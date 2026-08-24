@@ -7,6 +7,7 @@ with full inspectability for both the Research Corpus and dynamic User PDF uploa
 
 import sys
 import os
+import re
 import json
 import time
 import hashlib
@@ -66,6 +67,13 @@ def load_research_retriever() -> HybridRetriever:
     return HybridRetriever.from_chunks(chunks)
 
 
+def clean_display_text(text: str, doc_title: Optional[str] = None) -> str:
+    """Replaces internal user hashes with clean human-readable titles in answer text."""
+    if doc_title:
+        text = re.sub(r"user_[0-9a-f]{12}", doc_title, text)
+    return text
+
+
 # ---------------------------------------------------------------------------
 # Main Streamlit Application Renderer
 # ---------------------------------------------------------------------------
@@ -84,11 +92,12 @@ def run_app():
         /* Metric & Badge Styling */
         .status-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
         }
         .badge-sufficient { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .badge-partial { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
@@ -96,16 +105,45 @@ def run_app():
         .badge-refuse { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .badge-direct { background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
 
-        .cache-badge-hit { background-color: #d1ecf1; color: #0c5460; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
-        .cache-badge-miss { background-color: #fff3cd; color: #856404; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
+        .cache-badge-hit { 
+            background-color: #d1ecf1; 
+            color: #0c5460; 
+            font-weight: 600; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            border: 1px solid #bee5eb;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .cache-badge-indexed { 
+            background-color: #e2f0d9; 
+            color: #2b542c; 
+            font-weight: 600; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            border: 1px solid #cce2c2;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
 
-        /* Trace & Pipeline Cards */
+        /* High-Contrast Readable Quote Box */
         .quote-box {
-            background-color: #f6f8fa;
+            background-color: rgba(3, 102, 214, 0.07);
+            color: #1a202c;
             border-left: 4px solid #0366d6;
-            padding: 8px 12px;
-            font-style: italic;
-            margin: 6px 0;
+            padding: 10px 14px;
+            font-style: normal;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 8px 0 12px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Source Provenance Label */
+        .provenance-tag {
+            color: #4a5568;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -113,8 +151,8 @@ def run_app():
     # -----------------------------------------------------------------------
     # Sidebar: Corpus Mode & Configuration
     # -----------------------------------------------------------------------
-    st.sidebar.title("🔬 Knowledge Assistant")
-    st.sidebar.markdown("**Agentic RAG with Self-Corrective Auditing**")
+    st.sidebar.title("🔬 Agentic RAG")
+    st.sidebar.markdown("**Evidence-Aware Self-Corrective Knowledge Assistant**")
 
     corpus_mode = st.sidebar.radio(
         "Corpus Mode",
@@ -125,6 +163,7 @@ def run_app():
 
     active_retriever: Optional[HybridRetriever] = None
     active_corpus_name: str = ""
+    active_doc_title: Optional[str] = None
 
     if corpus_mode == "Research Corpus (10 Papers)":
         active_retriever = load_research_retriever()
@@ -166,6 +205,7 @@ def run_app():
         if uploaded_file is not None:
             file_bytes = uploaded_file.getvalue()
             file_hash = hashlib.sha256(file_bytes).hexdigest()
+            active_doc_title = uploaded_file.name
             
             # Check if already processed in session state
             if st.session_state.get("uploaded_pdf_hash") != file_hash:
@@ -194,14 +234,14 @@ def run_app():
                 info = st.session_state["uploaded_info"]
                 st.sidebar.markdown("---")
                 if info.get("cache_hit"):
-                    st.sidebar.markdown('<span class="cache-badge-hit">✓ CACHE HIT (0 API Calls)</span>', unsafe_allow_html=True)
+                    st.sidebar.markdown('<span class="cache-badge-hit">✓ Cache Hit — Embeddings Reused</span>', unsafe_allow_html=True)
                 else:
-                    st.sidebar.markdown('<span class="cache-badge-miss">⚡ CACHE MISS (Embeddings Generated)</span>', unsafe_allow_html=True)
+                    st.sidebar.markdown('<span class="cache-badge-indexed">✓ PDF Indexed — Embeddings Generated</span>', unsafe_allow_html=True)
 
                 st.sidebar.markdown(f"**Document**: `{info['filename']}`")
-                st.sidebar.markdown(f"**Document Hash**: `{info['file_hash'][:12]}...`")
                 st.sidebar.markdown(f"**Pages**: `{info['num_pages']}` | **Chunks**: `{info['num_chunks']}`")
                 active_retriever = st.session_state.get("uploaded_retriever")
+                active_doc_title = info['filename']
         else:
             st.sidebar.info("Please upload a PDF file to begin querying.")
             st.session_state.pop("uploaded_pdf_hash", None)
@@ -217,8 +257,8 @@ def run_app():
     # -----------------------------------------------------------------------
     # Main Query Area
     # -----------------------------------------------------------------------
-    st.title("Autonomous Agentic RAG Assistant")
-    st.caption(f"Active Target: **{active_corpus_name}** | Verification: **Deterministic Quote Extraction & Auditing**")
+    st.title("Agentic RAG Knowledge Assistant")
+    st.caption("Plan → Retrieve → Audit → Retry → Grounded Answer")
 
     default_query = preset_query_map.get(demo_preset, "")
 
@@ -273,19 +313,30 @@ def run_app():
         
         st.markdown(f'<div class="status-badge {badge_cls}">{badge_text}</div>', unsafe_allow_html=True)
         
-        # 2. Main Response Box
-        st.markdown("### Response")
-        st.markdown(trace.generation.response_text)
+        # 2. Main Response Box (Human-readable without internal IDs)
+        display_response = clean_display_text(trace.generation.response_text, active_doc_title)
+        st.markdown("### Answer")
+        st.markdown(display_response)
         
         # 3. Verified Citations
         if trace.generation.citations:
             st.markdown("#### 📚 Verified Source Citations")
             for i, cit in enumerate(trace.generation.citations, start=1):
-                source_label = f"[{cit.document_title} | {cit.section_title}]" if cit.section_title else f"[{cit.document_title}]"
-                with st.expander(f"📌 Citation [{i}] {source_label}", expanded=False):
-                    st.markdown(f"**Verified Supporting Quote:**")
+                # Format human-readable title and location
+                clean_title = active_doc_title if (active_doc_title and cit.doc_id.startswith("user_")) else cit.document_title
+                source_label = f"{clean_title} — {cit.section_title}" if cit.section_title else f"{clean_title}"
+                
+                with st.expander(f"📌 Citation [{i}] Source: {source_label}", expanded=False):
+                    st.markdown("**Verified Supporting Evidence:**")
                     st.markdown(f'<div class="quote-box">"{cit.exact_quote}"</div>', unsafe_allow_html=True)
-                    st.caption(f"Doc ID: `{cit.doc_id}` | Chunk ID: `{cit.chunk_id}` | Claim: {cit.claim_text}")
+                    
+                    st.markdown(f"- **Document**: `{clean_title}`")
+                    if cit.section_title:
+                        st.markdown(f"- **Section / Location**: `{cit.section_title}`")
+                    
+                    # Technical IDs in small caption area
+                    with st.container():
+                        st.caption(f"Technical Trace ID: `{cit.doc_id}` | Chunk: `{cit.chunk_id}` | Verified Claim: {cit.claim_text}")
         elif trace.final_decision == "REFUSE":
             st.info("ℹ️ No citations are provided because the indexed corpus lacks verified supporting evidence.")
 
@@ -303,7 +354,7 @@ def run_app():
                     elif p_rec.audit_result.verdict == "SUFFICIENT":
                         st.caption("↳ Verified sufficient evidence.")
 
-        # 5. Expandable Full Agent Trace
+        # 5. Expandable Full Agent Trace (Deep Inspect)
         with st.expander("🔍 Deep Inspect: Complete Agent Execution Trace", expanded=False):
             tab_plan, tab_retrieval, tab_audit, tab_perf = st.tabs([
                 "1. Query Plan",
