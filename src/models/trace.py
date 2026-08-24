@@ -2,8 +2,8 @@
 Structured Pydantic schemas for Query Planning, Evidence Auditing, Provenance, and Execution Traces.
 """
 
-from typing import Optional, List, Dict, Any, Literal
-from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any, Literal, Union
+from pydantic import BaseModel, Field, ConfigDict
 from src.models.retrieval import SearchResult
 
 
@@ -103,10 +103,11 @@ class GenerationResult(BaseModel):
 
 class PassRecord(BaseModel):
     """Record of a single Retrieve-Audit iteration."""
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     pass_number: int = Field(..., description="1-indexed pass number")
     search_queries: List[str] = Field(..., description="Search queries executed in this pass")
     retrieved_chunk_ids: List[str] = Field(..., description="List of chunk IDs returned")
-    retrieved_results: List[SearchResult] = Field(default_factory=list, description="Full search results")
+    retrieved_results: List[Any] = Field(default_factory=list, description="Full search results")
     audit_result: AuditResult = Field(..., description="Audit output for this pass")
     reformulated_query: Optional[str] = Field(None, description="Reformulated query if retry triggered")
     filter_fallback_event: Optional[str] = Field(None, description="Event record if metadata filter yielded 0 hits and triggered fallback")
@@ -114,6 +115,7 @@ class PassRecord(BaseModel):
 
 class AgentTrace(BaseModel):
     """End-to-end inspectable execution trace."""
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     trace_id: str = Field(..., description="Unique trace UUID")
     query: str = Field(..., description="Original user query")
     planner: QueryPlan = Field(..., description="Query planning decision")

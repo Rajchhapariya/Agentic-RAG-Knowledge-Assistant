@@ -49,6 +49,15 @@ class SectionAwareChunker:
 
         total_tokens = self.count_tokens(text)
         
+        page_m = re.search(r'Page\s*(\d+)', section.section_title)
+        page_num = int(page_m.group(1)) if page_m else None
+        
+        filename = doc.metadata.get("filename")
+        if filename:
+            location_str = f"{filename}: Page {page_num}, §{section.section_title}" if page_num else f"{filename}: §{section.section_title}"
+        else:
+            location_str = f"{doc.doc_id}: §{section.section_title}"
+
         # If section is small enough, it becomes a single chunk
         if total_tokens <= self.target_tokens:
             chunk_id = f"{doc.doc_id}_c{start_doc_idx:03d}"
@@ -65,7 +74,9 @@ class SectionAwareChunker:
                 chunk_index_in_section=0,
                 token_count=total_tokens,
                 char_start=section.start_char,
-                char_end=section.end_char
+                char_end=section.end_char,
+                page_number=page_num,
+                location=location_str,
             )
             return [Chunk(chunk_id=chunk_id, content=text, metadata=metadata)]
 
@@ -100,7 +111,9 @@ class SectionAwareChunker:
                         chunk_index_in_section=sec_chunk_idx,
                         token_count=chunk_token_count,
                         char_start=section.start_char,
-                        char_end=section.end_char
+                        char_end=section.end_char,
+                        page_number=page_num,
+                        location=location_str,
                     )
                     chunks.append(Chunk(chunk_id=chunk_id, content=chunk_text, metadata=metadata))
                     sec_chunk_idx += 1
@@ -159,7 +172,9 @@ class SectionAwareChunker:
                     chunk_index_in_section=sec_chunk_idx,
                     token_count=chunk_token_count,
                     char_start=section.start_char,
-                    char_end=section.end_char
+                    char_end=section.end_char,
+                    page_number=page_num,
+                    location=location_str,
                 )
                 chunks.append(Chunk(chunk_id=chunk_id, content=chunk_text, metadata=metadata))
 

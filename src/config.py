@@ -15,10 +15,12 @@ DATA_DIR = PROJECT_ROOT / "data"
 RAW_DOCS_DIR = DATA_DIR / "raw_documents"
 PROCESSED_DIR = DATA_DIR / "processed_chunks"
 BENCHMARK_DIR = DATA_DIR
+USER_UPLOADS_DIR = DATA_DIR / "user_uploads"
 
 # Ensure directories exist
 RAW_DOCS_DIR.mkdir(parents=True, exist_ok=True)
 PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+USER_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Processed Data Artifacts
 CHUNKS_JSON_PATH = PROCESSED_DIR / "chunks.json"

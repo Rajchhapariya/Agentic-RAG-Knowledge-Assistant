@@ -1,0 +1,73 @@
+[
+  {
+    "scenario_id": "DEMO_1_GROUNDED_ANSWER",
+    "title": "Scenario 1: Grounded Answer with Verifiable Citations",
+    "corpus_mode": "Research Corpus (10 Papers)",
+    "question": "How does Self-RAG use reflection tokens during inference?",
+    "expected_verdict": "SUFFICIENT",
+    "expected_passes": 1,
+    "expected_behavior": "Executes single-hop planning, hybrid retrieval, and evidence auditing in Pass 1. Produces grounded synthesis with exact quotes citing SelfRAG_Asai_2023.",
+    "key_ui_elements": [
+      "Status badge: ✓ ANSWER: FULLY GROUNDED & VERIFIED",
+      "Expandable Citation card showing exact quote: 'During inference, Self-RAG generates reflection tokens [Retrieve], [IsREL], [IsSUP], and [IsUSE]...'",
+      "Agent Trace tab 'Evidence Auditor' showing sub-question coverage = 100%"
+    ]
+  },
+  {
+    "scenario_id": "DEMO_2_RETRY_TRIGGERING",
+    "title": "Scenario 2: Dynamic Search Gap Diagnosis & Bounded Retry",
+    "corpus_mode": "Research Corpus (10 Papers)",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "expected_verdict": "SUFFICIENT",
+    "expected_passes": 2,
+    "expected_behavior": "Pass 1 retrieves initial passages for REALM and DPR, but Evidence Auditor identifies a missing comparison dimension regarding index refresh/maintenance frequency. Auditor reformulates the search query. Pass 2 retrieves the specific MIPS index updating mechanism from REALM_Guu_2020 and converges on SUFFICIENT.",
+    "key_ui_elements": [
+      "Multi-Pass Self-Correction visual columns (Pass 1: INSUFFICIENT_RETRY -> Pass 2: SUFFICIENT)",
+      "Agent Trace tab 'Retrieval Passes' showing reformulated query for MIPS index maintenance",
+      "Final grounded answer citing REALM_Guu_2020 and DPR_Karpukhin_2020"
+    ]
+  },
+  {
+    "scenario_id": "DEMO_3_OUT_OF_SCOPE_REFUSAL",
+    "title": "Scenario 3: Hallucination Prevention via Controlled Refusal",
+    "corpus_mode": "Research Corpus (10 Papers)",
+    "question": "What is the quantum teleportation fidelity achieved by Agent-Q in 2026?",
+    "expected_verdict": "REFUSE",
+    "expected_passes": 3,
+    "expected_behavior": "Executes Pass 1, Pass 2, and Pass 3 retries searching for quantum concepts. Auditor flags evidence as DEFINITIVELY_ABSENT and triggers strict refusal rather than ungrounded hallucination.",
+    "key_ui_elements": [
+      "Status badge: 🛑 REFUSED: INSUFFICIENT EVIDENCE (HALLUCINATION PREVENTION)",
+      "Refusal explanation explicitly detailing missing evidence dimensions",
+      "0 fabricated citations displayed"
+    ]
+  },
+  {
+    "scenario_id": "DEMO_4_USER_PDF_INGESTION",
+    "title": "Scenario 4: Dynamic PDF Ingestion & Content-Addressable Caching",
+    "corpus_mode": "Upload PDF",
+    "question": "What convergence threshold and factual accuracy are reported for Agent-Synthesizer?",
+    "expected_verdict": "SUFFICIENT",
+    "expected_passes": 1,
+    "expected_behavior": "Dynamic PDF parsed with pdfplumber, section-aware chunked, and embedded into isolated cache. Subsequent query runs through full Agentic pipeline with page-level citations. Re-upload demonstrates CACHE HIT with 0 embedding calls.",
+    "key_ui_elements": [
+      "Upload metadata: Document hash, Page count, Section count",
+      "Cache badge: CACHE MISS on first upload -> CACHE HIT on repeat upload",
+      "Page-level citation format: [user_...: Page 2 / Page 3]",
+      "Strict isolation confirming data/processed_chunks/ was not touched"
+    ]
+  },
+  {
+    "scenario_id": "DEMO_5_FALSE_PREMISE_DEBUNK",
+    "title": "Scenario 5: False Premise Contradiction & Debunking",
+    "corpus_mode": "Research Corpus (10 Papers)",
+    "question": "How does Toolformer use Proximal Policy Optimization (PPO) reinforcement learning to optimize API calls?",
+    "expected_verdict": "PARTIALLY_SUFFICIENT",
+    "expected_passes": 3,
+    "expected_behavior": "Retrieval finds Toolformer's self-supervised filtering methodology while noting the absence of PPO RL. Evidence Auditor flags unverified assumptions and produces grounded explanation with missing-evidence notes.",
+    "key_ui_elements": [
+      "Status badge: ⚠ PARTIAL ANSWER (MISSING INFORMATION CAVEATS)",
+      "Auditor trace highlighting missing PPO evidence and Toolformer API filtering context",
+      "Direct citation to Toolformer_Schick_2023"
+    ]
+  }
+]

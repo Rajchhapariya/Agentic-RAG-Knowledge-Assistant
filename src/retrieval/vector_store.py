@@ -31,6 +31,13 @@ class NumpyVectorStore:
         self.vectors = self.embedding_client.embed_texts(texts, keys=keys)
         print(f"Vector index built. Shape: {self.vectors.shape}")
 
+    def load_index(self, chunks: List[Chunk], vectors: np.ndarray) -> None:
+        """Loads pre-computed embeddings and chunks directly (0 API calls)."""
+        self.chunks = chunks
+        self.chunk_ids = [c.chunk_id for c in chunks]
+        self.chunks_by_id = {c.chunk_id: c for c in chunks}
+        self.vectors = vectors
+
     def search(
         self,
         query: str,

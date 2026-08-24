@@ -5,6 +5,7 @@ using Reciprocal Rank Fusion (RRF) with metadata filtering.
 
 import time
 from typing import List, Dict, Any, Optional, Literal, Tuple
+import numpy as np
 from src.config import DEFAULT_TOP_K, RRF_K
 from src.models.document import Chunk
 from src.models.retrieval import SearchResult, RetrievalQuery, RetrievalTrace
@@ -34,6 +35,22 @@ class HybridRetriever:
         """Factory method to initialize and index retriever directly from a chunk list."""
         vec_store = NumpyVectorStore()
         vec_store.build_index(chunks)
+        
+        bm25_eng = BM25SearchEngine()
+        bm25_eng.build_index(chunks)
+        
+        return cls(vector_store=vec_store, bm25_engine=bm25_eng, rrf_k=rrf_k)
+
+    @classmethod
+    def from_chunks_and_vectors(
+        cls,
+        chunks: List[Chunk],
+        vectors: np.ndarray,
+        rrf_k: int = RRF_K
+    ) -> "HybridRetriever":
+        """Factory method to initialize retriever from pre-computed vectors and chunks (0 API calls)."""
+        vec_store = NumpyVectorStore()
+        vec_store.load_index(chunks, vectors)
         
         bm25_eng = BM25SearchEngine()
         bm25_eng.build_index(chunks)

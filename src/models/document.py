@@ -45,6 +45,8 @@ class ChunkMetadata(BaseModel):
     token_count: int = Field(..., description="Token count using cl100k_base tokenizer")
     char_start: int = Field(..., description="Character start offset in document text")
     char_end: int = Field(..., description="Character end offset in document text")
+    page_number: Optional[int] = Field(None, description="1-indexed starting page number in original PDF")
+    location: Optional[str] = Field(None, description="Human-readable provenance tag (e.g. 'Page 3, Section 2.1')")
 
 
 class Chunk(BaseModel):

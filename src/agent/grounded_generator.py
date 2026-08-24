@@ -64,9 +64,9 @@ Respond with valid JSON conforming to the GenerationResult schema."""
 
         # 2. Explicit Refusal (Hallucination Prevention Gate)
         if decision in {"REFUSE", "DEFINITIVELY_ABSENT"}:
-            missing_reasons = "\n".join([f"- {m}" for m in audit_result.missing_information])
+            missing_reasons = "\n".join([f"- {m}" for m in audit_result.missing_information]) if audit_result.missing_information else "- No relevant evidence found in indexed documents."
             refusal_text = (
-                f"Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n"
+                f"Based on the indexed document(s), there is insufficient evidence to answer this question.\n\n"
                 f"**Missing Evidence Details:**\n{missing_reasons}\n\n"
                 f"*The system refused to generate an unverified answer to prevent hallucination.*"
             )

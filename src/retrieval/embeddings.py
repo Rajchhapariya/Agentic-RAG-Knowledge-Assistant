@@ -195,6 +195,49 @@ class EmbeddingClient:
         tracker.track_query_embedding(estimated_tokens=tokens, is_cache_hit=False)
         return vec
 
+    def embed_raw_texts(
+        self,
+        texts: List[str],
+        batch_size: int = 64
+    ) -> np.ndarray:
+        """
+        Embeds arbitrary text passages directly for dynamic user uploads
+        WITHOUT writing to or modifying the frozen research document cache.
+        """
+        if not texts:
+            return np.zeros((0, self.dim), dtype=np.float32)
+
+        tracker = get_cost_tracker()
+        if not self.api_enabled or self.cache_only:
+            raise OpenAIAPIDisabledError(
+                f"OpenAI API is disabled (OPENAI_API_ENABLED={self.api_enabled}, CACHE_ONLY_MODE={self.cache_only}) "
+                f"cannot generate embeddings for uploaded documents."
+            )
+
+        if not self.client:
+            raise ValueError("OpenAI client not initialized. Check OPENAI_API_KEY.")
+
+        vectors = []
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i + batch_size]
+            cleaned_batch = [t.replace("\n", " ") for t in batch]
+            total_tokens = sum(self._count_tokens(t) for t in batch)
+
+            response = self.client.embeddings.create(
+                model=self.model,
+                input=cleaned_batch
+            )
+            for item in response.data:
+                v = np.array(item.embedding, dtype=np.float32)
+                norm = np.linalg.norm(v)
+                if norm > 0:
+                    v = v / norm
+                vectors.append(v)
+
+            tracker.track_doc_embedding(num_chunks=len(batch), estimated_tokens=total_tokens, from_cache=False)
+
+        return np.vstack(vectors)
+
     def embed_texts(
         self,
         texts: List[str],
