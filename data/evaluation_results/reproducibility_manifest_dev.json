@@ -1,0 +1,26 @@
+{
+  "evaluation_version": "v1.0_final",
+  "is_partial_result": false,
+  "timestamp": "2026-08-24T05:01:36.867837+00:00",
+  "split": "dev",
+  "num_questions_selected": 1,
+  "num_records_completed": 1,
+  "dataset_path": "C:\\Users\\Rajch\\Desktop\\Agentic RAG Knowledge Assistant\\data\\benchmark_dataset.json",
+  "dataset_sha256": "06f25048d368f841356e9788a9ff41b15c2cef25103ea434582970d6f71ffe78",
+  "systems_evaluated": [
+    "Agentic_System_C_Full"
+  ],
+  "models": {
+    "llm_model": "gpt-4o-mini",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_dimensions": 1536
+  },
+  "corpus": {
+    "papers_count": 10,
+    "chunks_count": 243
+  },
+  "platform": {
+    "os": "win32",
+    "python_version": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]"
+  }
+}

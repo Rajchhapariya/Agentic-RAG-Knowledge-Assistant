@@ -1,0 +1,11 @@
+[
+  {
+    "question_id": "Q01_dev",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How does Self-RAG use reflection tokens during inference?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "Self-RAG introduces four special reflection tokens: [Retrieve], [IsREL], [IsSUP], and [IsUSE]. These tokens guide selective retrieval and self-critique [SelfRAG_Asai_2023].",
+    "trace_id": "tr_d04f94d3"
+  }
+]

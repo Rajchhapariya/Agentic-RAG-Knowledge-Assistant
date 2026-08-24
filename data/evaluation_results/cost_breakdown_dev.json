@@ -1,0 +1,59 @@
+{
+  "document_embeddings": {
+    "api_calls": 0,
+    "chunks_embedded": 0,
+    "chunks_cached": 0,
+    "tokens": 0,
+    "estimated_cost_usd": 0.0
+  },
+  "query_embeddings": {
+    "api_calls": 0,
+    "cache_hits": 1,
+    "cache_misses": 0,
+    "cache_hit_rate": 1.0,
+    "tokens": 0,
+    "estimated_cost_usd": 0.0
+  },
+  "llm_breakdown": {
+    "planner": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0
+    },
+    "auditor": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0
+    },
+    "generator": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0
+    },
+    "reformulator": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0
+    },
+    "baseline_generator": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  "totals": {
+    "total_api_calls": 0,
+    "total_tokens": 0,
+    "total_cost_usd": 0.0
+  }
+}

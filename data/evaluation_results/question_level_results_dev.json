@@ -1,0 +1,50 @@
+[
+  {
+    "question_id": "Q01_dev",
+    "system_name": "Agentic_System_C_Full",
+    "split": "dev",
+    "category": "answerable_single_hop",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_refusal": false,
+    "retrieved_chunk_ids": [
+      "SelfRAG_Asai_2023_c003",
+      "SelfRAG_Asai_2023_c009",
+      "SelfRAG_Asai_2023_c007",
+      "SelfRAG_Asai_2023_c057",
+      "SelfRAG_Asai_2023_c002"
+    ],
+    "retrieved_doc_ids": [
+      "SelfRAG_Asai_2023"
+    ],
+    "pass1_chunk_recall_at_k": 0.0,
+    "cumulative_pool_chunk_recall": 0.0,
+    "best_pass_chunk_recall_at_k": 0.0,
+    "per_subquery_chunk_recall": 0.0,
+    "chunk_precision_at_k": 0.0,
+    "chunk_recall_at_k": 0.0,
+    "doc_precision_at_k": 1.0,
+    "doc_recall_at_k": 1.0,
+    "mrr": 0.0,
+    "final_decision": "SUFFICIENT",
+    "generation_status": "ANSWERED",
+    "response_text": "Self-RAG introduces four special reflection tokens: [Retrieve], [IsREL], [IsSUP], and [IsUSE]. These tokens guide selective retrieval and self-critique [SelfRAG_Asai_2023].",
+    "correctness_score": 0.0,
+    "correctness_label": "Wrong",
+    "citation_precision": 1.0,
+    "citation_coverage": 1.0,
+    "is_hallucination": false,
+    "is_true_refusal": false,
+    "is_false_refusal": false,
+    "is_correct_debunk": false,
+    "total_latency_ms": 10.14,
+    "planner_latency_ms": 0.03,
+    "retrieval_latency_ms": 10.0,
+    "auditor_latency_ms": 0.04,
+    "generator_latency_ms": 0.04,
+    "num_llm_calls": 3,
+    "retry_count": 0,
+    "trace_id": "tr_d04f94d3",
+    "candidate_failure_category": "incorrect_answer"
+  }
+]

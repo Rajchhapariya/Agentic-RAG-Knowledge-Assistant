@@ -1,0 +1,706 @@
+[
+  {
+    "question_id": "Q01_dev",
+    "question": "How does Self-RAG use reflection tokens during inference?",
+    "category": "answerable_single_hop",
+    "split": "dev",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["SelfRAG_Asai_2023"],
+    "expected_chunk_ids": ["SelfRAG_Asai_2023_c008", "SelfRAG_Asai_2023_c011"],
+    "expected_section_titles": ["3.1 Problem Formalization and Overview", "3.3 Self-Rag Inference"],
+    "required_evidence_spans": [
+      "the model decodes a retrieval token to evaluate the utility of retrieval",
+      "critique token to evaluate the retrieved passage's relevance"
+    ],
+    "acceptable_answer_criteria": "Must mention retrieval tokens (Retrieve) to decide when to retrieve, and critique tokens (IsRel, IsSup, IsUse) to evaluate relevance, support, and utility.",
+    "expected_refusal": false,
+    "expected_citations": ["SelfRAG_Asai_2023"]
+  },
+  {
+    "question_id": "Q02_dev",
+    "question": "What loss function and negative sampling strategy is used to train DPR dual encoders?",
+    "category": "retrieval_sensitive",
+    "split": "dev",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["DPR_Karpukhin_2020"],
+    "expected_chunk_ids": ["DPR_Karpukhin_2020_c005", "DPR_Karpukhin_2020_c013"],
+    "expected_section_titles": ["3 Dense Passage Retriever (DPR)", "5.2 In-batch negative training"],
+    "required_evidence_spans": [
+      "negative log-likelihood",
+      "in-batch negatives"
+    ],
+    "acceptable_answer_criteria": "Must identify negative log-likelihood (NLL) of the positive passage loss, in-batch negative passages, and BM25 hard negatives.",
+    "expected_refusal": false,
+    "expected_citations": ["DPR_Karpukhin_2020"]
+  },
+  {
+    "question_id": "Q03_dev",
+    "question": "How does CRAG use upper and lower confidence thresholds to trigger Correct, Incorrect, and Ambiguous actions?",
+    "category": "exact_numerical",
+    "split": "dev",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["CRAG_Yan_2024"],
+    "expected_chunk_ids": ["CRAG_Yan_2024_c008"],
+    "expected_section_titles": ["4.3 Action Trigger"],
+    "required_evidence_spans": [
+      "If the confidence score is higher than the upper threshold, the retrieved document is identified as Correct",
+      "identified as Incorrect if below the lower threshold. Otherwise, a more soft and intermediate action, i.e., Ambiguous is executed"
+    ],
+    "acceptable_answer_criteria": "Must state that confidence above upper threshold triggers Correct, below lower threshold triggers Incorrect, and between them triggers Ambiguous.",
+    "expected_refusal": false,
+    "expected_citations": ["CRAG_Yan_2024"]
+  },
+  {
+    "question_id": "Q04_dev",
+    "question": "Compare how Self-RAG dynamically decides when to retrieve versus how FLARE triggers active retrieval.",
+    "category": "answerable_multi_hop",
+    "split": "dev",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["SelfRAG_Asai_2023", "FLARE_Jiang_2023"],
+    "expected_chunk_ids": ["SelfRAG_Asai_2023_c011", "FLARE_Jiang_2023_c012"],
+    "expected_section_titles": ["3.3 Self-Rag Inference", "3.2 Direct FLARE"],
+    "required_evidence_spans": [
+      "Self-Rag dynamically decides when to retrieve text passages by predicting Retrieve",
+      "forward-looking active retrieval that uses the next sentence to decide when and what to retrieve"
+    ],
+    "acceptable_answer_criteria": "Must explain that Self-RAG predicts explicit special Retrieve tokens (or probability thresholds) per segment, whereas FLARE actively inspects future sentence token confidence.",
+    "expected_refusal": false,
+    "expected_citations": ["SelfRAG_Asai_2023", "FLARE_Jiang_2023"]
+  },
+  {
+    "question_id": "Q05_dev",
+    "question": "What is the quantum teleportation fidelity achieved by Agent-Q in 2026?",
+    "category": "out_of_scope_unanswerable",
+    "split": "dev",
+    "answerable": false,
+    "expected_behavior": "REFUSE_OUT_OF_SCOPE",
+    "expected_doc_ids": [],
+    "expected_chunk_ids": [],
+    "expected_section_titles": [],
+    "required_evidence_spans": [],
+    "acceptable_answer_criteria": "Must explicitly refuse to answer due to lack of evidence in the research papers.",
+    "expected_refusal": true,
+    "expected_citations": []
+  },
+  {
+    "question_id": "Q06_dev",
+    "question": "How does Toolformer use Proximal Policy Optimization (PPO) reinforcement learning to optimize API calls?",
+    "category": "false_premise",
+    "split": "dev",
+    "answerable": false,
+    "expected_behavior": "DEBUNK_FALSE_PREMISE",
+    "expected_doc_ids": ["Toolformer_Schick_2023"],
+    "expected_chunk_ids": ["Toolformer_Schick_2023_c002"],
+    "expected_section_titles": ["1 Introduction"],
+    "required_evidence_spans": [
+      "Toolformer does not rely on reinforcement learning"
+    ],
+    "acceptable_answer_criteria": "Must refute the premise: Toolformer does NOT use PPO/reinforcement learning; it uses self-supervised in-context API generation and cross-entropy loss filtering.",
+    "expected_refusal": false,
+    "expected_citations": ["Toolformer_Schick_2023"]
+  },
+  {
+    "question_id": "Q07_dev",
+    "question": "How does the memory hierarchy work in MemGPT?",
+    "category": "ambiguous",
+    "split": "dev",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["MemGPT_Packer_2023"],
+    "expected_chunk_ids": ["MemGPT_Packer_2023_c005", "MemGPT_Packer_2023_c006"],
+    "expected_section_titles": ["2 MemGPT: An OS-inspired Architecture"],
+    "required_evidence_spans": [
+      "main context (analogous to RAM)",
+      "external context (analogous to disk storage)"
+    ],
+    "acceptable_answer_criteria": "Must describe MemGPT's OS-inspired tiers: main/working context (in-context RAM) vs external context (recall and archival disk storage).",
+    "expected_refusal": false,
+    "expected_citations": ["MemGPT_Packer_2023"]
+  },
+  {
+    "question_id": "Q08_dev",
+    "question": "How does Reflexion differ from standard ReAct in terms of memory and verbal feedback?",
+    "category": "entity_near_neighbor_confusion",
+    "split": "dev",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["Reflexion_Shinn_2023", "ReAct_Yao_2022"],
+    "expected_chunk_ids": ["Reflexion_Shinn_2023_c003", "ReAct_Yao_2022_c002"],
+    "expected_section_titles": ["1 Introduction", "1 Introduction"],
+    "required_evidence_spans": [
+      "verbal reinforcement learning",
+      "thought, action, and observation"
+    ],
+    "acceptable_answer_criteria": "Must differentiate: ReAct uses step-by-step thoughts and actions within a single trial, while Reflexion stores multi-trial verbal self-reflections in episodic memory buffers without updating model weights.",
+    "expected_refusal": false,
+    "expected_citations": ["Reflexion_Shinn_2023", "ReAct_Yao_2022"]
+  },
+  {
+    "question_id": "Q09_test",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["REALM_Guu_2020"],
+    "expected_chunk_ids": ["REALM_Guu_2020_c002", "REALM_Guu_2020_c004"],
+    "expected_section_titles": ["1 Introduction", "2 Background & Overview"],
+    "required_evidence_spans": [
+      "masked language model (MLM) pre-training step",
+      "retrieves knowledge from a textual knowledge corpus"
+    ],
+    "acceptable_answer_criteria": "Must describe REALM's retrieval-augmented masked language modeling objective where the model learns to retrieve documents to fill in masked tokens end-to-end.",
+    "expected_refusal": false,
+    "expected_citations": ["REALM_Guu_2020"]
+  },
+  {
+    "question_id": "Q10_test",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["Toolformer_Schick_2023"],
+    "expected_chunk_ids": ["Toolformer_Schick_2023_c002", "Toolformer_Schick_2023_c004"],
+    "expected_section_titles": ["1 Introduction", "2 Approach"],
+    "required_evidence_spans": [
+      "filters out API calls that do not reduce perplexity",
+      "loss over the ground truth tokens"
+    ],
+    "acceptable_answer_criteria": "Must state that Toolformer executes candidate API calls and retains only those that decrease the language modeling cross-entropy / perplexity loss on subsequent tokens.",
+    "expected_refusal": false,
+    "expected_citations": ["Toolformer_Schick_2023"]
+  },
+  {
+    "question_id": "Q11_test",
+    "question": "What are the two models introduced in RAG (RAG-Sequence vs RAG-Token)?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["RAG_Lewis_2020"],
+    "expected_chunk_ids": ["RAG_Lewis_2020_c004", "RAG_Lewis_2020_c005"],
+    "expected_section_titles": ["2 Models", "2.1 RAG-Sequence Model"],
+    "required_evidence_spans": [
+      "RAG-Sequence model uses the same retrieved document to generate the complete sequence",
+      "RAG-Token model can draw on different documents for each token"
+    ],
+    "acceptable_answer_criteria": "Must contrast RAG-Sequence (uses one document per entire output sequence) and RAG-Token (can select different documents per generated token).",
+    "expected_refusal": false,
+    "expected_citations": ["RAG_Lewis_2020"]
+  },
+  {
+    "question_id": "Q12_test",
+    "question": "What is the decompose-then-recompose knowledge refinement method in CRAG?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["CRAG_Yan_2024"],
+    "expected_chunk_ids": ["CRAG_Yan_2024_c009"],
+    "expected_section_titles": ["4.4 Knowledge Refinement"],
+    "required_evidence_spans": [
+      "decompose-then-recompose knowledge refinement method is designed to further extract the most critical knowledge strips",
+      "segmented the retrieved results into internal strips"
+    ],
+    "acceptable_answer_criteria": "Must explain that CRAG segments retrieved documents into fine-grained knowledge strips, filters out irrelevant strips, and recomposes only relevant strips.",
+    "expected_refusal": false,
+    "expected_citations": ["CRAG_Yan_2024"]
+  },
+  {
+    "question_id": "Q13_test",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["ReAct_Yao_2022", "Reflexion_Shinn_2023"],
+    "expected_chunk_ids": ["ReAct_Yao_2022_c002", "Reflexion_Shinn_2023_c003"],
+    "expected_section_titles": ["1 Introduction", "1 Introduction"],
+    "required_evidence_spans": [
+      "synergizing reasoning and acting",
+      "verbal self-reflection buffer across trials"
+    ],
+    "acceptable_answer_criteria": "Must explain that ReAct executes within a single episode, while Reflexion persists linguistic self-critiques across consecutive trials in an episodic memory buffer.",
+    "expected_refusal": false,
+    "expected_citations": ["ReAct_Yao_2022", "Reflexion_Shinn_2023"]
+  },
+  {
+    "question_id": "Q14_test",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["REALM_Guu_2020", "DPR_Karpukhin_2020"],
+    "expected_chunk_ids": ["REALM_Guu_2020_c008", "DPR_Karpukhin_2020_c005"],
+    "expected_section_titles": ["3.2 Computationally Feasible Pre-training", "3 Dense Passage Retriever (DPR)"],
+    "required_evidence_spans": [
+      "asynchronously refreshing the MIPS index",
+      "encodes all passages using the passage encoder offline"
+    ],
+    "acceptable_answer_criteria": "Must note that REALM periodically refreshes the MIPS dense index asynchronously during pre-training, whereas DPR uses fixed offline pre-computed FAISS embeddings after training.",
+    "expected_refusal": false,
+    "expected_citations": ["REALM_Guu_2020", "DPR_Karpukhin_2020"]
+  },
+  {
+    "question_id": "Q15_test",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["SelfRAG_Asai_2023"],
+    "expected_chunk_ids": ["SelfRAG_Asai_2023_c008"],
+    "expected_section_titles": ["3.1 Problem Formalization and Overview"],
+    "required_evidence_spans": [
+      "IsRel",
+      "IsSup",
+      "IsUse"
+    ],
+    "acceptable_answer_criteria": "Must explicitly identify the critique token groups: Retrieve, IsRel (Relevance), IsSup (Support / Groundedness), and IsUse (Utility).",
+    "expected_refusal": false,
+    "expected_citations": ["SelfRAG_Asai_2023"]
+  },
+  {
+    "question_id": "Q16_test",
+    "question": "How does FLARE use forward-looking active retrieval with generation confidence thresholds?",
+    "category": "retrieval_sensitive",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["FLARE_Jiang_2023"],
+    "expected_chunk_ids": ["FLARE_Jiang_2023_c012"],
+    "expected_section_titles": ["3.2 Direct FLARE"],
+    "required_evidence_spans": [
+      "forward-looking active retrieval",
+      "uses the next sentence to decide when and what to retrieve"
+    ],
+    "acceptable_answer_criteria": "Must describe generating candidate upcoming sentences, measuring token probabilities against confidence threshold theta, and triggering retrieval on low-confidence tokens.",
+    "expected_refusal": false,
+    "expected_citations": ["FLARE_Jiang_2023"]
+  },
+  {
+    "question_id": "Q17_test",
+    "question": "How many documents are retrieved for each question that the CRAG retrieval evaluator scores individually during inference?",
+    "category": "exact_numerical",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["CRAG_Yan_2024"],
+    "expected_chunk_ids": ["CRAG_Yan_2024_c007"],
+    "expected_section_titles": ["4.2 Retrieval Evaluator"],
+    "required_evidence_spans": [
+      "For every question, there are generally 10 documents retrieved"
+    ],
+    "acceptable_answer_criteria": "Must specify that 10 retrieved documents are scored individually by the retrieval evaluator for each question.",
+    "expected_refusal": false,
+    "expected_citations": ["CRAG_Yan_2024"]
+  },
+  {
+    "question_id": "Q18_test",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["RAG_Lewis_2020"],
+    "expected_chunk_ids": ["RAG_Lewis_2020_c006"],
+    "expected_section_titles": ["2.3 Decoding"],
+    "required_evidence_spans": [
+      "top K documents (K in {5, 10})"
+    ],
+    "acceptable_answer_criteria": "Must mention top-k values of 5 or 10 passages.",
+    "expected_refusal": false,
+    "expected_citations": ["RAG_Lewis_2020"]
+  },
+  {
+    "question_id": "Q19_test",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["CRAG_Yan_2024"],
+    "expected_chunk_ids": ["CRAG_Yan_2024_c008"],
+    "expected_section_titles": ["4.3 Action Trigger"],
+    "required_evidence_spans": [
+      "Otherwise, a more soft and intermediate action, i.e., Ambiguous is executed"
+    ],
+    "acceptable_answer_criteria": "Must explain that when the evaluator score falls between upper and lower thresholds, the Ambiguous action combines both internal retrieved documents and external web search knowledge.",
+    "expected_refusal": false,
+    "expected_citations": ["CRAG_Yan_2024"]
+  },
+  {
+    "question_id": "Q20_test",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["MemGPT_Packer_2023"],
+    "expected_chunk_ids": ["MemGPT_Packer_2023_c005"],
+    "expected_section_titles": ["2 MemGPT: An OS-inspired Architecture"],
+    "required_evidence_spans": [
+      "main context (analogous to RAM)",
+      "archival storage and recall storage"
+    ],
+    "acceptable_answer_criteria": "Must explain that working context is in the active LLM context window (system prompt, working memory, FIFO queue), while archival memory is out-of-context storage searched via function calling.",
+    "expected_refusal": false,
+    "expected_citations": ["MemGPT_Packer_2023"]
+  },
+  {
+    "question_id": "Q21_test",
+    "question": "How does REALM use BM25 sparse keyword matching during its pretraining phase?",
+    "category": "false_premise",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "DEBUNK_FALSE_PREMISE",
+    "expected_doc_ids": ["REALM_Guu_2020"],
+    "expected_chunk_ids": ["REALM_Guu_2020_c002"],
+    "expected_section_titles": ["1 Introduction"],
+    "required_evidence_spans": [
+      "REALM uses a neural dense retriever"
+    ],
+    "acceptable_answer_criteria": "Must debunk the false premise: REALM uses learned dense neural bi-encoders (BERT) and MIPS, not BM25 sparse keyword matching.",
+    "expected_refusal": false,
+    "expected_citations": ["REALM_Guu_2020"]
+  },
+  {
+    "question_id": "Q22_test",
+    "question": "What temperature setting does Reflexion use to perform gradient descent updates on actor weights?",
+    "category": "false_premise",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "DEBUNK_FALSE_PREMISE",
+    "expected_doc_ids": ["Reflexion_Shinn_2023"],
+    "expected_chunk_ids": ["Reflexion_Shinn_2023_c001"],
+    "expected_section_titles": ["1 Introduction"],
+    "required_evidence_spans": [
+      "Reflexion agents do not update weights"
+    ],
+    "acceptable_answer_criteria": "Must debunk the premise: Reflexion does not perform gradient descent or update weights; it performs verbal reinforcement learning via memory buffers.",
+    "expected_refusal": false,
+    "expected_citations": ["Reflexion_Shinn_2023"]
+  },
+  {
+    "question_id": "Q23_test",
+    "question": "What is the exact BLEU score achieved by LLaMA-4 on WMT-2027 machine translation?",
+    "category": "out_of_scope_unanswerable",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "REFUSE_OUT_OF_SCOPE",
+    "expected_doc_ids": [],
+    "expected_chunk_ids": [],
+    "expected_section_titles": [],
+    "required_evidence_spans": [],
+    "acceptable_answer_criteria": "Must explicitly refuse due to complete absence of evidence in the indexed papers.",
+    "expected_refusal": true,
+    "expected_citations": []
+  },
+  {
+    "question_id": "Q24_test",
+    "question": "What is the multi-agent consensus protocol used in the Swarm-Agent 2026 framework?",
+    "category": "out_of_scope_unanswerable",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "REFUSE_OUT_OF_SCOPE",
+    "expected_doc_ids": [],
+    "expected_chunk_ids": [],
+    "expected_section_titles": [],
+    "required_evidence_spans": [],
+    "acceptable_answer_criteria": "Must explicitly refuse due to complete absence of evidence in the indexed papers.",
+    "expected_refusal": true,
+    "expected_citations": []
+  },
+  {
+    "question_id": "Q25_test",
+    "question": "Does DPR use a generative sequence-to-sequence language model during passage retrieval?",
+    "category": "entity_near_neighbor_confusion",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["DPR_Karpukhin_2020"],
+    "expected_chunk_ids": ["DPR_Karpukhin_2020_c002", "DPR_Karpukhin_2020_c005"],
+    "expected_section_titles": ["1 Introduction", "3 Dense Passage Retriever (DPR)"],
+    "required_evidence_spans": [
+      "dense passage retriever (DPR)",
+      "dual-encoder architecture"
+    ],
+    "acceptable_answer_criteria": "Must clarify that DPR retrieval is purely a dual-encoder bi-encoder (dot product of question and passage embeddings) without a seq2seq generator; the reader is separate.",
+    "expected_refusal": false,
+    "expected_citations": ["DPR_Karpukhin_2020"]
+  },
+  {
+    "question_id": "Q26_test",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["RAG_Lewis_2020", "DPR_Karpukhin_2020"],
+    "expected_chunk_ids": ["RAG_Lewis_2020_c014", "DPR_Karpukhin_2020_c018"],
+    "expected_section_titles": ["4.3 Open-domain QA", "5.2 Out of domain evaluation"],
+    "required_evidence_spans": [
+      "BM25 can outperform dense retrieval on out-of-domain benchmarks",
+      "fine-tuned DPR achieves competitive or higher top-k retrieval accuracy"
+    ],
+    "acceptable_answer_criteria": "Must acknowledge the divergence: Lewis et al. / standard zero-shot dense bi-encoders struggle on out-of-domain terms compared to BM25, while DPR demonstrates that supervised dual-encoders generalize when fine-tuned on diverse open-domain sets.",
+    "expected_refusal": false,
+    "expected_citations": ["RAG_Lewis_2020", "DPR_Karpukhin_2020"]
+  },
+  {
+    "question_id": "Q27_test",
+    "question": "What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["Reflexion_Shinn_2023"],
+    "expected_chunk_ids": ["Reflexion_Shinn_2023_c004"],
+    "expected_section_titles": ["3 Reflexion: reinforcement via verbal reflection"],
+    "required_evidence_spans": [
+      "Actor, denoted as Ma, which generates text and actions",
+      "Evaluator model, represented by Me, that scores the outputs",
+      "Self-Reflection model, denoted as Msr, which generates verbal reinforcement cues"
+    ],
+    "acceptable_answer_criteria": "Must define the three models: Actor (generates action/text), Evaluator (computes reward/score), and Self-Reflection (produces linguistic verbal self-critique).",
+    "expected_refusal": false,
+    "expected_citations": ["Reflexion_Shinn_2023"]
+  },
+  {
+    "question_id": "Q28_test",
+    "question": "How does MemGPT manage memory transfers between the main context and external archival storage?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["MemGPT_Packer_2023"],
+    "expected_chunk_ids": ["MemGPT_Packer_2023_c005", "MemGPT_Packer_2023_c006"],
+    "expected_section_titles": ["2 MemGPT: An OS-inspired Architecture"],
+    "required_evidence_spans": [
+      "memory transfers between main context and external context",
+      "function calls to edit, read, and search external archival memory"
+    ],
+    "acceptable_answer_criteria": "Must describe OS-like function calls that enable the model to autonomously page, search, write, and retrieve memory blocks between in-context RAM and archival disk.",
+    "expected_refusal": false,
+    "expected_citations": ["MemGPT_Packer_2023"]
+  },
+  {
+    "question_id": "Q29_test",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["ReAct_Yao_2022"],
+    "expected_chunk_ids": ["ReAct_Yao_2022_c002", "ReAct_Yao_2022_c003"],
+    "expected_section_titles": ["1 Introduction", "2 ReAct: Synergizing Reasoning and Acting"],
+    "required_evidence_spans": [
+      "thought, action, and observation",
+      "interleaving thought, action, and observation steps"
+    ],
+    "acceptable_answer_criteria": "Must explicitly identify Thought (internal reasoning), Action (external tool call / search), and Observation (environment feedback).",
+    "expected_refusal": false,
+    "expected_citations": ["ReAct_Yao_2022"]
+  },
+  {
+    "question_id": "Q30_test",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["SelfRAG_Asai_2023", "RAG_Lewis_2020"],
+    "expected_chunk_ids": ["SelfRAG_Asai_2023_c011", "RAG_Lewis_2020_c006"],
+    "expected_section_titles": ["3.3 Self-Rag Inference", "2.3 Decoding"],
+    "required_evidence_spans": [
+      "segment-level beam search (with the beam size=B)",
+      "linear weighted sum of the normalized probability of each Critique token",
+      "autoregressive greedy generation"
+    ],
+    "acceptable_answer_criteria": "Must contrast Self-RAG's segment-level beam search weighted by critique token probabilities against RAG's standard autoregressive token decoding across top-k documents.",
+    "expected_refusal": false,
+    "expected_citations": ["SelfRAG_Asai_2023", "RAG_Lewis_2020"]
+  },
+  {
+    "question_id": "Q31_test",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["Toolformer_Schick_2023", "ReAct_Yao_2022"],
+    "expected_chunk_ids": ["Toolformer_Schick_2023_c002", "ReAct_Yao_2022_c002"],
+    "expected_section_titles": ["1 Introduction", "1 Introduction"],
+    "required_evidence_spans": [
+      "teaches language models to use tools via self-supervised training",
+      "prompts language models to interleave thoughts, actions, and observations in-context"
+    ],
+    "acceptable_answer_criteria": "Must contrast Toolformer's offline self-supervised fine-tuning (API tokens inserted into training data) against ReAct's inference-time in-context prompting with reasoning traces.",
+    "expected_refusal": false,
+    "expected_citations": ["Toolformer_Schick_2023", "ReAct_Yao_2022"]
+  },
+  {
+    "question_id": "Q32_test",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["CRAG_Yan_2024"],
+    "expected_chunk_ids": ["CRAG_Yan_2024_c008", "CRAG_Yan_2024_c012"],
+    "expected_section_titles": ["4.3 Action Trigger", "5.1 Experimental Setup"],
+    "required_evidence_spans": [
+      "confidence score ranges from -1 to 1",
+      "Correct, Incorrect, and Ambiguous"
+    ],
+    "acceptable_answer_criteria": "Must state that confidence scores range from [-1, 1] with upper and lower thresholds triggering Correct, Incorrect, or Ambiguous actions.",
+    "expected_refusal": false,
+    "expected_citations": ["CRAG_Yan_2024"]
+  },
+  {
+    "question_id": "Q33_test",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["REALM_Guu_2020"],
+    "expected_chunk_ids": ["REALM_Guu_2020_c004", "REALM_Guu_2020_c006"],
+    "expected_section_titles": ["2 Background & Overview", "3.1 Knowledge Retriever"],
+    "required_evidence_spans": [
+      "softmax over inner products of query and document representations",
+      "inner product of the dense vector embeddings"
+    ],
+    "acceptable_answer_criteria": "Must describe the normalized softmax distribution over the inner product (dot product) of dense neural query and document representations.",
+    "expected_refusal": false,
+    "expected_citations": ["REALM_Guu_2020"]
+  },
+  {
+    "question_id": "Q34_test",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["DPR_Karpukhin_2020"],
+    "expected_chunk_ids": ["DPR_Karpukhin_2020_c007"],
+    "expected_section_titles": ["4 Experimental Setup"],
+    "required_evidence_spans": [
+      "Natural Questions (NQ)",
+      "TriviaQA",
+      "WebQuestions (WQ)",
+      "CuratedTREC (TREC)",
+      "SQuAD"
+    ],
+    "acceptable_answer_criteria": "Must mention key QA benchmarks evaluated: Natural Questions, TriviaQA, WebQuestions, CuratedTREC, and SQuAD.",
+    "expected_refusal": false,
+    "expected_citations": ["DPR_Karpukhin_2020"]
+  },
+  {
+    "question_id": "Q35_test",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["MemGPT_Packer_2023"],
+    "expected_chunk_ids": ["MemGPT_Packer_2023_c004", "MemGPT_Packer_2023_c005"],
+    "expected_section_titles": ["1 Introduction", "2 MemGPT: An OS-inspired Architecture"],
+    "required_evidence_spans": [
+      "fixed context window limit (e.g. 8k tokens)",
+      "main context window constraint"
+    ],
+    "acceptable_answer_criteria": "Must identify fixed finite LLM context windows (such as 8,192 tokens in GPT-4) as the constraint driving MemGPT's virtual paging.",
+    "expected_refusal": false,
+    "expected_citations": ["MemGPT_Packer_2023"]
+  },
+  {
+    "question_id": "Q36_test",
+    "question": "How does CRAG evaluate the quality of retrieved documents before passing them to the generator?",
+    "category": "ambiguous",
+    "split": "test",
+    "answerable": true,
+    "expected_behavior": "ANSWER",
+    "expected_doc_ids": ["CRAG_Yan_2024"],
+    "expected_chunk_ids": ["CRAG_Yan_2024_c007", "CRAG_Yan_2024_c008"],
+    "expected_section_titles": ["4.2 Retrieval Evaluator", "4.3 Action Trigger"],
+    "required_evidence_spans": [
+      "Retrieval Evaluator is introduced to assess the overall quality of retrieved documents",
+      "evaluating the relevance score of each retrieved document"
+    ],
+    "acceptable_answer_criteria": "Must explain that CRAG uses a lightweight retrieval evaluator model to calculate confidence scores on each retrieved document, filtering and triggering actions before generation.",
+    "expected_refusal": false,
+    "expected_citations": ["CRAG_Yan_2024"]
+  },
+  {
+    "question_id": "Q37_test",
+    "question": "How does ReAct update LLM model weights using policy gradient reinforcement learning during interaction?",
+    "category": "false_premise",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "DEBUNK_FALSE_PREMISE",
+    "expected_doc_ids": ["ReAct_Yao_2022"],
+    "expected_chunk_ids": ["ReAct_Yao_2022_c002"],
+    "expected_section_titles": ["1 Introduction"],
+    "required_evidence_spans": [
+      "ReAct prompts LLMs to generate both verbal reasoning traces and actions",
+      "without updating model weights"
+    ],
+    "acceptable_answer_criteria": "Must debunk the premise: ReAct does not update model weights or use policy gradient RL; it is a prompting framework executed in-context on frozen language models.",
+    "expected_refusal": false,
+    "expected_citations": ["ReAct_Yao_2022"]
+  },
+  {
+    "question_id": "Q38_test",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "DEBUNK_FALSE_PREMISE",
+    "expected_doc_ids": ["RAG_Lewis_2020"],
+    "expected_chunk_ids": ["RAG_Lewis_2020_c007"],
+    "expected_section_titles": ["2.4 Training"],
+    "required_evidence_spans": [
+      "using FAISS to build a fast maximum inner product search (MIPS) index"
+    ],
+    "acceptable_answer_criteria": "Must debunk the premise: Lewis et al. did not create a new vector database format; they used standard FAISS for MIPS index searching.",
+    "expected_refusal": false,
+    "expected_citations": ["RAG_Lewis_2020"]
+  },
+  {
+    "question_id": "Q39_test",
+    "question": "What is the token compression ratio achieved by the Hyper-RAG 2027 architecture?",
+    "category": "out_of_scope_unanswerable",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "REFUSE_OUT_OF_SCOPE",
+    "expected_doc_ids": [],
+    "expected_chunk_ids": [],
+    "expected_section_titles": [],
+    "required_evidence_spans": [],
+    "acceptable_answer_criteria": "Must refuse to answer due to complete lack of evidence in the indexed papers.",
+    "expected_refusal": true,
+    "expected_citations": []
+  },
+  {
+    "question_id": "Q40_test",
+    "question": "What is the parameter count of the DeepSeek-V5 reasoning model released in 2027?",
+    "category": "out_of_scope_unanswerable",
+    "split": "test",
+    "answerable": false,
+    "expected_behavior": "REFUSE_OUT_OF_SCOPE",
+    "expected_doc_ids": [],
+    "expected_chunk_ids": [],
+    "expected_section_titles": [],
+    "required_evidence_spans": [],
+    "acceptable_answer_criteria": "Must refuse to answer due to complete lack of evidence in the indexed papers.",
+    "expected_refusal": true,
+    "expected_citations": []
+  }
+]

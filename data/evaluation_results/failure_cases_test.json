@@ -1,0 +1,1514 @@
+[
+  {
+    "question_id": "Q09_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "In REALM, the training objective for pre-training is masked language modeling, where the model takes a sentence from a pre-training corpus with some tokens masked out and must predict the value of those missing tokens. This is formalized as learning a distribution \\( p(y|x) \\) over possible outputs \\( y \\) given the input \\( x \\). The model is trained to optimize this objective by predicting the masked tokens effectively.",
+    "trace_id": "baselinea_naiverag_679fe689"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Toolformer decides whether to keep or filter a generated candidate API call based on whether the API call reduces perplexity on future tokens. During the finetuning process, API calls are sampled and filtered, ensuring that only those that contribute to improved performance in terms of perplexity are retained. This self-supervised learning approach allows Toolformer to learn effective tool usage from the API calls it generates.",
+    "trace_id": "baselinea_naiverag_ebb7454b"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "ReAct and Reflexion differ in their approach to handling reasoning traces across multi-trial tasks primarily in how they integrate reasoning with actions. ReAct generates both reasoning traces and task-specific actions in an interleaved manner, allowing the model to dynamically adjust its reasoning and action plans based on the context and external information. This synergy helps in tracking and updating action plans, handling exceptions, and improving interpretability.\n\nIn contrast, Reflexion focuses on the iterative improvement of reasoning traces by reflecting on past actions and their outcomes. It emphasizes learning from previous trials to refine future reasoning and decision-making processes. While ReAct integrates reasoning and acting in real-time, Reflexion relies on a more retrospective approach to enhance reasoning over multiple trials.\n\nOverall, ReAct's method is more proactive and integrated, while Reflexion is more about learning from past experiences to improve future reasoning.",
+    "trace_id": "baselinea_naiverag_ec7db8ff"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "The provided passages do not explicitly detail the retrieval index maintenance processes for REALM and DPR. However, we can infer some differences based on their approaches to retrieval.\n\nDPR (Dense Passage Retriever) focuses on training question and passage encoders using a negative sampling method, which involves in-batch negatives and tuning parameters for traditional retrieval methods like BM25. This suggests that DPR relies on a more dynamic and adaptable retrieval mechanism that can be fine-tuned across different datasets.\n\nOn the other hand, REALM (Retrieval-Augmented Language Model) emphasizes pre-training with a focus on improving the retriever's performance through inductive biases and fine-tuning for Open-domain Question Answering tasks. REALM's approach appears to integrate retrieval more closely with the model's learning process, potentially allowing for a more cohesive retrieval and indexing strategy.\n\nIn summary, while DPR utilizes a more traditional and adaptable retrieval index maintenance through training and tuning, REALM integrates retrieval into its pre-training and fine-tuning processes, aiming for a more seamless interaction between retrieval and model performance.",
+    "trace_id": "baselinea_naiverag_0bce55f1"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "The specific reflection critique tokens generated in Self-RAG are designed to signal the need for retrieval or to confirm the output's relevance, support, or completeness. These tokens help the model evaluate its own output and determine whether the retrieved passages are useful for enhancing the quality and factuality of the generated text. However, the exact types of reflection critique tokens are not detailed in the provided passages.",
+    "trace_id": "baselinea_naiverag_64c5052e"
+  },
+  {
+    "question_id": "Q16_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How does FLARE use forward-looking active retrieval with generation confidence thresholds?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "FLARE employs forward-looking active retrieval by iteratively generating a temporary next sentence and using it as a query to retrieve relevant documents if it contains low-confidence tokens. The underlying principle is that LMs should only retrieve information when they exhibit low confidence, indicated by the generation of low-probability tokens. This approach ensures that retrieval is targeted and relevant, enhancing the quality of the generated content throughout the long-form generation process.",
+    "trace_id": "baselinea_naiverag_a0f636f5"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "The typical top-k retrieval count evaluated in the original RAG paper by Lewis et al. is not explicitly mentioned in the provided passages. However, it is noted that RAG achieves strong results without the need for a re-ranker or extractive reader, indicating that it relies on its retrieval mechanism effectively. For specific top-k values, you may need to refer directly to the original RAG paper for detailed experimental setups.",
+    "trace_id": "baselinea_naiverag_89855c32"
+  },
+  {
+    "question_id": "Q19_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "In the CRAG retrieval system, when a document receives an ambiguous confidence score\u2014meaning it does not clearly fall into the categories of Correct or Incorrect\u2014a soft and balanced action labeled as Ambiguous is triggered. This action combines elements of both the Correct and Incorrect actions, allowing for a more nuanced approach to handling documents that do not meet the clear thresholds for definitive judgment. This ensures that the system can still make use of the retrieved documents while acknowledging the uncertainty in their relevance.",
+    "trace_id": "baselinea_naiverag_a05f6830"
+  },
+  {
+    "question_id": "Q20_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "failure_category": "partial_answer",
+    "response_text": "In MemGPT, the working context consists of the main context, which includes the LLM prompt tokens that are actively in use and can be accessed by the LLM processor during inference. This is analogous to main memory or RAM in traditional computing. On the other hand, archival memory refers to the external context, which includes any information held outside of the LLM's fixed context window. This out-of-context data must be explicitly moved into the main context to be utilized by the LLM processor. Thus, the working context is the actively used data, while archival memory is the stored data that can be retrieved when needed.",
+    "trace_id": "baselinea_naiverag_b4ec2009"
+  },
+  {
+    "question_id": "Q21_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How does REALM use BM25 sparse keyword matching during its pretraining phase?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not explicitly mention the use of BM25 sparse keyword matching during REALM's pretraining phase. However, they do discuss the general approach of REALM, which involves a retrieve-then-predict process where the model retrieves documents from a knowledge corpus to aid in generating answers. While BM25 is mentioned in the context of comparing retrieval methods, the specific integration of BM25 into REALM's pretraining is not detailed in the passages. Therefore, it can be inferred that while BM25 may be a relevant retrieval method, the passages do not provide information on its direct application within REALM's pretraining framework.",
+    "trace_id": "baselinea_naiverag_544b2e49"
+  },
+  {
+    "question_id": "Q22_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What temperature setting does Reflexion use to perform gradient descent updates on actor weights?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not mention a temperature setting or gradient descent updates on actor weights for Reflexion. Instead, Reflexion uses a novel approach that relies on verbal reinforcement and linguistic feedback rather than traditional weight updates through gradient descent. Therefore, there is no specific temperature setting related to gradient descent in the context of Reflexion.",
+    "trace_id": "baselinea_naiverag_cfcc215f"
+  },
+  {
+    "question_id": "Q23_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What is the exact BLEU score achieved by LLaMA-4 on WMT-2027 machine translation?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the BLEU score achieved by LLaMA-4 on WMT-2027 machine translation. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselinea_naiverag_afb24140"
+  },
+  {
+    "question_id": "Q24_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What is the multi-agent consensus protocol used in the Swarm-Agent 2026 framework?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding a multi-agent consensus protocol used in the Swarm-Agent 2026 framework. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselinea_naiverag_67240098"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "The provided passages do not specifically address zero-shot out-of-domain retrieval results comparing standard dense retrieval and BM25 in the early RAG literature. However, it is noted that dense retrieval methods like DPR generally outperform traditional methods such as BM25 in open-domain question answering tasks, as indicated in Passage 1. Additionally, Passage 3 highlights that while DPR performs better overall, the two methods differ qualitatively, with BM25 being sensitive to specific keywords and phrases, whereas DPR captures lexical variations and semantic relationships more effectively. For a detailed comparison on zero-shot out-of-domain retrieval specifically, further literature beyond the provided passages would be necessary.",
+    "trace_id": "baselinea_naiverag_bee05979"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "The three components of a step in the ReAct prompting framework are:\n\n1. **Action**: This refers to the actual action taken by the agent in the environment.\n2. **Thought**: This is a reasoning trace that does not affect the external environment but aims to compose useful information by reasoning over the current context.\n3. **Context Update**: This involves updating the context to support future reasoning or acting, incorporating the action and thought into the new context.",
+    "trace_id": "baselinea_naiverag_4bc56fe1"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Self-RAG's segment-level beam search differs from standard greedy decoding in RAG by allowing for a more flexible and comprehensive exploration of possible outputs. In Self-RAG, during the inference process, multiple continuation candidates are generated in parallel for each retrieved passage, and a segment-level beam search is conducted to obtain the top segment continuations at each timestamp. This approach enables the model to evaluate and select from multiple options based on a critic score, which is a weighted sum of the probabilities of various critique tokens. In contrast, standard greedy decoding typically selects the most probable token at each step without considering alternative continuations, which can limit the diversity and quality of the generated output. Thus, Self-RAG's method enhances the model's ability to produce more accurate and contextually relevant responses by leveraging a broader search space and incorporating self-reflection mechanisms.",
+    "trace_id": "baselinea_naiverag_89cab210"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Toolformer and ReAct both aim to enhance the capabilities of language models (LMs) by enabling them to utilize external tools, but they do so in different ways.\n\nToolformer is designed to learn tool usage in a self-supervised manner without requiring extensive human annotations. It allows LMs to decide independently when and how to use various tools, such as search engines, calculators, and translation systems, through simple API calls. This approach improves the zero-shot performance of the model while maintaining its core language modeling abilities. However, Toolformer has limitations, such as the inability to chain tool usage (using the output of one tool as input for another) and sensitivity to input phrasing.\n\nOn the other hand, ReAct (not detailed in the provided passages) typically emphasizes a more interactive approach, allowing LMs to react to their environment and make decisions based on real-time feedback. This can include refining queries or processing results in a more dynamic way, which may enable more complex interactions with tools compared to Toolformer's independent API calls.\n\nIn summary, while Toolformer focuses on self-supervised learning and independent tool usage, ReAct likely emphasizes interactivity and adaptability in tool utilization, potentially allowing for more complex and responsive interactions.",
+    "trace_id": "baselinea_naiverag_b28d32b0"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "In CRAG's retrieval evaluator, the confidence score interval for triggering actions is set empirically with specific thresholds for different datasets. The action categories are {Correct, Incorrect, Ambiguous}. The confidence thresholds are as follows:\n\n- For PopQA: (0.59, -0.99)\n- For PubHealth and Arc-Challenge: (0.5, -0.91)\n- For Biography: (0.95, -0.91)\n\nThese thresholds determine whether the retrieved documents are deemed correct, incorrect, or ambiguous based on their relevance scores.",
+    "trace_id": "baselinea_naiverag_fcddcae7"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "In the REALM knowledge retriever, the retrieval probability \\( p(z|x) \\) is computed by modeling it as a sample from a distribution that is based on a neural network architecture. Specifically, it uses a bi-encoder architecture where \\( p(z|x) \\) is proportional to the exponential of the inner product between a dense representation of the document \\( \\mathbf{d}(z) \\) and a query representation \\( \\mathbf{q}(x) \\). Both \\( \\mathbf{d}(z) \\) and \\( \\mathbf{q}(x) \\) are produced by BERT-based encoders. The formula is given as:\n\n\\[\np(z|x) \\propto \\exp(\\mathbf{d}(z)^{\\top} \\mathbf{q}(x))\n\\]\n\nThis allows the model to retrieve documents that are likely to contain answers relevant to the input query \\( x \\).",
+    "trace_id": "baselinea_naiverag_7075c015"
+  },
+  {
+    "question_id": "Q34_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "The open-domain question answering datasets used to evaluate the Dense Passage Retriever (DPR) include Natural Questions (NQ), TriviaQA (TQA), WebQuestions (WQ), and CuratedTrec (CT).",
+    "trace_id": "baselinea_naiverag_7b60b581"
+  },
+  {
+    "question_id": "Q35_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "The provided passages do not specify an exact token limit for the context window targeted by MemGPT. However, they indicate that MemGPT is designed to overcome the limitations of finite context windows in large language models (LLMs), which typically restrict their utility in tasks like extended conversations and document analysis. MemGPT employs a multi-level memory architecture to manage context beyond these limitations, but the specific token limit is not detailed in the passages.",
+    "trace_id": "baselinea_naiverag_e6f3c827"
+  },
+  {
+    "question_id": "Q37_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "How does ReAct update LLM model weights using policy gradient reinforcement learning during interaction?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not specifically mention how ReAct updates LLM model weights using policy gradient reinforcement learning during interaction. Instead, they focus on the method's ability to synergize reasoning and acting, its performance across various tasks, and the potential for human-in-the-loop behavior correction. The passages suggest that ReAct allows for dynamic reasoning and interaction with external environments, but they do not detail the mechanics of weight updates or the application of reinforcement learning in that context. Further exploration of the paper or additional resources may be needed to find specific information on weight updates using policy gradient methods.",
+    "trace_id": "baselinea_naiverag_6b581385"
+  },
+  {
+    "question_id": "Q38_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not mention any custom vector database format invented by Lewis et al. in the 2020 RAG paper to replace FAISS. Therefore, based on the available context, there is no information regarding such a format.",
+    "trace_id": "baselinea_naiverag_b79e6a7f"
+  },
+  {
+    "question_id": "Q39_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What is the token compression ratio achieved by the Hyper-RAG 2027 architecture?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the token compression ratio achieved by the Hyper-RAG 2027 architecture. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselinea_naiverag_ad7a8bec"
+  },
+  {
+    "question_id": "Q40_test",
+    "system_name": "Baseline_A_NaiveDense",
+    "question": "What is the parameter count of the DeepSeek-V5 reasoning model released in 2027?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the parameter count of the DeepSeek-V5 reasoning model released in 2027. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselinea_naiverag_3c6040bc"
+  },
+  {
+    "question_id": "Q09_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "In REALM, the training objective for pre-training is masked language modeling, where the model takes a sentence from a pre-training corpus with some tokens masked out and must predict the value of those missing tokens. The model learns a distribution over possible outputs given the input, which is formalized as p(y|x), where x is the input sentence and y is the predicted output. During fine-tuning, the task shifts to Open-QA, where the input is a question and the output is the answer.",
+    "trace_id": "baselineb_hybridrag_1db4c264"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Toolformer decides whether to keep or filter a generated candidate API call based on whether the API call reduces perplexity on future tokens. During its training, Toolformer is finetuned on a large number of sampled API calls that are filtered according to this criterion, ensuring that only those calls that contribute positively to the model's performance are retained.",
+    "trace_id": "baselineb_hybridrag_464d262f"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "The provided context passages do not mention \"Reflexion\" or provide a comparison between ReAct and Reflexion in handling reasoning traces across multi-trial tasks. Therefore, I cannot provide a direct answer to how they differ in that specific aspect. If you have more information or specific details about Reflexion, I could help analyze or compare based on that.",
+    "trace_id": "baselineb_hybridrag_0e12d850"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "In REALM, the retrieval index is maintained by tuning the passage encoder asynchronously during training, which involves re-indexing the passages as the model learns. This approach allows REALM to adaptively update its knowledge base in response to the training data.\n\nIn contrast, DPR (Dense Passage Retriever) does not rely on such dynamic re-indexing during training. Instead, it focuses on learning a strong passage retrieval model using pairs of questions and answers, and it maintains a static document index that is built from a pre-trained bi-encoder. This index is used to retrieve documents that contain answers to questions, but it does not undergo the same level of continuous updating as in REALM.\n\nOverall, REALM's method allows for more flexibility and adaptability in maintaining the retrieval index, while DPR opts for a simpler, static approach that emphasizes strong retrieval performance without the complexities of ongoing index maintenance.",
+    "trace_id": "baselineb_hybridrag_4e75887e"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "Self-RAG generates several specific reflection critique tokens to evaluate retrieval utility and relevance. These tokens include:\n\n1. **Retrieve**: This token indicates whether the model should augment its generation with retrieved passages.\n2. **Critique tokens**: These tokens are used to assess the relevance of the retrieved passages and the quality of the generated output. They help determine if the information in the response segment is supported by the retrieved passage and evaluate the overall utility of the response.\n\nThe model uses these critique tokens to provide a self-assessment of its output, ensuring that the generated text aligns with the retrieved evidence and meets the task requirements.",
+    "trace_id": "baselineb_hybridrag_186e4b6b"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "The provided context passages do not specify the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al. Therefore, I cannot provide that information based on the given passages.",
+    "trace_id": "baselineb_hybridrag_dc859590"
+  },
+  {
+    "question_id": "Q19_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "The CRAG retrieval system handles ambiguous confidence scores by triggering a soft and balanced action labeled as \"Ambiguous.\" This action is executed when the confidence score of a retrieved document falls between the upper and lower thresholds, indicating that the system cannot confidently classify the document as either Correct or Incorrect. In this case, the system integrates both corrective and discarding strategies to refine the retrieved documents. Each document is evaluated individually, and the results are eventually combined to optimize the overall retrieval process.",
+    "trace_id": "baselineb_hybridrag_0cf99628"
+  },
+  {
+    "question_id": "Q21_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How does REALM use BM25 sparse keyword matching during its pretraining phase?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not explicitly mention how REALM uses BM25 sparse keyword matching during its pretraining phase. However, they do discuss the overall approach of REALM, which involves training a retriever using a performance-based signal from unsupervised text and optimizing the marginal likelihood through a retrieve-then-predict process. The focus is on improving the retriever's performance rather than detailing the integration of BM25. Therefore, based on the available context, it is unclear how BM25 specifically fits into REALM's pretraining.",
+    "trace_id": "baselineb_hybridrag_1d83bedc"
+  },
+  {
+    "question_id": "Q23_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What is the exact BLEU score achieved by LLaMA-4 on WMT-2027 machine translation?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the BLEU score achieved by LLaMA-4 on WMT-2027 machine translation. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselineb_hybridrag_5301ebbe"
+  },
+  {
+    "question_id": "Q24_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What is the multi-agent consensus protocol used in the Swarm-Agent 2026 framework?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not mention a multi-agent consensus protocol used in the Swarm-Agent 2026 framework. Therefore, I cannot provide an answer based on the available information. If you have more specific details or another source, I would be happy to help!",
+    "trace_id": "baselineb_hybridrag_660f1c34"
+  },
+  {
+    "question_id": "Q25_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "Does DPR use a generative sequence-to-sequence language model during passage retrieval?",
+    "category": "entity_near_neighbor_confusion",
+    "failure_category": "partial_answer",
+    "response_text": "No, DPR does not use a generative sequence-to-sequence language model during passage retrieval. Instead, it relies on a dense encoder framework that maps text passages and questions to dense vector representations for retrieval, using a similarity function based on the inner product of these vectors.",
+    "trace_id": "baselineb_hybridrag_366f8eaf"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "The provided context passages do not contain specific information regarding zero-shot out-of-domain retrieval results comparing standard dense retrieval and BM25 in the early RAG literature. Therefore, I cannot provide a direct answer to your question based on the available passages. If you have access to additional sources or specific studies, I recommend consulting those for detailed comparisons in that area.",
+    "trace_id": "baselineb_hybridrag_dea4aa50"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "The three components of a step in the ReAct prompting framework are:\n\n1. **Reasoning Traces**: These are verbal reasoning processes that help the model induce, track, and update action plans.\n2. **Actions**: These are task-specific actions that the model generates to interact with external environments or knowledge bases.\n3. **Dynamic Interaction**: This involves the model's ability to adjust its reasoning and actions based on the information it gathers from the environment, allowing for a more integrated approach to problem-solving.",
+    "trace_id": "baselineb_hybridrag_c343526e"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Self-RAG's segment-level beam search offers a more flexible and effective approach compared to standard greedy decoding in RAG. While greedy decoding selects the most probable token at each step without considering future possibilities, segment-level beam search evaluates multiple continuation candidates in parallel, allowing for a more comprehensive exploration of potential outputs. This method utilizes a weighted linear sum of reflection token probabilities as segment scores, enabling better performance in tasks that require balancing citation accuracy and completeness. Empirical results indicate that Self-RAG significantly outperforms standard RAG approaches, demonstrating its advantages in generating high-quality outputs across various tasks.",
+    "trace_id": "baselineb_hybridrag_edee91bc"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Toolformer and ReAct both aim to enhance the capabilities of language models (LMs) by enabling them to utilize external tools, but they do so in different ways.\n\n**Toolformer** is designed to learn how to use various tools (like search engines, calculators, and translation systems) in a self-supervised manner. It does this by finetuning on a large number of sampled API calls that are filtered based on their effectiveness in reducing perplexity on future tokens. Toolformer allows LMs to decide independently when and how to call these tools, which enhances their zero-shot performance without requiring extensive human annotations. However, Toolformer has limitations, such as the inability to chain tool use (using the output of one tool as input for another) and sensitivity to input phrasing.\n\n**ReAct**, on the other hand, focuses on a more interactive approach where LMs can reason and act based on the context of the task at hand. It allows LMs to generate actions (like API calls) and reasoning steps in a more dynamic and flexible manner. This approach can enable LMs to refine their queries or responses based on the results they receive from the tools, potentially leading to more effective tool use.\n\nIn summary, while Toolformer emphasizes self-supervised learning and independent decision-making for tool use, ReAct promotes a more interactive and reasoning-based approach, allowing for a more fluid integration of tool outputs into the language model's responses.",
+    "trace_id": "baselineb_hybridrag_c73a97b8"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "In the REALM knowledge retriever, the retrieval probability \\( p(z|x) \\) is computed using a performance-based signal from unsupervised text. The model employs a retrieve-then-predict approach, where it first retrieves documents \\( z \\) from a knowledge corpus \\( \\mathcal{Z} \\) based on the input \\( x \\). The retrieval is modeled as a distribution \\( p(z|x) \\), which is optimized to improve the language model's perplexity. \n\nThe computation involves a summation over all documents in the knowledge corpus, but to make it feasible, REALM approximates this by summing over the top \\( k \\) documents with the highest probability under \\( p(z|x) \\). This is achieved through a structured retriever that allows for caching and asynchronous updates, and the selection of the best documents is formulated as a Maximum Inner Product Search (MIPS) problem. The retriever is designed to be differentiable, allowing gradients to be computed and optimized using stochastic gradient descent during both pre-training and fine-tuning.",
+    "trace_id": "baselineb_hybridrag_049d810f"
+  },
+  {
+    "question_id": "Q37_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "How does ReAct update LLM model weights using policy gradient reinforcement learning during interaction?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not explicitly describe how ReAct updates LLM model weights using policy gradient reinforcement learning during interaction. Instead, they focus on the method's ability to synergize reasoning and acting in large language models, the use of human-in-the-loop behavior correction, and the challenges of traditional reinforcement learning methods. ReAct allows for human edits to reasoning traces to improve task performance, but it does not detail a specific mechanism for updating model weights through policy gradient methods. Further systematic study on this aspect is suggested as future work.",
+    "trace_id": "baselineb_hybridrag_cca55fe2"
+  },
+  {
+    "question_id": "Q38_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not mention any custom vector database format invented by Lewis et al. in the 2020 RAG paper to replace FAISS. Instead, they describe the use of FAISS for building a MIPS index for fast retrieval in RAG. Therefore, it appears that no such custom format was introduced in that paper.",
+    "trace_id": "baselineb_hybridrag_1b8905d0"
+  },
+  {
+    "question_id": "Q39_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What is the token compression ratio achieved by the Hyper-RAG 2027 architecture?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the token compression ratio achieved by the Hyper-RAG 2027 architecture. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselineb_hybridrag_cf46fd9f"
+  },
+  {
+    "question_id": "Q40_test",
+    "system_name": "Baseline_B_HybridRAG",
+    "question": "What is the parameter count of the DeepSeek-V5 reasoning model released in 2027?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the parameter count of the DeepSeek-V5 reasoning model released in 2027. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "baselineb_hybridrag_252ff1e0"
+  },
+  {
+    "question_id": "Q09_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"we show how to pre-train such a knowledge retriever in an unsupervised manner, using masked language modeling as the learning signal\" [REALM_Guu_2020: Abstract]",
+    "trace_id": "abl1_a1b414d8"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We let the model start an API call not just when <API> is the most likely token, but whenever it is one of the kk most likely tokens.\" [Toolformer_Schick_2023: 4.2 Downstream Tasks]",
+    "trace_id": "abl1_e959ba47"
+  },
+  {
+    "question_id": "Q12_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What is the decompose-then-recompose knowledge refinement method in CRAG?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"a decompose-then-recompose knowledge refinement method is designed to further extract the most critical knowledge strips in it.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement] \"a decompose-then-recompose algorithm is meticulously crafted throughout the retrieval and utilization process.\" [CRAG_Yan_2024: 1 Introduction]",
+    "trace_id": "abl1_1181e98f"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments (e.g. Wikipedia) to incorporate additional information into reasoning (act to reason).\" [ReAct_Yao_2022: 1 Introduction] \"we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments.\" [ReAct_Yao_2022: Abstract]",
+    "trace_id": "abl1_5fbd1fe4"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We use a pre-trained bi-encoder from DPR to initialize our retriever and to build the document index.\" [RAG_Lewis_2020: 2.2 Retriever: DPR] \"which includes tuning the passage encoder asynchronously by re-indexing the passages during training.\" [DPR_Karpukhin_2020: 7 Related Work]",
+    "trace_id": "abl1_9321daf2"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"It then generates critique tokens to criticize its own output and choose best one (Step 3) in terms of factuality and overall quality.\" [SelfRAG_Asai_2023: 1 Introduction] \"These reflection tokens (Table 1) signal the need for retrieval or confirm the output's relevance, support, or completeness.\" [SelfRAG_Asai_2023: 3 Self-Rag: Learning to Retrieve, Generate and Critique] \"If retrieval is needed, the model generates: a critique token to evaluate the retrieved passage's relevance, the next response segment, and a critique token to evaluate if the information in the response segment is supported by the passage.\" [SelfRAG_Asai_2023: 3.1 Problem Formalization and Overview]",
+    "trace_id": "abl1_d8fba257"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"the top-k is set to 5\" [CRAG_Yan_2024: 19 B.3 Implementation Details]",
+    "trace_id": "abl1_b3fb6bb3"
+  },
+  {
+    "question_id": "Q20_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"MemGPT's OS-inspired multi-level memory architecture delineates between two primary memory types: main context (analogous to main memory/physical memory/RAM) and external context (analogous to disk memory/disk storage).\" [MemGPT_Packer_2023: 2 MemGPT (MemoryGPT)] \"Working context is a fixed-size read/write block of unstructured text, writeable only via MemGPT function calls.\" [MemGPT_Packer_2023: 2.1 Main context (prompt tokens)] \"MemGPT orchestrates data movement between main context and external context via function calls that are generated by the LLM processor.\" [MemGPT_Packer_2023: 2.3 Function executor (handling of completion tokens)]",
+    "trace_id": "abl1_f5d538ed"
+  },
+  {
+    "question_id": "Q25_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "Does DPR use a generative sequence-to-sequence language model during passage retrieval?",
+    "category": "entity_near_neighbor_confusion",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"Recent work Izacard and Grave 2020; Lewis et al. 2020b have also shown that DPR can be combined with generation models such as BART Lewis et al. 2020a and T5 Raffel et al. 2019, achieving good performance on open-domain QA and other knowledge-intensive tasks.\" [DPR_Karpukhin_2020: 7 Related Work]",
+    "trace_id": "abl1_bb114daa"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"our dense retriever outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [DPR_Karpukhin_2020: Abstract] \"we demonstrated that dense retrieval can outperform and potentially replace the traditional sparse retrieval component in open-domain question answering.\" [DPR_Karpukhin_2020: 8 Conclusion]",
+    "trace_id": "abl1_121a0988"
+  },
+  {
+    "question_id": "Q27_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific roles of the Actor, Evaluator, and Self-Reflection models in detail\n- Sub-question 1 ('What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl1_ef51f5c3"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner\" [ReAct_Yao_2022: 1 Introduction]",
+    "trace_id": "abl1_65f634a9"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific performance metrics comparing Self-RAG's segment-level beam search with standard greedy decoding\n- details on how segment-level beam search improves upon or differs from greedy decoding\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl1_ea04df6c"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We introduce Toolformer, a model trained to decide which APIs to call, when to call them, what arguments to pass, and how to best incorporate the results into future token prediction.\" [Toolformer_Schick_2023: Abstract] \"A simple way to overcome these limitations of today's language models is to give them the ability to use external tools such as search engines, calculators, or calendars.\" [Toolformer_Schick_2023: 1 Introduction] \"We investigate whether our approach enables a model to use tools without any further supervision and to decide for itself when and how to call which of the available tools.\" [Toolformer_Schick_2023: 4 Experiments]",
+    "trace_id": "abl1_a460c560"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"Based on the aforementioned confidence score for each retrieved document, three types of actions are designed and triggered accordingly where the upper and lower thresholds are set.\" [CRAG_Yan_2024: 4.3 Action Trigger]",
+    "trace_id": "abl1_1f7f0a2a"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"p_{\\eta}(z|x)\\propto\\exp\\left(\\mathbf{d}(z)^{\\top}\\mathbf{q}(x)\\right)\" [RAG_Lewis_2020: 2.2 Retriever: DPR]",
+    "trace_id": "abl1_8b1f2c38"
+  },
+  {
+    "question_id": "Q34_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What open-domain question answering datasets were used to evaluate DPR?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl1_e1aa2df8"
+  },
+  {
+    "question_id": "Q35_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"Awareness of context limits is a key aspect in making the self-editing mechanism work effectively, to this end MemGPT prompts the processor with warnings regarding token limitations to guide its memory management decisions.\" [MemGPT_Packer_2023: 2.3 Function executor (handling of completion tokens)] \"When discussing OpenAI models, unless otherwise specified \u2018GPT-4 Turbo' refers to the specific gpt-4-1106-preview model endpoint (context window of 128,000128,000), \u2018GPT-4\u2018 refers to gpt-4-0613 (context window of 8,1928,192), and \u2018GPT-3.5 Turbo\u2018 refers to gpt-3.5-turbo-1106 (context window of 16,38516,385).\" [MemGPT_Packer_2023: 3 Experiments]",
+    "trace_id": "abl1_55eb3d7c"
+  },
+  {
+    "question_id": "Q36_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How does CRAG evaluate the quality of retrieved documents before passing them to the generator?",
+    "category": "ambiguous",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"a lightweight retrieval evaluator is designed to assess the overall quality of retrieved documents for a query, returning a confidence degree based on which different knowledge retrieval actions can be triggered.\" [CRAG_Yan_2024: Abstract] \"A lightweight retrieval evaluator is designed to assess the overall quality of retrieved documents for a query.\" [CRAG_Yan_2024: 1 Introduction]",
+    "trace_id": "abl1_af25cebe"
+  },
+  {
+    "question_id": "Q37_test",
+    "system_name": "Ablation_1_NoPlanner",
+    "question": "How does ReAct update LLM model weights using policy gradient reinforcement learning during interaction?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "According to the literature: \"Reflexion converts binary or scalar feedback from the environment into verbal feedback in the form of a textual summary, which is then added as additional context for the LLM agent in the next episode.\" [Reflexion_Shinn_2023: 1 Introduction]",
+    "trace_id": "abl1_191d7508"
+  },
+  {
+    "question_id": "Q09_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 2 ('What is the masked language modeling task in REALM?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_4988b74c"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We let the model start an API call not just when <API> is the most likely token, but whenever it is one of the kk most likely tokens.\" [Toolformer_Schick_2023: 4.2 Downstream Tasks]",
+    "trace_id": "abl2_02c99fa4"
+  },
+  {
+    "question_id": "Q12_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What is the decompose-then-recompose knowledge refinement method in CRAG?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"a decompose-then-recompose algorithm is designed for retrieved documents to selectively focus on key information and filter out irrelevant information in them.\" [CRAG_Yan_2024: Abstract] \"a decompose-then-recompose knowledge refinement method is designed to further extract the most critical knowledge strips in it.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement]",
+    "trace_id": "abl2_1834e9d5"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific details on how Reflexion manages reasoning traces in multi-trial tasks\n- Sub-question 2 ('How does Reflexion manage reasoning traces in multi-trial tasks?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_81f0757e"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"we structure the retriever such that the computation performed for each document can be cached and asynchronously updated\" [REALM_Guu_2020: 1 Introduction] \"the goal of our dense passage retriever (DPR) is to index all the passages in a low-dimensional and continuous space, such that it can retrieve efficiently the top kk passages relevant to the input question for the reader at run-time.\" [DPR_Karpukhin_2020: 3 Dense Passage Retriever (DPR)]",
+    "trace_id": "abl2_9f779287"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"It then generates critique tokens to criticize its own output and choose best one (Step 3) in terms of factuality and overall quality.\" [SelfRAG_Asai_2023: 1 Introduction] \"These reflection tokens (Table 1) signal the need for retrieval or confirm the output's relevance, support, or completeness.\" [SelfRAG_Asai_2023: 3 Self-Rag: Learning to Retrieve, Generate and Critique] \"Subsequently, Self-Rag concurrently processes multiple retrieved passages, evaluating their relevance and then generating corresponding task outputs (Step 2).\" [SelfRAG_Asai_2023: 1 Introduction] \"Generating reflection tokens to self-evaluate its own output makes Self-Rag controllable during the inference phase, enabling it to tailor its behavior to diverse task requirements.\" [SelfRAG_Asai_2023: 3.3 Self-Rag Inference] \"Our analysis demonstrates the effectiveness of training and inference with reflection tokens for overall performance improvements as well as test-time model customizations (e.g., balancing the trade-off between citation previsions and completeness).\" [SelfRAG_Asai_2023: 1 Introduction]",
+    "trace_id": "abl2_e97545fe"
+  },
+  {
+    "question_id": "Q17_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How many documents are retrieved for each question that the CRAG retrieval evaluator scores individually during inference?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"a lightweight retrieval evaluator is constructed to estimate the relevance score of retrieved documents to the input query\" [CRAG_Yan_2024: 4.1 Overview of Model Inference] \"the evaluator predicts the relevance score for each question-document pair individually.\" [CRAG_Yan_2024: 4.2 Retrieval Evaluator] \"A lightweight retrieval evaluator is designed to assess the overall quality of retrieved documents for a query.\" [CRAG_Yan_2024: 1 Introduction]",
+    "trace_id": "abl2_eb8a20f0"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"the top-k is set to 5\" [CRAG_Yan_2024: 19 B.3 Implementation Details]",
+    "trace_id": "abl2_3bde7b64"
+  },
+  {
+    "question_id": "Q19_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"A lightweight retrieval evaluator is designed to assess the overall quality of retrieved documents for a query.\" [CRAG_Yan_2024: 1 Introduction] \"A confidence degree is quantified based on which different knowledge retrieval actions of {Correct, Incorrect, Ambiguous} can be triggered.\" [CRAG_Yan_2024: 1 Introduction]",
+    "trace_id": "abl2_1ec48000"
+  },
+  {
+    "question_id": "Q20_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- definition of archival memory in MemGPT\n- Sub-question 2 ('What is the definition of archival memory in MemGPT?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_6165abd5"
+  },
+  {
+    "question_id": "Q25_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "Does DPR use a generative sequence-to-sequence language model during passage retrieval?",
+    "category": "entity_near_neighbor_confusion",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"The retriever (Dense Passage Retriever [26], henceforth DPR) provides latent documents conditioned on the input, and the seq2seq model (BART [32]) then conditions on these latent documents together with the input to generate the output.\" [RAG_Lewis_2020: 1 Introduction]",
+    "trace_id": "abl2_b4b96afd"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"our dense retriever outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [DPR_Karpukhin_2020: Abstract] \"we demonstrate that with the proper training setup, simply fine-tuning the question and passage encoders on existing question-passage pairs is sufficient to greatly outperform BM25.\" [DPR_Karpukhin_2020: 1 Introduction] \"DPR performs better than BM25 in general\" [DPR_Karpukhin_2020: 5.3 Qualitative Analysis]",
+    "trace_id": "abl2_aca5a479"
+  },
+  {
+    "question_id": "Q27_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 3 ('What is the role of the Self-Reflection model in the Reflexion framework?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_dc1f909a"
+  },
+  {
+    "question_id": "Q28_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How does MemGPT manage memory transfers between the main context and external archival storage?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific details on how external archival storage is utilized in MemGPT\n- Sub-question 2 ('What is the role of external archival storage in MemGPT?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_99d91993"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments (e.g. Wikipedia) to incorporate additional information into reasoning (act to reason).\" [ReAct_Yao_2022: 1 Introduction] \"Designing ReAct prompts is straightforward as human annotators just type down their thoughts in language on top of their actions taken.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting]",
+    "trace_id": "abl2_c411dedb"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific details on how greedy decoding works in standard RAG\n- Sub-question 1 ('What is segment-level beam search in Self-RAG?') has no verified supporting evidence.\n- Sub-question 2 ('How does greedy decoding work in standard RAG?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_95ae1065"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We investigate whether our approach enables a model to use tools without any further supervision and to decide for itself when and how to call which of the available tools.\" [Toolformer_Schick_2023: 4 Experiments] \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments (e.g. Wikipedia) to incorporate additional information into reasoning (act to reason).\" [ReAct_Yao_2022: 1 Introduction]",
+    "trace_id": "abl2_abc33d2f"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"The two confidence thresholds for triggering one of the three actions were set empirically. Specifically, they were set as (0.59, -0.99) in PopQA, (0.5, -0.91) in PubQA and Arc-Challenge, as well as (0.95, -0.91) in Biography.\" [CRAG_Yan_2024: 19 B.3 Implementation Details] \"the corresponding actions: {Correct, Incorrect, Ambiguous}\" [CRAG_Yan_2024: 4.1 Overview of Model Inference]",
+    "trace_id": "abl2_c752d4a4"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What is the formula for computing p(z|x) in REALM?') has no verified supporting evidence.\n- Sub-question 2 ('What role does the masked language model play in REALM?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_66235761"
+  },
+  {
+    "question_id": "Q34_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"We trained the question and passage encoders for up to 4040 epochs for large datasets (NQ, TriviaQA, SQuAD) and 100100 epochs for small datasets (TREC, WQ)\" [DPR_Karpukhin_2020: 5 Experiments: Passage Retrieval] \"When training with multiple datasets, TREC, the smallest dataset of the five, benefits greatly from more training examples.\" [DPR_Karpukhin_2020: 5.1 Main Results] \"Overall, our DPR-based models outperform the previous state-of-the-art results on four out of the five datasets, with 1% to 12% absolute differences in exact match accuracy.\" [DPR_Karpukhin_2020: 6.2 Results]",
+    "trace_id": "abl2_bfe18dfb"
+  },
+  {
+    "question_id": "Q35_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific token limit targeted by MemGPT\n- Sub-question 1 ('What is the context window token limit targeted by MemGPT?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl2_cc4adbdb"
+  },
+  {
+    "question_id": "Q38_test",
+    "system_name": "Ablation_2_DenseOnlyAgentic",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "According to the literature: \"A plug-and-play method named CRAG is proposed to improve the ability of automatic self-correction and efficient utilization of retrieved documents.\" [CRAG_Yan_2024: 1 Introduction] \"The model coupling the proposed method with standard RAG is named CRAG and that coupling with Self-RAG is named Self-CRAG.\" [CRAG_Yan_2024: 5.3 Results]",
+    "trace_id": "abl2_bfa45bb6"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Toolformer decides whether to keep or filter a generated candidate API call based on whether the API call reduces perplexity on future tokens. During the finetuning process, the model evaluates a large number of sampled API calls and filters them according to their effectiveness in improving the prediction of subsequent tokens. This self-supervised approach allows Toolformer to learn which API calls are beneficial for its performance.",
+    "trace_id": "abl3_555bc77e"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "In REALM, the retrieval component is designed to enhance the model's ability to retrieve meaningful information during the pre-training and fine-tuning processes. The focus is on maximizing the likelihood of a generative process, which involves strategies for injecting useful inductive biases to guide the model towards effective retrievals. However, the specific details about the maintenance of the retrieval index in REALM are not explicitly discussed in the provided passages.\n\nOn the other hand, DPR (Dense Passage Retriever) emphasizes the efficiency of its retrieval component by indexing a large collection of text passages in a low-dimensional continuous space. It utilizes a bi-encoder architecture to produce dense representations of documents and queries, allowing for efficient retrieval of the top passages relevant to a question. The maintenance of the retrieval index in DPR involves building a dense vector index using FAISS, which can be resource-intensive but is designed for high-speed retrieval, processing up to 995 questions per second.\n\nIn summary, while REALM focuses on improving retrieval through generative processes and inductive biases, DPR prioritizes efficient indexing and retrieval speed, utilizing dense vector representations and specialized indexing techniques.",
+    "trace_id": "abl3_458620f2"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "In Self-RAG, the specific reflection critique tokens generated to evaluate retrieval utility and relevance include tokens that assess the relevance of the retrieved passages, confirm the output's relevance and support, and evaluate the overall utility of the response. These tokens are used to critique the generated output after each segment, ensuring that the model can self-assess and improve the quality of its responses based on the retrieved information.",
+    "trace_id": "abl3_918d7ccb"
+  },
+  {
+    "question_id": "Q19_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "In the CRAG retrieval system, when a document is evaluated and the confidence score falls between the upper and lower thresholds, it triggers a soft and balanced action labeled as \"Ambiguous.\" This action combines elements of both the \"Correct\" and \"Incorrect\" actions, allowing for a more nuanced response when the system cannot confidently classify the retrieved document as either correct or incorrect. This approach ensures that the system can still make use of the retrieved documents while acknowledging the uncertainty in their relevance.",
+    "trace_id": "abl3_dcb6535c"
+  },
+  {
+    "question_id": "Q21_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How does REALM use BM25 sparse keyword matching during its pretraining phase?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not indicate that REALM uses BM25 sparse keyword matching during its pretraining phase. Instead, REALM employs a retrieve-then-predict generative process, where it retrieves documents from a knowledge corpus based on the input question and then generates an answer based on the retrieved documents. The focus is on leveraging better pre-training methods rather than relying on traditional sparse retrieval methods like BM25. Therefore, BM25 is not part of REALM's pretraining approach.",
+    "trace_id": "abl3_713b16a8"
+  },
+  {
+    "question_id": "Q22_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What temperature setting does Reflexion use to perform gradient descent updates on actor weights?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not mention a temperature setting or gradient descent updates on actor weights for Reflexion. Instead, Reflexion uses verbal reinforcement and does not update weights through traditional methods like gradient descent. It focuses on using linguistic feedback for policy optimization rather than weight updates.",
+    "trace_id": "abl3_afca5b34"
+  },
+  {
+    "question_id": "Q23_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What is the exact BLEU score achieved by LLaMA-4 on WMT-2027 machine translation?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the BLEU score achieved by LLaMA-4 on WMT-2027 machine translation. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "abl3_1b31265c"
+  },
+  {
+    "question_id": "Q24_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What is the multi-agent consensus protocol used in the Swarm-Agent 2026 framework?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not mention a multi-agent consensus protocol used in the Swarm-Agent 2026 framework. Therefore, I cannot provide an answer based on the available information. If you have more specific details or another source, I would be happy to help!",
+    "trace_id": "abl3_a79a75f9"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "The early RAG literature indicates that standard dense retrieval methods, such as those used in the Dense Passage Retriever (DPR), outperform BM25 in terms of retrieval accuracy. Specifically, the DPR system demonstrated significant improvements over BM25, achieving a top-20 passage retrieval accuracy that was 9%-19% higher. This suggests that dense retrieval methods are more effective than traditional sparse retrieval methods like BM25, particularly in the context of open-domain question answering.",
+    "trace_id": "abl3_aed156c2"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "The three components of a step in the ReAct prompting framework are: (1) verbal reasoning traces, (2) actions pertaining to a task, and (3) the interleaved manner in which these elements are generated, allowing for dynamic reasoning and interaction with external environments.",
+    "trace_id": "abl3_95646a0e"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "Self-RAG's segment-level beam search differs from standard greedy decoding in RAG by allowing for a more flexible and comprehensive exploration of possible outputs. In Self-RAG, during the segment-level beam search, multiple continuation candidates are generated in parallel for each segment, and the best sequence is selected at the end of the generation process. This approach enables the model to consider various potential outputs and select the most suitable one based on a segment score that incorporates reflection token probabilities.\n\nIn contrast, standard greedy decoding typically selects the most probable token at each step without considering alternative options, which can lead to suboptimal outputs. The segment-level beam search in Self-RAG thus enhances the model's ability to generate high-quality responses by evaluating multiple candidates and leveraging self-reflection to critique and improve the output, ultimately leading to better performance in tasks requiring nuanced generation.",
+    "trace_id": "abl3_5caf11f2"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "In CRAG's retrieval evaluator, the confidence score intervals for triggering actions are set empirically. The specific intervals are as follows:\n\n- For PopQA: (0.59, -0.99)\n- For PubQA and Arc-Challenge: (0.5, -0.91)\n- For Biography: (0.95, -0.91)\n\nThe action categories that can be triggered based on these confidence scores are: {Correct, Incorrect, Ambiguous}.",
+    "trace_id": "abl3_fcfa90f1"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "In the REALM knowledge retriever, the retrieval probability \\( p(z|x) \\) is computed by modeling the retrieval process as a sample from a distribution based on the input \\( x \\). Specifically, given an input \\( x \\), the model retrieves possibly helpful documents \\( z \\) from a knowledge corpus \\( \\mathcal{Z} \\). The overall likelihood of generating an output \\( y \\) is then conditioned on both the retrieved documents \\( z \\) and the original input \\( x \\). This is mathematically represented as:\n\n\\[\np(y|x) = \\sum_{z \\in \\mathcal{Z}} p(y|z,x) p(z|x)\n\\]\n\nTo optimize the retrieval process, the model approximates this by summing over the top \\( k \\) documents with the highest probability under \\( p(z|x) \\), which is reasonable if most documents have near zero probability. This approach allows the model to efficiently handle the large number of candidate documents during training and inference.",
+    "trace_id": "abl3_eaa4d9d2"
+  },
+  {
+    "question_id": "Q37_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "How does ReAct update LLM model weights using policy gradient reinforcement learning during interaction?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided passages do not explicitly mention the use of policy gradient reinforcement learning to update LLM model weights during interaction with ReAct. Instead, they focus on the paradigm of combining reasoning and acting in language models, emphasizing the effectiveness of ReAct in various tasks and its ability to generate reasoning traces and actions in an interleaved manner. The passages suggest that while ReAct shows promising results, it also acknowledges the limitations of traditional reinforcement learning methods, which require substantial compute and time. Therefore, it appears that ReAct does not directly utilize policy gradient reinforcement learning for updating model weights but rather explores other methods, such as human-in-the-loop interactions and potential fine-tuning approaches, to improve performance.",
+    "trace_id": "abl3_e1ebbf8c"
+  },
+  {
+    "question_id": "Q38_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not mention any custom vector database format invented by Lewis et al. in the 2020 RAG paper to replace FAISS. In fact, the passages indicate that FAISS was used for fast retrieval in the RAG framework. Therefore, there is no information available regarding a replacement for FAISS in the context of the RAG paper.",
+    "trace_id": "abl3_1addf6e1"
+  },
+  {
+    "question_id": "Q39_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What is the token compression ratio achieved by the Hyper-RAG 2027 architecture?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the token compression ratio achieved by the Hyper-RAG 2027 architecture. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "abl3_034f8617"
+  },
+  {
+    "question_id": "Q40_test",
+    "system_name": "Ablation_3_NoSufficiencyChecker",
+    "question": "What is the parameter count of the DeepSeek-V5 reasoning model released in 2027?",
+    "category": "out_of_scope_unanswerable",
+    "failure_category": "hallucination",
+    "response_text": "The provided context passages do not contain any information regarding the parameter count of the DeepSeek-V5 reasoning model released in 2027. Therefore, I cannot provide an answer to your question based on the available information.",
+    "trace_id": "abl3_1e8f861e"
+  },
+  {
+    "question_id": "Q09_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What is the training objective in REALM?') has no verified supporting evidence.\n- Sub-question 2 ('What is the masked language modeling task in REALM?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_0313c1aa"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"This is done in a self-supervised way, requiring nothing more than a handful of demonstrations for each API.\" [Toolformer_Schick_2023: Abstract] \"We let the model start an API call not just when <API> is the most likely token, but whenever it is one of the kk most likely tokens.\" [Toolformer_Schick_2023: 4.2 Downstream Tasks] \"Toolformer currently does not take into account the tool-dependent, computational cost incurred from making an API call.\" [Toolformer_Schick_2023: 7 Limitations]",
+    "trace_id": "abl4_f8962824"
+  },
+  {
+    "question_id": "Q12_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What is the decompose-then-recompose knowledge refinement method in CRAG?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"a decompose-then-recompose knowledge refinement method is designed to further extract the most critical knowledge strips in it.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement] \"Then, the retrieval evaluator fine-tuned in Section 4.2 is employed to calculate the relevance score of each knowledge strip.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement]",
+    "trace_id": "abl4_6c88df48"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions\" [ReAct_Yao_2022: Abstract] \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments\" [ReAct_Yao_2022: 1 Introduction] \"Reflexion agents verbally reflect on task feedback signals, then maintain their own reflective text in an episodic memory buffer to induce better decision-making in subsequent trials.\" [Reflexion_Shinn_2023: Abstract]",
+    "trace_id": "abl4_bcb96642"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific retrieval index maintenance approach used in REALM\n- detailed explanation of DPR's retrieval index maintenance process\n- Sub-question 1 ('What is the retrieval index maintenance approach used in REALM?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_2208d231"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"It then generates critique tokens to criticize its own output and choose best one (Step 3) in terms of factuality and overall quality.\" [SelfRAG_Asai_2023: 1 Introduction] \"These reflection tokens (Table 1) signal the need for retrieval or confirm the output's relevance, support, or completeness.\" [SelfRAG_Asai_2023: 3 Self-Rag: Learning to Retrieve, Generate and Critique] \"Subsequently, Self-Rag concurrently processes multiple retrieved passages, evaluating their relevance and then generating corresponding task outputs (Step 2).\" [SelfRAG_Asai_2023: 1 Introduction] \"Generating reflection tokens to self-evaluate its own output makes Self-Rag controllable during the inference phase, enabling it to tailor its behavior to diverse task requirements.\" [SelfRAG_Asai_2023: 3.3 Self-Rag Inference] \"If retrieval is needed, the model generates: a critique token to evaluate the retrieved passage's relevance, the next response segment, and a critique token to evaluate if the information in the response segment is supported by the passage.\" [SelfRAG_Asai_2023: 3.1 Problem Formalization and Overview]",
+    "trace_id": "abl4_2ebbe727"
+  },
+  {
+    "question_id": "Q16_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How does FLARE use forward-looking active retrieval with generation confidence thresholds?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"We propose two forward-looking active retrieval augmented generation (FLARE) methods to implement the active retrieval augmented generation framework.\" [FLARE_Jiang_2023: 3 FLARE: Forward-Looking Active REtrieval Augmented Generation] \"we propose Forward-Looking Active REtrieval augmented generation (FLARE), as illustrated in Figure 1.\" [FLARE_Jiang_2023: 1 Introduction] \"the retrieval queries should reflect the intents of future generations.\" [FLARE_Jiang_2023: 3 FLARE: Forward-Looking Active REtrieval Augmented Generation] \"we adopt an active retrieval strategy that only retrieves when LMs generate low-probability tokens.\" [FLARE_Jiang_2023: 1 Introduction]",
+    "trace_id": "abl4_2341571c"
+  },
+  {
+    "question_id": "Q17_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How many documents are retrieved for each question that the CRAG retrieval evaluator scores individually during inference?",
+    "category": "exact_numerical",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 2 ('What is the process of document retrieval during inference in CRAG?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_9dd6195c"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- top-k retrieval count evaluated in the RAG paper by Lewis et al.\n- Sub-question 1 ('What is the top-k retrieval count evaluated in the RAG paper by Lewis et al.?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_ee2b3b8d"
+  },
+  {
+    "question_id": "Q19_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"a lightweight retrieval evaluator is constructed to estimate the relevance score of retrieved documents to the input query\" [CRAG_Yan_2024: 4.1 Overview of Model Inference] \"a lightweight retrieval evaluator is to estimate and trigger three knowledge retrieval actions discriminately.\" [CRAG_Yan_2024: 6 Conclusion & Limitation] \"returning a confidence degree based on which different knowledge retrieval actions can be triggered.\" [CRAG_Yan_2024: Abstract] \"The relevance score is quantified into a total of three confidence degrees and then triggered the corresponding actions: {Correct, Incorrect, Ambiguous}\" [CRAG_Yan_2024: 4.1 Overview of Model Inference]",
+    "trace_id": "abl4_1ad8cc81"
+  },
+  {
+    "question_id": "Q20_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- definition of archival memory in MemGPT\n- Sub-question 2 ('What is the definition of archival memory in MemGPT?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_ca6958cc"
+  },
+  {
+    "question_id": "Q25_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "Does DPR use a generative sequence-to-sequence language model during passage retrieval?",
+    "category": "entity_near_neighbor_confusion",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific details on the use of a generative sequence-to-sequence language model in DPR\n- Sub-question 1 ('Does DPR utilize a generative sequence-to-sequence language model during passage retrieval?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_4d7a37e4"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"Dense retrieval methods have thus never be shown to outperform TF-IDF/BM25 for open-domain QA before ORQA\" [DPR_Karpukhin_2020: 1 Introduction] \"Although DPR performs better than BM25 in general, passages retrieved by these two methods differ qualitatively.\" [DPR_Karpukhin_2020: 5.3 Qualitative Analysis]",
+    "trace_id": "abl4_8eb45166"
+  },
+  {
+    "question_id": "Q27_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 3 ('What is the role of the Self-Reflection model in the Reflexion framework?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_a8fd07e8"
+  },
+  {
+    "question_id": "Q28_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How does MemGPT manage memory transfers between the main context and external archival storage?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"This out-of-context data must always be explicitly moved into main context in order for it to be passed to the LLM processor during inference.\" [MemGPT_Packer_2023: 2 MemGPT (MemoryGPT)] \"MemGPT orchestrates data movement between main context and external context via function calls that are generated by the LLM processor.\" [MemGPT_Packer_2023: 2.3 Function executor (handling of completion tokens)] \"we allow the LLM to manage what is placed in its own context (analogous to physical memory) via an \u2018LLM OS', which we call MemGPT.\" [MemGPT_Packer_2023: 1 Introduction] \"we propose virtual context management, a technique drawing inspiration from hierarchical memory systems in traditional operating systems which provide the illusion of an extended virtual memory via paging between physical memory and disk.\" [MemGPT_Packer_2023: Abstract]",
+    "trace_id": "abl4_6bacd9c4"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments (e.g.\tWikipedia) to incorporate additional information into reasoning (act to reason).\" [ReAct_Yao_2022: 1 Introduction] \"Designing ReAct prompts is straightforward as human annotators just type down their thoughts in language on top of their actions taken.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting] \"by simply removing a hallucinating sentence in Act 17 and adding some hints in Act 23, ReAct can be made to change its behavior drastically to align with these human thought edits and succeed in the task.\" [ReAct_Yao_2022: 8 A.3 Human-in-the-loop behavior correction on AlfWorld]",
+    "trace_id": "abl4_671de60d"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific details on how greedy decoding works in standard RAG\n- Sub-question 1 ('What is segment-level beam search in Self-RAG?') has no verified supporting evidence.\n- Sub-question 2 ('How does greedy decoding work in standard RAG?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_e88f53ec"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"we show that LMs can teach themselves to use external tools via simple APIs and achieve the best of both worlds.\" [Toolformer_Schick_2023: Abstract] \"Toolformer, a language model that learns in a self-supervised way how to use different tools such as search engines, calculators, and translation systems via simple API calls.\" [Toolformer_Schick_2023: 8 Conclusion] \"ReAct shows strong generalization to new task instances while learning solely from one to six in-context examples, consistently outperforming baselines with only reasoning or acting across different domains.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting]",
+    "trace_id": "abl4_6f1f0a8f"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What confidence score interval is used in CRAG's retrieval evaluator?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl4_8a81d810"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"p_{\\eta}(z|x)\\propto\\exp\\left(\\mathbf{d}(z)^{\\top}\\mathbf{q}(x)\\right)\" [RAG_Lewis_2020: 2.2 Retriever: DPR]",
+    "trace_id": "abl4_9f63f906"
+  },
+  {
+    "question_id": "Q34_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"We trained the question and passage encoders for up to 4040 epochs for large datasets (NQ, TriviaQA, SQuAD) and 100100 epochs for small datasets (TREC, WQ)\" [DPR_Karpukhin_2020: 5 Experiments: Passage Retrieval] \"With the exception of SQuAD, DPR performs consistently better than BM25 on all datasets.\" [DPR_Karpukhin_2020: 5.1 Main Results]",
+    "trace_id": "abl4_8e27fb2c"
+  },
+  {
+    "question_id": "Q35_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"unless otherwise specified \u2018GPT-4 Turbo' refers to the specific gpt-4-1106-preview model endpoint (context window of 128,000128,000), \u2018GPT-4\u2018 refers to gpt-4-0613 (context window of 8,1928,192), and \u2018GPT-3.5 Turbo\u2018 refers to gpt-3.5-turbo-1106 (context window of 16,38516,385)\" [MemGPT_Packer_2023: 3 Experiments]",
+    "trace_id": "abl4_6bf82345"
+  },
+  {
+    "question_id": "Q38_test",
+    "system_name": "Ablation_4_NoRetryLoop",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "According to the literature: \"We introduce RAG models where the parametric memory is a pre-trained seq2seq model and the non-parametric memory is a dense vector index of Wikipedia, accessed with a pre-trained neural retriever.\" [RAG_Lewis_2020: Abstract]",
+    "trace_id": "abl4_722841e9"
+  },
+  {
+    "question_id": "Q09_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"For fine-tuning, the task is Open-QA: xx is a question, and yy is the answer.\" [REALM_Guu_2020: 3.1 REALM\u2019s generative process]",
+    "trace_id": "abl5_d84aeb6e"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"We let the model start an API call not just when <API> is the most likely token, but whenever it is one of the kk most likely tokens.\" [Toolformer_Schick_2023: 4.2 Downstream Tasks] \"This is done by finetuning on a large number of sampled API calls that are filtered based on whether they reduce perplexity on future tokens.\" [Toolformer_Schick_2023: 8 Conclusion]",
+    "trace_id": "abl5_5bcb0aba"
+  },
+  {
+    "question_id": "Q12_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What is the decompose-then-recompose knowledge refinement method in CRAG?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"a decompose-then-recompose knowledge refinement method is designed to further extract the most critical knowledge strips in it.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement] \"a decompose-then-recompose algorithm is meticulously crafted throughout the retrieval and utilization process.\" [CRAG_Yan_2024: 1 Introduction] \"a decompose-then-recompose algorithm is designed for retrieved documents to selectively focus on key information and filter out irrelevant information in them.\" [CRAG_Yan_2024: Abstract]",
+    "trace_id": "abl5_70c4f690"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments.\" [ReAct_Yao_2022: Abstract] \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments (e.g.\tWikipedia) to incorporate additional information into reasoning (act to reason).\" [ReAct_Yao_2022: 1 Introduction] \"ReAct shows strong generalization to new task instances while learning solely from one to six in-context examples, consistently outperforming baselines with only reasoning or acting across different domains.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting] \"ReAct leads to superior performance with interpretable decision traces.\" [ReAct_Yao_2022: 6 Conclusion]",
+    "trace_id": "abl5_57b45fe5"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"On the other hand, the time required for building an index for dense vectors is much longer.\" [DPR_Karpukhin_2020: 5.4 Run-time Efficiency]",
+    "trace_id": "abl5_d0553244"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"It then generates critique tokens to criticize its own output and choose best one (Step 3) in terms of factuality and overall quality.\" [SelfRAG_Asai_2023: 1 Introduction] \"If retrieval is needed, the model generates: a critique token to evaluate the retrieved passage's relevance, the next response segment, and a critique token to evaluate if the information in the response segment is supported by the passage.\" [SelfRAG_Asai_2023: 3.1 Problem Formalization and Overview]",
+    "trace_id": "abl5_c3c05e58"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"the top retrieved document is from a gold article in 71% of cases, and a gold article is present in the top 10 retrieved articles in 90% of cases.\" [RAG_Lewis_2020: 4.4 Fact Verification]",
+    "trace_id": "abl5_adb77050"
+  },
+  {
+    "question_id": "Q19_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How does the CRAG retrieval system handle ambiguous confidence scores during document evaluation?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"Essentially, a lightweight retrieval evaluator is to estimate and trigger three knowledge retrieval actions discriminately.\" [CRAG_Yan_2024: 6 Conclusion & Limitation]",
+    "trace_id": "abl5_0550a79f"
+  },
+  {
+    "question_id": "Q20_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"MemGPT's OS-inspired multi-level memory architecture delineates between two primary memory types: main context (analogous to main memory/physical memory/RAM) and external context (analogous to disk memory/disk storage).\" [MemGPT_Packer_2023: 2 MemGPT (MemoryGPT)] \"Working context is a fixed-size read/write block of unstructured text, writeable only via MemGPT function calls.\" [MemGPT_Packer_2023: 2.1 Main context (prompt tokens)] \"MemGPT orchestrates data movement between main context and external context via function calls that are generated by the LLM processor.\" [MemGPT_Packer_2023: 2.3 Function executor (handling of completion tokens)]",
+    "trace_id": "abl5_32d87d35"
+  },
+  {
+    "question_id": "Q25_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "Does DPR use a generative sequence-to-sequence language model during passage retrieval?",
+    "category": "entity_near_neighbor_confusion",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"Recent work Izacard and Grave 2020; Lewis et al. 2020b have also shown that DPR can be combined with generation models such as BART Lewis et al. 2020a and T5 Raffel et al. 2019, achieving good performance on open-domain QA and other knowledge-intensive tasks.\" [DPR_Karpukhin_2020: 7 Related Work]",
+    "trace_id": "abl5_259e43a7"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"our dense retriever outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [DPR_Karpukhin_2020: Abstract] \"we demonstrated that dense retrieval can outperform and potentially replace the traditional sparse retrieval component in open-domain question answering.\" [DPR_Karpukhin_2020: 8 Conclusion]",
+    "trace_id": "abl5_92948989"
+  },
+  {
+    "question_id": "Q27_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What is the specific role of the Actor, Evaluator, and Self-Reflection models in the Reflexion framework?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "abl5_259314e5"
+  },
+  {
+    "question_id": "Q28_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How does MemGPT manage memory transfers between the main context and external archival storage?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"This out-of-context data must always be explicitly moved into main context in order for it to be passed to the LLM processor during inference.\" [MemGPT_Packer_2023: 2 MemGPT (MemoryGPT)] \"MemGPT orchestrates data movement between main context and external context via function calls that are generated by the LLM processor.\" [MemGPT_Packer_2023: 2.3 Function executor (handling of completion tokens)] \"we allow the LLM to manage what is placed in its own context (analogous to physical memory) via an \u2018LLM OS', which we call MemGPT.\" [MemGPT_Packer_2023: 1 Introduction]",
+    "trace_id": "abl5_cfb9f1ab"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"A) Intuitive and easy to design: Designing ReAct prompts is straightforward as human annotators just type down their thoughts in language on top of their actions taken. No ad-hoc format choice, thought design, or example selection is used in this paper. We detail prompt design for each task in Sections 3 and 4.\nB) General and flexible: Due to the flexible thought space and thought-action occurrence format, ReAct works for diverse tasks with distinct action spaces and reasoning needs, including but not limited to QA, fact verification, text game, and web navigation.\nC) Performant and robust: ReAct shows strong generalization to new task instances while learning solely from one to six in-context examples, consistently outperforming baselines with only reasoning or acting across different domains.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting]",
+    "trace_id": "abl5_5ef51fb3"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"Empirical results on six tasks, including reasoning and long-form generation, demonstrate that Self-Rag significantly outperforms pre-trained and instruction-tuned LLMs that have more parameters and widely adopted RAG approaches with higher citation accuracy.\" [SelfRAG_Asai_2023: 1 Introduction] \"We conduct a segment-level beam search (with the beam size=BB) to obtain the top-BB segment continuations at each timestamp tt, and return the best sequence at the end of generation.\" [SelfRAG_Asai_2023: 3.3 Self-Rag Inference] \"Self-Rag significantly outperforms LLMs with more parameters or with conventional retrieval-augmented generation approaches.\" [SelfRAG_Asai_2023: 6 Conclusion]",
+    "trace_id": "abl5_d7f5323d"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We introduce Toolformer, a model trained to decide which APIs to call, when to call them, what arguments to pass, and how to best incorporate the results into future token prediction.\" [Toolformer_Schick_2023: Abstract] \"A simple way to overcome these limitations of today's language models is to give them the ability to use external tools such as search engines, calculators, or calendars.\" [Toolformer_Schick_2023: 1 Introduction] \"One such limitation is the inability of Toolformer to use tools in a chain (i.e., using the output of one tool as an input for another tool).\" [Toolformer_Schick_2023: 7 Limitations] \"Toolformer considerably improves zero-shot performance of a 6.7B parameter GPT-J model, enabling it to even outperform a much larger GPT-3 model on a range of different downstream tasks.\" [Toolformer_Schick_2023: 8 Conclusion] \"We choose the more challenging zero-shot setup as we are interested in seeing whether Toolformer works in precisely those cases where a user does not specify in advance which tools should be used in which way for solving a specific problem.\" [Toolformer_Schick_2023: 4.2 Downstream Tasks]",
+    "trace_id": "abl5_eb46dc9b"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"A confidence degree is quantified based on which different knowledge retrieval actions of {Correct, Incorrect, Ambiguous} can be triggered.\" [CRAG_Yan_2024: 1 Introduction]",
+    "trace_id": "abl5_a3a504ee"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"p_{\\eta}(z|x)\\propto\\exp\\left(\\mathbf{d}(z)^{\\top}\\mathbf{q}(x)\\right)\" [RAG_Lewis_2020: 2.2 Retriever: DPR]",
+    "trace_id": "abl5_85dbfcfa"
+  },
+  {
+    "question_id": "Q34_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"We trained the question and passage encoders for up to 4040 epochs for large datasets (NQ, TriviaQA, SQuAD) and 100100 epochs for small datasets (TREC, WQ)\" [DPR_Karpukhin_2020: 5 Experiments: Passage Retrieval] \"DPR-based models outperform the previous state-of-the-art results on four out of the five datasets\" [DPR_Karpukhin_2020: 6.2 Results]",
+    "trace_id": "abl5_b13caa61"
+  },
+  {
+    "question_id": "Q35_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"\u2018GPT-4 Turbo' refers to the specific gpt-4-1106-preview model endpoint (context window of 128,000128,000), \u2018GPT-4\u2018 refers to gpt-4-0613 (context window of 8,1928,192), and \u2018GPT-3.5 Turbo\u2018 refers to gpt-3.5-turbo-1106 (context window of 16,38516,385).\" [MemGPT_Packer_2023: 3 Experiments]",
+    "trace_id": "abl5_85545818"
+  },
+  {
+    "question_id": "Q36_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How does CRAG evaluate the quality of retrieved documents before passing them to the generator?",
+    "category": "ambiguous",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"Essentially, a lightweight retrieval evaluator is to estimate and trigger three knowledge retrieval actions discriminately.\" [CRAG_Yan_2024: 6 Conclusion & Limitation] \"our motivation is to improve the retrieval quality by correcting the retrieval results that the system judges to be of low quality.\" [CRAG_Yan_2024: 5.1 Tasks, Datasets and Metrics]",
+    "trace_id": "abl5_a2148e27"
+  },
+  {
+    "question_id": "Q37_test",
+    "system_name": "Ablation_5_NoDecomposition",
+    "question": "How does ReAct update LLM model weights using policy gradient reinforcement learning during interaction?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "According to the literature: \"reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments.\" [ReAct_Yao_2022: Abstract]",
+    "trace_id": "abl5_8da2c847"
+  },
+  {
+    "question_id": "Q09_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What is the training objective and masked language modeling task in REALM?",
+    "category": "answerable_single_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What is the training objective in REALM?') has no verified supporting evidence.\n- Sub-question 2 ('What is the masked language modeling task in REALM?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "tr_501926e6"
+  },
+  {
+    "question_id": "Q10_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How does Toolformer decide whether to keep or filter a generated candidate API call?",
+    "category": "answerable_single_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We let the model start an API call not just when <API> is the most likely token, but whenever it is one of the kk most likely tokens.\" [Toolformer_Schick_2023: 4.2 Downstream Tasks] \"Toolformer currently does not take into account the tool-dependent, computational cost incurred from making an API call.\" [Toolformer_Schick_2023: 7 Limitations]",
+    "trace_id": "tr_5867823f"
+  },
+  {
+    "question_id": "Q12_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What is the decompose-then-recompose knowledge refinement method in CRAG?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"a decompose-then-recompose knowledge refinement method is designed to further extract the most critical knowledge strips in it.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement] \"Then, the retrieval evaluator fine-tuned in Section 4.2 is employed to calculate the relevance score of each knowledge strip.\" [CRAG_Yan_2024: 4.4 Knowledge Refinement] \"a decompose-then-recompose algorithm is meticulously crafted throughout the retrieval and utilization process.\" [CRAG_Yan_2024: 1 Introduction]",
+    "trace_id": "tr_73ceb898"
+  },
+  {
+    "question_id": "Q13_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How do ReAct and Reflexion differ in handling reasoning traces across multi-trial tasks?",
+    "category": "answerable_multi_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions\" [ReAct_Yao_2022: Abstract] \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments\" [ReAct_Yao_2022: 1 Introduction] \"Reflexion agents verbally reflect on task feedback signals, then maintain their own reflective text in an episodic memory buffer to induce better decision-making in subsequent trials.\" [Reflexion_Shinn_2023: Abstract]",
+    "trace_id": "tr_3018487d"
+  },
+  {
+    "question_id": "Q14_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "Compare the retrieval index maintenance in REALM versus DPR.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"The key intuition of REALM is to train the retriever using a performance-based signal from unsupervised text: a retrieval that improves the language model's perplexity is helpful and should be rewarded, while an uninformative retrieval should be penalized.\" [REALM_Guu_2020: 1 Introduction] \"the goal of our dense passage retriever (DPR) is to index all the passages in a low-dimensional and continuous space, such that it can retrieve efficiently the top kk passages relevant to the input question for the reader at run-time.\" [DPR_Karpukhin_2020: 3 Dense Passage Retriever (DPR)]",
+    "trace_id": "tr_bff1ee8c"
+  },
+  {
+    "question_id": "Q15_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What specific reflection critique tokens are generated in Self-RAG to evaluate retrieval utility and relevance?",
+    "category": "retrieval_sensitive",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"It then generates critique tokens to criticize its own output and choose best one (Step 3) in terms of factuality and overall quality.\" [SelfRAG_Asai_2023: 1 Introduction] \"These reflection tokens (Table 1) signal the need for retrieval or confirm the output's relevance, support, or completeness.\" [SelfRAG_Asai_2023: 3 Self-Rag: Learning to Retrieve, Generate and Critique] \"Subsequently, Self-Rag concurrently processes multiple retrieved passages, evaluating their relevance and then generating corresponding task outputs (Step 2).\" [SelfRAG_Asai_2023: 1 Introduction] \"Generating reflection tokens to self-evaluate its own output makes Self-Rag controllable during the inference phase, enabling it to tailor its behavior to diverse task requirements.\" [SelfRAG_Asai_2023: 3.3 Self-Rag Inference] \"If retrieval is needed, the model generates: a critique token to evaluate the retrieved passage's relevance, the next response segment, and a critique token to evaluate if the information in the response segment is supported by the passage.\" [SelfRAG_Asai_2023: 3.1 Problem Formalization and Overview]",
+    "trace_id": "tr_dcb9abd9"
+  },
+  {
+    "question_id": "Q18_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What is the typical top-k retrieval count evaluated in the original RAG paper by Lewis et al.?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"We consider k\u2208{5,10}k\\in\\{5,10\\} for training and set kk for test time using dev data.\" [RAG_Lewis_2020: 3 Experiments]",
+    "trace_id": "tr_ba2b3846"
+  },
+  {
+    "question_id": "Q20_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What constitutes the working context versus archival memory in MemGPT?",
+    "category": "ambiguous",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"Working context is a fixed-size read/write block of unstructured text, writeable only via MemGPT function calls.\" [MemGPT_Packer_2023: 2.1 Main context (prompt tokens)] \"In conversational settings, working context is intended to be used to store key facts, preferences, and other important information about the user and the persona the agent is adopting, allowing the agent to converse fluently with the user.\" [MemGPT_Packer_2023: 2.1 Main context (prompt tokens)]",
+    "trace_id": "tr_63a08d53"
+  },
+  {
+    "question_id": "Q21_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How does REALM use BM25 sparse keyword matching during its pretraining phase?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "According to the literature: \"we augment language model pre-training with a latent knowledge retriever, which allows the model to retrieve and attend over documents from a large corpus such as Wikipedia, used during pre-training, fine-tuning and inference.\" [REALM_Guu_2020: Abstract]",
+    "trace_id": "tr_0cafb051"
+  },
+  {
+    "question_id": "Q26_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How do reported results on zero-shot out-of-domain retrieval compare between standard dense retrieval and BM25 in the early RAG literature?",
+    "category": "contradiction_conflicting_evidence",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"our dense retriever outperforms a strong Lucene-BM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy\" [DPR_Karpukhin_2020: Abstract] \"Although DPR performs better than BM25 in general, passages retrieved by these two methods differ qualitatively.\" [DPR_Karpukhin_2020: 5.3 Qualitative Analysis]",
+    "trace_id": "tr_4851f2b4"
+  },
+  {
+    "question_id": "Q28_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How does MemGPT manage memory transfers between the main context and external archival storage?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"This out-of-context data must always be explicitly moved into main context in order for it to be passed to the LLM processor during inference.\" [MemGPT_Packer_2023: 2 MemGPT (MemoryGPT)] \"MemGPT orchestrates data movement between main context and external context via function calls that are generated by the LLM processor.\" [MemGPT_Packer_2023: 2.3 Function executor (handling of completion tokens)] \"we allow the LLM to manage what is placed in its own context (analogous to physical memory) via an \u2018LLM OS', which we call MemGPT.\" [MemGPT_Packer_2023: 1 Introduction] \"we propose virtual context management, a technique drawing inspiration from hierarchical memory systems in traditional operating systems which provide the illusion of an extended virtual memory via paging between physical memory and disk.\" [MemGPT_Packer_2023: Abstract]",
+    "trace_id": "tr_4ba6095a"
+  },
+  {
+    "question_id": "Q29_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What are the three components of a step in the ReAct prompting framework?",
+    "category": "answerable_single_hop",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"ReAct prompts LLMs to generate both verbal reasoning traces and actions pertaining to a task in an interleaved manner, which allows the model to perform dynamic reasoning to create, maintain, and adjust high-level plans for acting (reason to act), while also interact with the external environments (e.g.\tWikipedia) to incorporate additional information into reasoning (act to reason).\" [ReAct_Yao_2022: 1 Introduction] \"Designing ReAct prompts is straightforward as human annotators just type down their thoughts in language on top of their actions taken.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting] \"Due to the flexible thought space and thought-action occurrence format, ReAct works for diverse tasks with distinct action spaces and reasoning needs, including but not limited to QA, fact verification, text game, and web navigation.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting]",
+    "trace_id": "tr_3c4f6bc2"
+  },
+  {
+    "question_id": "Q30_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How does Self-RAG's segment-level beam search compare with standard greedy decoding in RAG?",
+    "category": "answerable_multi_hop",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- specific details on how greedy decoding works in standard RAG\n- Sub-question 1 ('What is segment-level beam search in Self-RAG?') has no verified supporting evidence.\n- Sub-question 2 ('How does greedy decoding work in standard RAG?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "tr_1bc0051c"
+  },
+  {
+    "question_id": "Q31_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "Compare how Toolformer and ReAct enable language models to utilize external tools.",
+    "category": "answerable_multi_hop",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"we show that LMs can teach themselves to use external tools via simple APIs and achieve the best of both worlds.\" [Toolformer_Schick_2023: Abstract] \"Toolformer, a language model that learns in a self-supervised way how to use different tools such as search engines, calculators, and translation systems via simple API calls.\" [Toolformer_Schick_2023: 8 Conclusion] \"our approach enables LMs to learn how to use a variety of tools in a self-supervised way\" [Toolformer_Schick_2023: 7 Limitations] \"we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments.\" [ReAct_Yao_2022: Abstract] \"by interacting with a Wikipedia API, ReAct is able to retrieve information to support reasoning, while also use reasoning to target what to retrieve next, demonstrating a synergy of reasoning and acting.\" [ReAct_Yao_2022: 3 Knowledge-Intensive Reasoning Tasks] \"ReAct shows strong generalization to new task instances while learning solely from one to six in-context examples, consistently outperforming baselines with only reasoning or acting across different domains.\" [ReAct_Yao_2022: 2 ReAct: Synergizing Reasoning + Acting]",
+    "trace_id": "tr_5e209f34"
+  },
+  {
+    "question_id": "Q32_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What confidence score interval and action categories are used in CRAG's retrieval evaluator?",
+    "category": "retrieval_sensitive",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"the corresponding actions: {Correct, Incorrect, Ambiguous}\" [CRAG_Yan_2024: 4.1 Overview of Model Inference]",
+    "trace_id": "tr_7e16d61f"
+  },
+  {
+    "question_id": "Q33_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "How is the retrieval probability p(z|x) computed in the REALM knowledge retriever?",
+    "category": "retrieval_sensitive",
+    "failure_category": "false_refusal",
+    "response_text": "Based on the 10 research papers in the index, there is insufficient evidence to answer this question.\n\n**Missing Evidence Details:**\n- Sub-question 1 ('What is the formula for computing p(z|x) in REALM?') has no verified supporting evidence.\n- Sub-question 2 ('What role does the masked language model play in REALM's retrieval process?') has no verified supporting evidence.\n\n*The system refused to generate an unverified answer to prevent hallucination.*",
+    "trace_id": "tr_6762a59d"
+  },
+  {
+    "question_id": "Q34_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What open-domain question answering datasets were used to evaluate DPR?",
+    "category": "exact_numerical",
+    "failure_category": "partial_answer",
+    "response_text": "According to the literature: \"We trained the question and passage encoders for up to 4040 epochs for large datasets (NQ, TriviaQA, SQuAD) and 100100 epochs for small datasets (TREC, WQ)\" [DPR_Karpukhin_2020: 5 Experiments: Passage Retrieval]",
+    "trace_id": "tr_2cb95744"
+  },
+  {
+    "question_id": "Q35_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What context window token limit is targeted by MemGPT when managing multi-level context?",
+    "category": "exact_numerical",
+    "failure_category": "incorrect_answer",
+    "response_text": "According to the literature: \"unless otherwise specified \u2018GPT-4 Turbo' refers to the specific gpt-4-1106-preview model endpoint (context window of 128,000128,000), \u2018GPT-4\u2018 refers to gpt-4-0613 (context window of 8,1928,192), and \u2018GPT-3.5 Turbo\u2018 refers to gpt-3.5-turbo-1106 (context window of 16,38516,385)\" [MemGPT_Packer_2023: 3 Experiments]",
+    "trace_id": "tr_dbb62ede"
+  },
+  {
+    "question_id": "Q38_test",
+    "system_name": "Agentic_System_C_Full",
+    "question": "What custom vector database format was invented by Lewis et al. in the 2020 RAG paper to replace FAISS?",
+    "category": "false_premise",
+    "failure_category": "hallucination",
+    "response_text": "According to the literature: \"we refer to as retrieval-augmented generation (RAG).\" [RAG_Lewis_2020: 1 Introduction] \"we use a single Wikipedia dump for our non-parametric knowledge source.\" [RAG_Lewis_2020: 3 Experiments]",
+    "trace_id": "tr_1679de16"
+  }
+]

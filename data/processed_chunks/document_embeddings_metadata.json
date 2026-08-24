@@ -1,0 +1,8 @@
+{
+  "embedding_model": "text-embedding-3-small",
+  "dimensions": 1536,
+  "num_chunks": 243,
+  "corpus_hash": "cb6540eaa81efb0becfc2df4c9d14a8e6838cd98b5d831c58a7f46e368bb5758",
+  "corpus_version": "v1.0",
+  "saved_at": "2026-08-23T09:36:15.328535+00:00"
+}
