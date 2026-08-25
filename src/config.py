@@ -31,13 +31,28 @@ DOC_EMBEDDINGS_CACHE_PATH = PROCESSED_DIR / "document_embeddings.npz"
 DOC_EMBEDDINGS_METADATA_PATH = PROCESSED_DIR / "document_embeddings_metadata.json"
 QUERY_EMBEDDINGS_CACHE_PATH = PROCESSED_DIR / "query_embeddings_cache.npz"
 
+def _get_env_or_secret(key: str, default: str = "") -> str:
+    """Gets an environment variable, falling back to Streamlit secrets if running on Streamlit Cloud."""
+    val = os.getenv(key)
+    if val:
+        return val
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and key in st.secrets:
+            val = str(st.secrets[key])
+            os.environ[key] = val
+            return val
+    except Exception:
+        pass
+    return default
+
 # Safety & Execution Modes
-OPENAI_API_ENABLED = os.getenv("OPENAI_API_ENABLED", "true").lower() in ("true", "1", "yes")
-CACHE_ONLY_MODE = os.getenv("CACHE_ONLY_MODE", "false").lower() in ("true", "1", "yes")
+OPENAI_API_ENABLED = _get_env_or_secret("OPENAI_API_ENABLED", "true").lower() in ("true", "1", "yes")
+CACHE_ONLY_MODE = _get_env_or_secret("CACHE_ONLY_MODE", "false").lower() in ("true", "1", "yes")
 
 # Benchmark Budget Guard: hard limit in USD. Benchmark refuses to run if estimated cost exceeds this.
 # Override via MAX_EXPERIMENT_COST_USD environment variable.
-MAX_EXPERIMENT_COST_USD: float = float(os.getenv("MAX_EXPERIMENT_COST_USD", "1.00"))
+MAX_EXPERIMENT_COST_USD: float = float(_get_env_or_secret("MAX_EXPERIMENT_COST_USD", "1.00"))
 
 # Chunking Hyperparameters
 TARGET_CHUNK_TOKENS = 450
@@ -46,9 +61,9 @@ MIN_CHUNK_TOKENS = 80
 TOKENIZER_ENCODING = "cl100k_base"
 
 # Models Configuration
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+OPENAI_API_KEY = _get_env_or_secret("OPENAI_API_KEY", "")
+OPENAI_MODEL = _get_env_or_secret("OPENAI_MODEL", "gpt-4o-mini")
+OPENAI_EMBEDDING_MODEL = _get_env_or_secret("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
 EMBEDDING_DIM = 1536
 
 # Official Pricing Constants (per 1,000,000 tokens)
