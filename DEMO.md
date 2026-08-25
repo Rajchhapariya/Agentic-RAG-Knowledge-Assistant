@@ -17,7 +17,7 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
 ## 🚀 Quick Setup & Launch
 
 1. **Activate Environment & Verify Keys**:
-   Ensure `.env` contains your `OPENAI_API_KEY`.
+   Ensure `.env` contains your `OPENAI_API_KEY` (or configure secrets in Streamlit Cloud).
 2. **Launch the Application**:
    ```bash
    streamlit run app.py
@@ -49,9 +49,9 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
 * **Action**: In the sidebar dropdown, select **`1. Answerable: Self-RAG reflection tokens`** and click **Ask Assistant**.
 * **What to Show on Screen**:
   1. **Status Badge**: Point out `<span class="badge-sufficient">✓ ANSWER: FULLY GROUNDED & VERIFIED</span>`.
-  2. **Grounded Response**: Highlight how the answer explains `[Retrieve]`, `[IsREL]`, `[IsSUP]`, and `[IsUSE]` tokens.
+  2. **Grounded Response**: Highlight how the answer explains `[Retrieve]`, `[IsREL]`, `[IsSUP]`, and `[IsUSE]` tokens in natural language.
   3. **Expand Citation [1]**: Expand the citation card to show the verbatim source passage extracted directly from `SelfRAG_Asai_2023`.
-  4. **Inspect Trace**: Click **Deep Inspect: Complete Agent Execution Trace** $\rightarrow$ show Tab 3 (*Evidence Auditor*) where each sub-question is mathematically verified against candidate chunks.
+  4. **Inspect Trace**: Click **Deep Inspect: Complete Agent Execution Trace** $\rightarrow$ show Tab 3 (*Evidence Auditor*) where each sub-question is verified against candidate chunks.
 * **What to Say**:
   > *"In standard RAG, the model generates an answer and we hope it didn't hallucinate. Here, our Evidence Auditor verifies exact character-level quotation spans before the generator is even allowed to synthesize the final output."*
 
@@ -93,22 +93,22 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
 * **Corpus Mode**: Switch sidebar radio to **`Upload PDF`**.
 * **Action**:
   1. Drag and drop any research PDF (e.g. `data/raw_documents/CRAG_Yan_2024.pdf` or a sample paper).
-  2. Notice the metadata banner: File hash, Page count, Section count, and `CACHE MISS` (Embeddings Generated).
+  2. Notice the metadata banner: File hash, Page count, Section count, and `✓ PDF Indexed — Embeddings Generated`.
   3. Enter a question specific to the uploaded paper and click **Ask Assistant**.
   4. Expand citation to show **Page-Level Provenance** (`[filename: Page X, §Section]`).
-  5. Re-upload or re-select the same file: Notice the immediate `CACHE HIT (0 API Calls)` badge.
+  5. Re-upload or re-select the same file: Notice the immediate `✓ Cache Hit — Embeddings Reused` badge (0 embedding API calls).
 * **What to Say**:
   > *"We extended the pipeline to user uploads without cutting corners: uploads are parsed with pdfplumber, section-chunked, and stored in an isolated Content-Addressable cache keyed by SHA-256. Repeat uploads result in 0 embedding API calls, and dynamic queries use the exact same agentic planner and auditor."*
 
 ---
 
-### Optional Scenario 5: False Premise Contradiction & Debunking (~30s)
+### Scenario 5: False Premise Contradiction & Debunking (~30s)
 
 * **Goal**: Show that the system identifies false assumptions in user queries.
 * **Corpus Mode**: `Research Corpus (10 Papers)`
 * **Action**: Select **`4. Debunk: Toolformer PPO reinforcement learning`** and click **Ask Assistant**.
 * **What to Show on Screen**:
-  1. **Status Badge**: `<span class="badge-debunk">🛡️ FALSE PREMISE DEBUNKED & CORRECTED</span>`.
+  1. **Status Badge**: `<span class="badge-debunk">🛡️ FALSE PREMISE DEBUNKED & CORRECTED</span>` (or `<span class="badge-partial">⚠ PARTIAL ANSWER</span>`).
   2. **Auditor Finding**: The trace notes that Toolformer does *not* use PPO RL, but rather self-supervised in-context API filtering.
   3. **Cited Correction**: Explains the true mechanism with verified citations.
 
@@ -116,14 +116,12 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
 
 ## 💡 Key Architectural Talking Points for Interviews
 
-1. **Why Agentic RAG Over Naive RAG?**
-   * *"Naive RAG is an open loop: Retrieve $k$ chunks and feed them to the LLM. If the retrieval is noisy or irrelevant, the LLM hallucinates. Agentic RAG closes the loop with deterministic planning, hybrid dense/sparse retrieval, iterative evidence auditing, and bounded retries."*
-2. **How is Evidence Auditing Implemented?**
-   * *"The Auditor performs atomic sub-question verification: it matches candidate chunks against each required claim, validates exact substring quotes, checks for logical contradictions, and produces an actionable search gap if evidence is missing."*
-3. **Tradeoffs & Real-World Latency**:
-   * *"The held-out evaluation demonstrated a classic reliability-latency tradeoff: Agentic RAG prevented all hallucinations on adversarial unanswerables, but had an average latency of ~17.7s compared to ~1.86s for Hybrid RAG. The Evidence Auditor accounted for ~88% of the latency and ~81% of cost, which informed our roadmap for fast-pass lexical gating and speculative auditing."*
-4. **Deterministic Testing Discipline**:
-   * *"Our entire 87-test suite runs 100% offline in ~40 seconds with 0 OpenAI API calls by mocking LLM boundaries with realistic Pydantic domain models while validating real orchestration logic."*
+1. **Why Plain Single-Pass RAG Was Insufficient**: Traditional top-$k$ RAG feeds retrieved passages directly to the generator without validation, causing silent hallucinations when context is irrelevant or the question is out of scope.
+2. **Why the Evidence Sufficiency Checker + Bounded Retry Loop is the Core Agentic Component**: Query planning alone is open-loop. What makes the system agentic is the closed-loop Evidence Auditor acting as an evaluation gate that verifies atomic claim support, diagnoses retrieval gaps, and controls bounded query reformulations.
+3. **Why Retrieval and Generation Were Evaluated Separately**: Measuring cumulative evidence recall ($52.1\%$) separately from answer accuracy ($45.8\%$) and hallucination ($0/4$) decoupled retrieval recall from generator grounding failures.
+4. **Why the Held-Out Result Showed a Real Tradeoff Rather than "Agentic RAG is Better"**: Agentic RAG eliminated hallucinations on adversarial unanswerables ($0/4$ vs. $4/4$ for Hybrid RAG), but conservative quote verification reduced answer accuracy ($45.8\%$ vs. $60.4\%$) and increased latency ($\sim 17.7\text{s}$ vs. $\sim 1.86\text{s}$).
+5. **Why the Evidence Auditor Became the Main Latency/Cost Bottleneck**: Profiling revealed that the LLM auditor accounted for $\sim 88.2\%$ of total execution latency and $\sim 81.4\%$ of benchmark token spend, motivating future work on two-tier lexical gating.
+6. **How Benchmark Isolation, Caching, Mocking, and Budget Controls Improved Reproducibility**: SHA-256 CAS vector caching, query caching, mocked Pydantic test boundaries ($87$ offline tests), and hard execution guards enabled deterministic evaluation with zero accidental API spend.
 
 ---
 

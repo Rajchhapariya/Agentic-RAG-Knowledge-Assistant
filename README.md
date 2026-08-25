@@ -354,9 +354,21 @@ pytest -m integration
 
 ### 4. Launch the Streamlit Web Application
 ```bash
+# Run locally
 streamlit run app.py
 ```
 Open `http://localhost:8501` to test the research corpus presets or upload custom PDFs.
+
+#### Deploying to Streamlit Community Cloud:
+1. Connect repository `Rajchhapariya/Agentic-RAG-Knowledge-Assistant` at [share.streamlit.io](https://share.streamlit.io).
+2. Set **Main file path**: `app.py`.
+3. In **Advanced Settings → Secrets**, add your credentials:
+   ```toml
+   OPENAI_API_KEY = "your-actual-openai-api-key"
+   OPENAI_MODEL = "gpt-4o-mini"
+   OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
+   ```
+4. Click **Deploy**.
 
 ### 5. Run Benchmark (Optional - Consumes API Credits)
 ```bash
