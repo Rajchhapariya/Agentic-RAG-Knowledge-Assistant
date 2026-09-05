@@ -9,6 +9,7 @@ from typing import Optional, Dict, Any, List
 from openai import OpenAI
 from src.config import (
     OPENAI_API_KEY,
+    get_openai_api_key,
     OPENAI_MODEL,
     OPENAI_API_ENABLED,
     CACHE_ONLY_MODE,
@@ -93,7 +94,7 @@ Rules:
 - For single factual questions, query_type is "FACTUAL_SINGLE_HOP" with 1 sub_question."""
 
     def __init__(self, api_key: Optional[str] = None, model: str = OPENAI_MODEL):
-        self.api_key = api_key or OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
+        self.api_key = api_key or get_openai_api_key() or OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY is not set.")
         self.client = OpenAI(api_key=self.api_key)

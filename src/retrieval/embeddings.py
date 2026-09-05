@@ -16,6 +16,7 @@ import tiktoken
 
 from src.config import (
     OPENAI_API_KEY,
+    get_openai_api_key,
     OPENAI_EMBEDDING_MODEL,
     EMBEDDING_DIM,
     EMBEDDINGS_CACHE_PATH,
@@ -47,7 +48,7 @@ class EmbeddingClient:
         api_enabled: Optional[bool] = None,
         cache_only: Optional[bool] = None,
     ):
-        self.api_key = api_key or OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
+        self.api_key = api_key or get_openai_api_key() or OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
         self.api_enabled = OPENAI_API_ENABLED if api_enabled is None else api_enabled
         self.cache_only = CACHE_ONLY_MODE if cache_only is None else cache_only
 

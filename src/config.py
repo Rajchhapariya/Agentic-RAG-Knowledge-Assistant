@@ -32,19 +32,30 @@ DOC_EMBEDDINGS_METADATA_PATH = PROCESSED_DIR / "document_embeddings_metadata.jso
 QUERY_EMBEDDINGS_CACHE_PATH = PROCESSED_DIR / "query_embeddings_cache.npz"
 
 def _get_env_or_secret(key: str, default: str = "") -> str:
-    """Gets an environment variable, falling back to Streamlit secrets if running on Streamlit Cloud."""
-    val = os.getenv(key)
-    if val:
-        return val
+    """Gets a setting, prioritizing Streamlit secrets over os.getenv, and strips formatting."""
+    val = ""
     try:
         import streamlit as st
-        if hasattr(st, "secrets") and key in st.secrets:
-            val = str(st.secrets[key])
-            os.environ[key] = val
-            return val
+        if hasattr(st, "secrets"):
+            if key in st.secrets:
+                val = str(st.secrets[key])
+            elif key.lower() in st.secrets:
+                val = str(st.secrets[key.lower()])
+            elif key == "OPENAI_API_KEY" and "openai" in st.secrets and "api_key" in st.secrets["openai"]:
+                val = str(st.secrets["openai"]["api_key"])
     except Exception:
         pass
+    if not val:
+        val = os.getenv(key, "")
+    if val:
+        val = str(val).strip().strip('"').strip("'").strip()
+        os.environ[key] = val
+        return val
     return default
+
+def get_openai_api_key() -> str:
+    """Returns the active OpenAI API key dynamically, checking st.secrets then os.getenv."""
+    return _get_env_or_secret("OPENAI_API_KEY", "")
 
 # Safety & Execution Modes
 OPENAI_API_ENABLED = _get_env_or_secret("OPENAI_API_ENABLED", "true").lower() in ("true", "1", "yes")
