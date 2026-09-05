@@ -96,8 +96,11 @@ Agentic-RAG-Knowledge-Assistant/
 │   │   ├── retrieval.py              # SearchResult, RetrievalQuery, and RRF models
 │   │   └── trace.py                  # Inspectable execution schemas (QueryPlan, AuditResult, AgentTrace)
 │   ├── ingestion/
-│   │   ├── pdf_loader.py             # Dual-engine PDF extractor (pdfplumber + pypdf fallback)
-│   │   ├── section_chunker.py        # Section-aware chunking preserving hierarchy and page numbers
+│   │   ├── pdf_loader.py             # Dual-engine PDF extractor (pdfplumber + pypdf) with academic & resume heading detection
+│   │   ├── parser.py                 # Structured HTML/PDF paper parser with section boundary extraction
+│   │   ├── section_chunker.py        # Section-aware chunking preserving hierarchy and page provenance
+│   │   ├── corpus_fetcher.py         # Automated ArXiv / HTML source corpus downloader
+│   │   ├── pipeline.py               # Research corpus ingestion and embedding precomputation pipeline
 │   │   └── user_pdf_pipeline.py      # Dynamic PDF ingestion with SHA-256 CAS vector caching
 │   ├── retrieval/
 │   │   ├── embeddings.py             # OpenAI EmbeddingClient with disk caching & token accounting
@@ -105,16 +108,18 @@ Agentic-RAG-Knowledge-Assistant/
 │   │   ├── vector_store.py           # In-memory NumPy cosine similarity vector index
 │   │   └── hybrid_retriever.py       # Reciprocal Rank Fusion (RRF, k=60) dense/sparse retriever
 │   ├── agent/
-│   │   ├── query_planner.py          # Query classifier, entity extractor, and sub-question decomposer
+│   │   ├── planner.py                # Query classifier, entity extractor, sub-question decomposer (papers + user docs)
 │   │   ├── evidence_auditor.py       # Atomic claim verification, contradiction check, and search gap diagnosis
-│   │   ├── grounded_generator.py     # Source-grounded generator with strict verbatim citation enforcement
+│   │   ├── reformulator.py           # Diagnosed gap query reformulation for iterative retries
+│   │   ├── grounded_generator.py     # Fluent natural synthesis with clean [1], [2] in-text citations & schema guarantees
+│   │   ├── ablations.py              # Isolated pipeline ablations for benchmark reproducibility
 │   │   └── orchestrator.py           # Multi-pass loop controller managing state transitions and retries
 │   ├── evaluation/
 │   │   ├── benchmark_runner.py       # Evaluator across 8 systems (Baselines, Ablations, Full Agentic)
 │   │   ├── metrics.py                # Deterministic accuracy, hallucination, refusal, and recall metrics
 │   │   └── dataset_loader.py         # Benchmark dataset validation and loader
 │   ├── ui/
-│   │   └── app.py                    # Streamlit interface with dual-mode selector and inspectable traces
+│   │   └── app.py                    # Streamlit interface with dual-mode selector, natural citations, and inspectable traces
 │   └── utils/
 │       └── cost_tracker.py           # Thread-safe token tracking and USD cost accounting
 ├── tests/
@@ -256,7 +261,7 @@ Analyzing the benchmark failures exposed three distinct structural failure modes
 
 ## 9. Dynamic User PDF Ingestion
 
-The application includes an isolated dynamic ingestion pipeline for arbitrary user-uploaded documents:
+The application includes an isolated dynamic ingestion pipeline for arbitrary user-uploaded documents (research papers, technical whitepapers, resumes, and reports):
 
 ```
 [User Uploads PDF]
@@ -265,6 +270,7 @@ The application includes an isolated dynamic ingestion pipeline for arbitrary us
 1. PDF Parsing (`src/ingestion/pdf_loader.py`)
    - Primary extractor: `pdfplumber` (page numbers, section headings)
    - Fallback extractor: `pypdf`
+   - Semantic Heading Recognition: Detects academic sections (Abstract, Methods, Results, Discussion) and career sections (Experience, Skills, Education, Projects, Certifications)
    - Content verification: detects blank/scanned files (`UnextractablePDFError`)
        │
        ▼
@@ -281,12 +287,12 @@ The application includes an isolated dynamic ingestion pipeline for arbitrary us
        ▼
 4. Unified Agentic Execution (`src/agent/orchestrator.py`)
    - Dynamic document is queried through identical Planner → Retriever → Auditor pipeline
-   - Output includes page-level citations: `[filename: Page X, §Section]`
+   - Output includes fluent natural-language synthesis, inline `[1], [2]` citation tags, and verified source expanders
 ```
 
 ---
 
-## 10. Scripted Portfolio Demonstrations
+## 10. Scripted Portfolio Demonstrations & Curated Question Bank
 
 See [`DEMO.md`](DEMO.md) for a comprehensive 2–3 minute rehearsal guide. The repository includes 5 verified demonstration scenarios defined in [`data/demo_questions.json`](data/demo_questions.json):
 
@@ -305,6 +311,19 @@ To execute all 5 scenarios and view the live cost/latency summary:
 python -m scripts.run_scripted_demo
 ```
 
+### 💡 Curated Questions for Live Exploration
+
+| Category | Recommended Query | Target Behavior & Architecture Proof |
+| :--- | :--- | :--- |
+| **Factual Single-Hop** | *"How does CRAG use confidence thresholds to trigger Correct, Incorrect, and Ambiguous actions?"* | Hybrid retrieval + exact quote verification (`CRAG_Yan_2024 §4.3`). |
+| **Factual Single-Hop** | *"How does FLARE decide when to trigger retrieval dynamically during generation?"* | Active retrieval token confidence tracking (`FLARE_Jiang_2023`). |
+| **Multi-Hop Comparative** | *"Compare the retrieval index maintenance in REALM versus DPR."* | Pass 1 retry $\rightarrow$ gap diagnosis $\rightarrow$ Pass 2 dual-paper synthesis. |
+| **Multi-Hop Comparative** | *"How do Self-RAG and CRAG differ in how they correct low-quality retrieved passages?"* | Cross-paper evaluation and attribution across reflection tokens vs. external web search. |
+| **False-Premise Debunking** | *"How does Toolformer use Proximal Policy Optimization (PPO) reinforcement learning to optimize API calls?"* | False premise detection (`has_conflict=True`) $\rightarrow$ debunks PPO and cites self-supervised loss filtering. |
+| **Controlled Refusal** | *"What is the quantum teleportation fidelity achieved by Agent-Q in 2026?"* | Hallucination prevention gate $\rightarrow$ exhausts 3 passes $\rightarrow$ refuses without fabricating. |
+| **User Resume / PDF** | *"Summarize the candidate's professional experience and key accomplishments."* | Dynamic PDF extraction with section-aware provenance and clean citation cards. |
+| **User Resume / PDF** | *"What programming languages, frameworks, and technical skills are listed?"* | Exact-grounded skill extraction without parametric extrapolation. |
+
 ---
 
 ## 11. Cost Engineering & Test Isolation
@@ -321,6 +340,8 @@ To support rapid development and reproducible continuous integration without inc
 ## 12. Reproducibility & Setup Guide
 
 ### 1. Clone and Environment Setup
+*Requires Python 3.10+ (tested on Python 3.10, 3.11, 3.12, and 3.14).*
+
 ```bash
 git clone https://github.com/Rajchhapariya/Agentic-RAG-Knowledge-Assistant.git
 cd Agentic-RAG-Knowledge-Assistant

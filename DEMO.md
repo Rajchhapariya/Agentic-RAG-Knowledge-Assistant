@@ -49,11 +49,11 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
 * **Action**: In the sidebar dropdown, select **`1. Answerable: Self-RAG reflection tokens`** and click **Ask Assistant**.
 * **What to Show on Screen**:
   1. **Status Badge**: Point out `<span class="badge-sufficient">✓ ANSWER: FULLY GROUNDED & VERIFIED</span>`.
-  2. **Grounded Response**: Highlight how the answer explains `[Retrieve]`, `[IsREL]`, `[IsSUP]`, and `[IsUSE]` tokens in natural language.
+  2. **Grounded Synthesis**: Highlight how the answer naturally synthesizes `[Retrieve]`, `[IsREL]`, `[IsSUP]`, and `[IsUSE]` token mechanics with clean numbered inline citation tags (`[1], [2]`).
   3. **Expand Citation [1]**: Expand the citation card to show the verbatim source passage extracted directly from `SelfRAG_Asai_2023`.
   4. **Inspect Trace**: Click **Deep Inspect: Complete Agent Execution Trace** $\rightarrow$ show Tab 3 (*Evidence Auditor*) where each sub-question is verified against candidate chunks.
 * **What to Say**:
-  > *"In standard RAG, the model generates an answer and we hope it didn't hallucinate. Here, our Evidence Auditor verifies exact character-level quotation spans before the generator is even allowed to synthesize the final output."*
+  > *"In standard RAG, the model generates an answer and we hope it didn't hallucinate. Here, our Evidence Auditor verifies exact character-level quotation spans before the generator synthesizes a clean, natural-language answer with verified citation tags."*
 
 ---
 
@@ -89,16 +89,18 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
 
 ### Scenario 4: User-Uploaded PDF & Dynamic Ingestion (~45s)
 
-* **Goal**: Show dynamic document parsing, section-aware chunking, page-level provenance, and SHA-256 vector caching.
+* **Goal**: Show dynamic document parsing, section-aware chunking, page-level provenance, and SHA-256 vector caching across research papers or resumes.
 * **Corpus Mode**: Switch sidebar radio to **`Upload PDF`**.
 * **Action**:
-  1. Drag and drop any research PDF (e.g. `data/raw_documents/CRAG_Yan_2024.pdf` or a sample paper).
-  2. Notice the metadata banner: File hash, Page count, Section count, and `✓ PDF Indexed — Embeddings Generated`.
-  3. Enter a question specific to the uploaded paper and click **Ask Assistant**.
-  4. Expand citation to show **Page-Level Provenance** (`[filename: Page X, §Section]`).
+  1. Drag and drop any research PDF (e.g. `data/raw_documents/CRAG_Yan_2024.pdf`) or a personal resume/CV.
+  2. Notice the metadata banner: File hash, Page count, Chunk count, and `✓ PDF Indexed — Embeddings Generated`.
+  3. Enter a question specific to the uploaded document:
+     * **For research papers**: *"How does the paper evaluate retrieval performance?"*
+     * **For resumes**: *"Summarize the candidate's professional experience and key technical skills."*
+  4. Expand citation to show **Page and Section Provenance** (`[Document: Page X — §Section]`).
   5. Re-upload or re-select the same file: Notice the immediate `✓ Cache Hit — Embeddings Reused` badge (0 embedding API calls).
 * **What to Say**:
-  > *"We extended the pipeline to user uploads without cutting corners: uploads are parsed with pdfplumber, section-chunked, and stored in an isolated Content-Addressable cache keyed by SHA-256. Repeat uploads result in 0 embedding API calls, and dynamic queries use the exact same agentic planner and auditor."*
+  > *"We extended the pipeline to dynamic uploads without cutting corners: uploads are parsed with pdfplumber, section-chunked with academic and resume heading detection, and stored in an isolated Content-Addressable cache keyed by SHA-256. Repeat uploads result in 0 embedding API calls, and dynamic queries use the exact same agentic planner and auditor."*
 
 ---
 
@@ -111,6 +113,36 @@ Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT �
   1. **Status Badge**: `<span class="badge-debunk">🛡️ FALSE PREMISE DEBUNKED & CORRECTED</span>` (or `<span class="badge-partial">⚠ PARTIAL ANSWER</span>`).
   2. **Auditor Finding**: The trace notes that Toolformer does *not* use PPO RL, but rather self-supervised in-context API filtering.
   3. **Cited Correction**: Explains the true mechanism with verified citations.
+
+---
+
+## 📋 Complete Demo Question Catalog
+
+Use these ready-to-use prompts during live presentations:
+
+### 1. Factual / Answerable (Single-Paper Focus)
+- **CRAG Thresholds**: *"How does CRAG use upper and lower confidence thresholds to trigger Correct, Incorrect, and Ambiguous actions?"*
+- **FLARE Dynamic Retrieval**: *"How does FLARE decide when to trigger retrieval dynamically during generation?"*
+- **MemGPT Memory Paging**: *"How does MemGPT manage its context window using virtual memory and OS-style paging?"*
+- **ReAct Synergies**: *"How does ReAct combine reasoning traces with environment actions?"*
+
+### 2. Multi-Hop Comparative (Cross-Paper Synthesis)
+- **REALM vs. DPR Index Maintenance**: *"Compare how REALM and DPR approach index maintenance and neural retriever pre-training."*
+- **Self-RAG vs. CRAG Correction**: *"How do Self-RAG and CRAG differ in how they correct low-quality or irrelevant retrieved passages?"*
+- **ReAct vs. Reflexion**: *"What is the architectural difference between ReAct's action-observation loop and Reflexion's verbal reinforcement memory?"*
+
+### 3. False-Premise & Debunking (Adversarial Robustness)
+- **Toolformer PPO**: *"How does Toolformer use Proximal Policy Optimization (PPO) reinforcement learning to optimize API calls?"*
+- **Self-RAG Parameter Freezing**: *"Why does Self-RAG freeze all LLM weights and only train the retriever dual-encoder?"*
+
+### 4. Controlled Refusal (Hallucination Prevention)
+- **Quantum Fidelity**: *"What is the quantum teleportation fidelity achieved by Agent-Q in 2026?"*
+- **Autonomous Driving**: *"What LiDAR point-cloud clustering algorithm does Waymo use in highway driving?"*
+
+### 5. Uploaded Resume / Document Queries
+- **Experience Overview**: *"Summarize the candidate's professional experience and key accomplishments."*
+- **Skills Extraction**: *"What programming languages, frameworks, and technical skills are listed?"*
+- **Education & Credentials**: *"What educational degrees and certifications does the candidate hold?"*
 
 ---
 
