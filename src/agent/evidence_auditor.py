@@ -118,7 +118,7 @@ def verify_quote_in_text(quote: str, content: str) -> bool:
 class EvidenceAuditor:
     """Audits retrieved chunks against sub-questions using structured 4-way evidence relations."""
 
-    SYSTEM_PROMPT = """You are an adversarial Evidence Auditor evaluating whether retrieved research paper passages provide sufficient factual proof to answer user sub-questions, or whether the user query contains a false factual premise contradicted by the corpus.
+    SYSTEM_PROMPT = """You are an adversarial Evidence Auditor evaluating whether retrieved document passages provide sufficient factual proof to answer user sub-questions, or whether the user query contains a false factual premise contradicted by the corpus.
 
 You must evaluate candidate chunks against each sub-question with extreme rigor:
 1. For each sub-question, inspect every retrieved chunk and assign an evidence relationship:

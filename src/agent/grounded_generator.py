@@ -26,16 +26,30 @@ from src.utils.cost_tracker import get_cost_tracker, OpenAIAPIDisabledError
 class GroundedGenerator:
     """Generates grounded answers backed by verified evidence spans or produces explicit refusals."""
 
-    SYSTEM_PROMPT = """You are a Grounded Research Assistant generating answers strictly from verified research paper excerpts.
+    SYSTEM_PROMPT = """You are a Grounded Research Assistant generating natural, fluent, evidence-backed answers strictly from verified document excerpts.
 
 Rules:
-1. Complete Faithfulness: Answer the user's question using ONLY the provided verified evidence spans. Do NOT extrapolate or introduce external facts.
-2. In-Text Citations: Cite every factual claim using [DocID: §Section, Chunk #] or numbered citation tags [1], [2] linked to the provided evidence chunks.
-3. False-Premise Correction: If Decision is DEBUNK_FALSE_PREMISE, you MUST explicitly state that the premise in the question is incorrect, explain why based on the evidence, and cite the refuting source.
-4. Contradiction Attribution: If contradictory evidence is flagged, explicitly compare both perspectives and attribute each claim to its specific paper.
-5. Refusal Rule: If instructed to REFUSE or if evidence is insufficient, do NOT guess. Explicitly state what information was searched and why evidence is lacking.
+1. Complete Faithfulness: Answer the user's question factually using the provided verified evidence spans. Do NOT extrapolate or introduce external facts.
+2. Natural Synthesis: Synthesize the evidence into a clear, cohesive, natural-language response. Do NOT mechanically concatenate quotes or repeat "According to [DocID]" for every sentence. Write like an expert assistant explaining the findings clearly.
+3. In-Text Citations: Reference your evidence cleanly using numbered citation tags like [1], [2] corresponding to the citation_index of the evidence spans.
+4. False-Premise Correction: If Decision is DEBUNK_FALSE_PREMISE, explicitly state that the premise in the question is incorrect, explain why based on the evidence, and cite the refuting source.
+5. Contradiction Attribution: If contradictory evidence is flagged, explicitly compare both perspectives and attribute each claim to its specific document.
+6. Refusal Rule: If instructed to REFUSE or if evidence is insufficient, do NOT guess. Explicitly state what information was searched and why evidence is lacking.
 
-Respond with valid JSON conforming to the GenerationResult schema."""
+You MUST respond with valid JSON adhering to this EXACT schema:
+{
+  "response_text": "Your clear, fluent, natural-language synthesized answer here with inline citation tags like [1], [2]...",
+  "citations": [
+    {
+      "doc_id": "document ID from the span",
+      "document_title": "document title",
+      "section_title": "section title",
+      "chunk_id": "chunk ID",
+      "exact_quote": "exact quote from the verified span",
+      "claim_text": "the specific claim being supported"
+    }
+  ]
+}"""
 
     def __init__(self, api_key: Optional[str] = None, model: str = OPENAI_MODEL):
         self.api_key = api_key or get_openai_api_key() or OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
@@ -91,16 +105,16 @@ Respond with valid JSON conforming to the GenerationResult schema."""
                 "subquestion": span.subquestion_text
             })
 
-        guidance = "Answer the question factually based on the verified evidence spans."
+        guidance = "Synthesize a clear, cohesive, natural-language answer to the question using the verified evidence spans. Reference evidence with inline citation numbers like [1], [2]."
         if decision == "PARTIALLY_SUFFICIENT":
             guidance = (
-                "Answer the supported parts of the query factually with citations. "
+                "Synthesize a clear, cohesive answer to the supported parts of the query factually with citations like [1], [2]. "
                 "At the end of your response, explicitly state which parts could NOT be confirmed from the retrieved evidence."
             )
         elif decision == "DEBUNK_FALSE_PREMISE":
             guidance = (
-                "The user query asserts a premise that is contradicted or unsupported by the literature. "
-                "Explicitly correct and debunk the false premise using the verified evidence spans, citing the contradicting source."
+                "The user query asserts a premise that is contradicted or unsupported by the documents. "
+                "Explicitly correct and debunk the false premise using the verified evidence spans, citing the refuting source with [1], [2]."
             )
 
         user_content = (
@@ -198,13 +212,22 @@ Respond with valid JSON conforming to the GenerationResult schema."""
                     claim_text=s.justification or s.exact_quote
                 ))
 
-        response_text = raw_data.get("response_text", "")
+        response_text = (
+            raw_data.get("response_text")
+            or raw_data.get("answer")
+            or raw_data.get("response")
+            or raw_data.get("text")
+            or raw_data.get("content")
+            or raw_data.get("summary")
+            or ""
+        )
         if not response_text:
+            evidence_points = " ".join([f"{s.exact_quote} [{idx}]" for idx, s in enumerate(audit_result.verified_supported_spans, start=1)])
             if decision == "DEBUNK_FALSE_PREMISE":
-                conflict_summary = audit_result.contradiction.conflict_summary or "The premise in the question is contradicted by the corpus."
-                response_text = f"The premise in the question is incorrect: {conflict_summary} " + " ".join([f"According to {s.doc_id} ({s.section_title}): \"{s.exact_quote}\"" for s in audit_result.verified_supported_spans])
+                conflict_summary = audit_result.contradiction.conflict_summary or "The premise in the question is contradicted by the verified documents."
+                response_text = f"The premise in the question is incorrect: {conflict_summary}\n\nBased on verified evidence: {evidence_points}"
             else:
-                response_text = " ".join([f"According to {s.doc_id} ({s.section_title}): \"{s.exact_quote}\"" for s in audit_result.verified_supported_spans])
+                response_text = f"Based on verified document evidence: {evidence_points}"
 
         missing_caveats = audit_result.missing_information if decision == "PARTIALLY_SUFFICIENT" else None
 

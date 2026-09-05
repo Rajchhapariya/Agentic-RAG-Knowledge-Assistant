@@ -22,10 +22,10 @@ class UnextractablePDFError(Exception):
 class PDFLoader:
     """Extracts structured text, headings, and page numbers from PDF files or bytes."""
 
-    # Heading patterns to detect sections in raw text
+    # Heading patterns to detect sections in raw text (research papers, resumes, reports)
     HEADING_PATTERNS = [
         re.compile(r'^(?:#+\s*|\d+(\.\d+)*\s+)([A-Z][A-Za-z0-9\s,\-:]{2,60})$'),
-        re.compile(r'^(Abstract|Introduction|Related Work|Background|Methodology|Methods|Architecture|Approach|Experiments|Results|Discussion|Conclusion|Limitations)\b', re.IGNORECASE),
+        re.compile(r'^(Abstract|Introduction|Related Work|Background|Methodology|Methods|Architecture|Approach|Experiments|Results|Discussion|Conclusion|Limitations|Experience|Work Experience|Professional Experience|Education|Academic Background|Skills|Technical Skills|Core Competencies|Projects|Key Projects|Certifications|Licenses|Summary|Professional Summary|Objective|Publications|Awards|Honors|Achievements|Contact)\b', re.IGNORECASE),
     ]
 
     def load_pdf(
