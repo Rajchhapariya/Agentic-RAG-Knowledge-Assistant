@@ -227,7 +227,11 @@ def run_app():
                 except UnextractablePDFError as e:
                     st.sidebar.error(f"❌ Extraction Failed: {e}")
                 except Exception as e:
-                    st.sidebar.error(f"❌ Ingestion Error: {e}")
+                    err_str = str(e)
+                    if "401" in err_str or "invalid_api_key" in err_str:
+                        st.sidebar.error("🔑 **Invalid OpenAI API Key (401)**: The key provided is invalid or a placeholder. In Streamlit Cloud, go to **Manage app (lower right) → Settings (⋮) → Secrets** and set `OPENAI_API_KEY` to your valid key from https://platform.openai.com/api-keys.")
+                    else:
+                        st.sidebar.error(f"❌ Ingestion Error: {e}")
             
             # Display Upload Metadata from session state
             if "uploaded_info" in st.session_state:
@@ -292,7 +296,11 @@ def run_app():
                     st.error(f"🔒 API Execution Guard: {e}")
                     st.stop()
                 except Exception as e:
-                    st.error(f"❌ Execution Error: {e}")
+                    err_str = str(e)
+                    if "401" in err_str or "invalid_api_key" in err_str:
+                        st.error("🔑 **Invalid OpenAI API Key (401)**: The key provided is invalid or a placeholder. In Streamlit Cloud, go to **Manage app (lower right) → Settings (⋮) → Secrets** and set `OPENAI_API_KEY` to your valid key from https://platform.openai.com/api-keys.")
+                    else:
+                        st.error(f"❌ Execution Error: {e}")
                     st.stop()
 
     # Render Last Trace if available
