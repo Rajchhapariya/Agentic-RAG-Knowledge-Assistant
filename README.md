@@ -4,6 +4,17 @@
 
 ---
 
+## 📸 System Demonstration & Execution Interface
+
+| Grounded Answer & Citation Auditing | Multi-Pass Iterative Self-Correction Trace |
+| :---: | :---: |
+| ![Grounded Answer & Citation Auditing](assets/rag_demo_citations.png) | ![Self-Correction Trace](assets/rag_demo_self_correction_trace.png) |
+| *Evidence auditor catching unverified premises with exact paper citations* | *Closed-loop query reformulation trace across 3 self-corrective passes* |
+
+---
+
+---
+
 ## 1. Problem Statement
 
 Standard Retrieval-Augmented Generation (RAG) architectures follow an unvalidated, feed-forward pipeline:
