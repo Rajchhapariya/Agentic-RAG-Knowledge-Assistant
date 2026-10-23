@@ -1,10 +1,10 @@
 # Agentic RAG Knowledge Assistant
 
-> An evidence-aware RAG system that plans retrieval, audits evidence, retries when necessary, and refuses unsupported questions.
+> A closed-loop retrieval-augmented generation engine with query decomposition, hybrid lexical-vector retrieval (BM25 + Dense RRF), deterministic citation auditing, and bounded error recovery.
 
 ---
 
-## 📸 System Demonstration & Execution Interface
+## System Demonstration & Interface
 
 | Grounded Answer & Citation Auditing | Multi-Pass Iterative Self-Correction Trace |
 | :---: | :---: |
@@ -322,7 +322,7 @@ To execute all 5 scenarios and view the live cost/latency summary:
 python -m scripts.run_scripted_demo
 ```
 
-### 💡 Curated Questions for Live Exploration
+###  Curated Questions for Live Exploration
 
 | Category | Recommended Query | Target Behavior & Architecture Proof |
 | :--- | :--- | :--- |
