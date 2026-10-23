@@ -161,7 +161,7 @@ def main():
     # ------------------------------------------------------------------
     # Real execution
     # ------------------------------------------------------------------
-    print(f"\n🚀  EXECUTING BENCHMARK (real-api=True, budget=${args.budget:.2f})")
+    print(f"\n[BENCHMARK] EXECUTING BENCHMARK (real-api=True, budget=${args.budget:.2f})")
     if args.smoke_test:
         print("   Smoke-test mode: 1 question × 1 system.\n")
 

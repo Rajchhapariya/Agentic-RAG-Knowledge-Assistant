@@ -68,8 +68,7 @@ class ExperimentHarness:
 
         self.retriever = HybridRetriever.from_chunks(chunks)
 
-        # Initialize all 8 fixed configurations
-        self.systems = {
+                self.systems = {
             "Baseline_A_NaiveDense": NaiveRAG(retriever=self.retriever, top_k=5),
             "Baseline_B_HybridRAG": HybridRAG(retriever=self.retriever, top_k=5),
             "Ablation_1_NoPlanner": AblationNoPlanner(retriever=self.retriever, top_k=5),
@@ -375,7 +374,6 @@ def print_summary_table(aggregates: List[SystemAggregateMetrics]):
         print(row)
     print("=" * 140)
 
-    # Print Cost & Token Usage Breakdown
-    print("\nBENCHMARK API USAGE, TOKEN CONSUMPTION & COST BREAKDOWN")
+        print("\nBENCHMARK API USAGE, TOKEN CONSUMPTION & COST BREAKDOWN")
     print(get_cost_tracker().get_summary_table())
     print("\n")

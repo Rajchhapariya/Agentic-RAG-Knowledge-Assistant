@@ -67,7 +67,7 @@ def run_demonstration():
     print("=" * 90)
     
     # -----------------------------------------------------------------------
-    # Step 1: Initial Upload (Cache Miss -> Embed & Index)
+    # Initial Upload (Cache Miss -> Embed & Index)
     # -----------------------------------------------------------------------
     print("\n>>> STEP 1: First Upload of PDF (Cold Ingestion)")
     doc, chunks, retriever, info_1 = pipeline.ingest_pdf(pdf_bytes, filename=pdf_name)
@@ -80,7 +80,7 @@ def run_demonstration():
     print(f"  - Stored Artifacts:    {info_1['doc_dir']}")
     
     # -----------------------------------------------------------------------
-    # Step 2: Repeated Upload (Cache Hit -> Zero Doc Embedding Calls)
+    # Repeated Upload (Cache Hit -> Zero Doc Embedding Calls)
     # -----------------------------------------------------------------------
     print("\n>>> STEP 2: Repeated Upload of Same PDF (Warm Ingestion)")
     doc_2, chunks_2, retriever_2, info_2 = pipeline.ingest_pdf(pdf_bytes, filename=pdf_name)
@@ -91,7 +91,7 @@ def run_demonstration():
     print(f"  - Reused Embeddings:   {info_2['dimensions']} dims")
     
     # -----------------------------------------------------------------------
-    # Step 3: Answerable Question against Uploaded PDF
+    # Answerable Question against Uploaded PDF
     # -----------------------------------------------------------------------
     orchestrator = AgentOrchestrator(retriever=retriever_2)
     
@@ -108,7 +108,7 @@ def run_demonstration():
     print(f"Response:\n{trace_1.generation.response_text}")
     
     # -----------------------------------------------------------------------
-    # Step 4: Unanswerable Question against Uploaded PDF (Refusal Check)
+    # Unanswerable Question against Uploaded PDF (Refusal Check)
     # -----------------------------------------------------------------------
     print("\n>>> STEP 4: Unanswerable Question (Hallucination Safeguard Check)")
     q_unanswerable = "What is the quantum superposition error rate measured on cryogenic hardware?"

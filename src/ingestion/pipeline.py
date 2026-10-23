@@ -178,7 +178,7 @@ class IngestionPipeline:
         print(f"Populated SQLite database: {SQLITE_DB_PATH.name}")
 
     def _compute_statistics(self, documents: List[Document], chunks: List[Chunk]) -> Dict[str, Any]:
-        """Computes comprehensive token, section, and chunk distribution statistics."""
+        """Computes token, section, and chunk distribution statistics."""
         token_counts = [c.metadata.token_count for c in chunks]
         word_counts = [len(doc.full_text.split()) for doc in documents]
         

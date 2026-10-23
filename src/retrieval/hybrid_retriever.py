@@ -184,8 +184,7 @@ class HybridRetriever:
                 rrf_score += sparse_weight * (1.0 / (self.rrf_k + s_rank))
             scored_candidates.append((cid, rrf_score))
 
-        # Sort candidates by RRF score descending
-        scored_candidates.sort(key=lambda x: x[1], reverse=True)
+                scored_candidates.sort(key=lambda x: x[1], reverse=True)
         top_candidates = scored_candidates[:top_k]
 
         # Build final SearchResult objects
