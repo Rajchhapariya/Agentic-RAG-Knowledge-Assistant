@@ -102,19 +102,19 @@ def test_representative_content_fidelity():
 
     all_chunk_text = " ".join(c["content"] for c in chunks)
 
-    # 1. CRAG evaluator concepts
+    # CRAG evaluator concepts
     assert "retrieval evaluator" in all_chunk_text.lower() or "evaluator" in all_chunk_text.lower()
     assert "correct" in all_chunk_text.lower() and "ambiguous" in all_chunk_text.lower()
 
-    # 2. Self-RAG reflection tokens
+    # Self-RAG reflection tokens
     assert "retrieve" in all_chunk_text.lower()
     assert "reflection" in all_chunk_text.lower()
 
-    # 3. Toolformer API calls
+    # Toolformer API calls
     assert "calculator" in all_chunk_text.lower() or "api" in all_chunk_text.lower()
 
-    # 4. ReAct Thought/Action/Observation
+    # ReAct thought-action-observation cycles
     assert "thought" in all_chunk_text.lower() and "action" in all_chunk_text.lower()
 
-    # 5. DPR bi-encoders
+    # DPR dense bi-encoders
     assert "question encoder" in all_chunk_text.lower() or "passage encoder" in all_chunk_text.lower() or "bi-encoder" in all_chunk_text.lower()

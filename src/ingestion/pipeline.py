@@ -32,23 +32,23 @@ class IngestionPipeline:
         """Runs full ingestion: fetch -> parse -> chunk -> persist -> statistics."""
         print("=== Phase 1: Starting Corpus Ingestion & Section-Aware Chunking ===")
         
-        # 1. Fetch & parse all documents
+        # Fetch and parse all documents
         documents: List[Document] = self.fetcher.fetch_all()
         
-        # 2. Chunk documents
+        # Chunk documents into semantic windows
         all_chunks: List[Chunk] = []
         for doc in documents:
             doc_chunks = self.chunker.chunk_document(doc)
             all_chunks.extend(doc_chunks)
             print(f"  -> {doc.doc_id}: {len(doc_chunks)} section-aware chunks generated.")
 
-        # 3. Persist to JSON files
+        # Persist chunks to JSON storage
         self._save_to_json(documents, all_chunks)
 
-        # 4. Persist to SQLite metadata database
+        # Persist document metadata to SQLite
         self._save_to_sqlite(documents, all_chunks)
 
-        # 5. Compute summary statistics
+        # Compute corpus summary statistics
         stats = self._compute_statistics(documents, all_chunks)
         print("=== Phase 1 Ingestion Completed Successfully ===")
         return stats

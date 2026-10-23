@@ -68,7 +68,7 @@ class ExperimentHarness:
 
         self.retriever = HybridRetriever.from_chunks(chunks)
 
-                self.systems = {
+        self.systems = {
             "Baseline_A_NaiveDense": NaiveRAG(retriever=self.retriever, top_k=5),
             "Baseline_B_HybridRAG": HybridRAG(retriever=self.retriever, top_k=5),
             "Ablation_1_NoPlanner": AblationNoPlanner(retriever=self.retriever, top_k=5),
@@ -211,17 +211,17 @@ class ExperimentHarness:
             print("[No records to save]")
             return
 
-        # 1. Question-level JSON
+        # Question-level telemetry JSON
         q_path = os.path.join(RESULTS_DIR, f"question_level_results{suffix}.json")
         with open(q_path, "w", encoding="utf-8") as f:
             json.dump([r.model_dump() for r in records], f, indent=2)
 
-        # 2. Aggregate Summary JSON
+        # Aggregate summary metrics JSON
         agg_path = os.path.join(RESULTS_DIR, f"aggregate_summary{suffix}.json")
         with open(agg_path, "w", encoding="utf-8") as f:
             json.dump([a.model_dump() for a in aggregates], f, indent=2)
 
-        # 3. Aggregate CSV
+        # Aggregate summary CSV export
         csv_path = os.path.join(RESULTS_DIR, f"aggregate_summary{suffix}.csv")
         if aggregates:
             keys = list(aggregates[0].model_dump().keys())
@@ -231,17 +231,17 @@ class ExperimentHarness:
                 for a in aggregates:
                     writer.writerow(a.model_dump())
 
-        # 4. Failures JSON
+        # Failure case analysis JSON
         fail_path = os.path.join(RESULTS_DIR, f"failure_cases{suffix}.json")
         with open(fail_path, "w", encoding="utf-8") as f:
             json.dump(failures, f, indent=2)
 
-        # 5. Cost Breakdown JSON
+        # Token cost breakdown JSON
         cost_path = os.path.join(RESULTS_DIR, f"cost_breakdown{suffix}.json")
         with open(cost_path, "w", encoding="utf-8") as f:
             json.dump(get_cost_tracker().get_summary_dict(), f, indent=2)
 
-        # 6. Reproducibility Manifest JSON
+        # Reproducibility manifest JSON
         dataset_content = open(BENCHMARK_PATH, "rb").read()
         dataset_hash = hashlib.sha256(dataset_content).hexdigest()
         manifest = {
@@ -374,6 +374,6 @@ def print_summary_table(aggregates: List[SystemAggregateMetrics]):
         print(row)
     print("=" * 140)
 
-        print("\nBENCHMARK API USAGE, TOKEN CONSUMPTION & COST BREAKDOWN")
+    print("\nBENCHMARK API USAGE, TOKEN CONSUMPTION & COST BREAKDOWN")
     print(get_cost_tracker().get_summary_table())
     print("\n")

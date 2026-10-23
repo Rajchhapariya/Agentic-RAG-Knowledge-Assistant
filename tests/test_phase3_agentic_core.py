@@ -34,7 +34,7 @@ from src.agent.evidence_auditor import EvidenceAuditor
 from src.agent.grounded_generator import GroundedGenerator
 from src.agent.orchestrator import AgentOrchestrator
 
-# Import conftest factory helpers directly (not as a package import)
+# Direct conftest factory import
 from conftest import (
     make_query_plan,
     make_sufficient_audit,

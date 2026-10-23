@@ -95,7 +95,7 @@ class PDFLoader:
 
     def _extract_pages(self, pdf_bytes: bytes, doc_name: str) -> Tuple[List[Tuple[int, str]], str]:
         """Extracts text page by page using pdfplumber with fallback to pypdf."""
-        # 1. Primary: pdfplumber
+        # Primary loader: pdfplumber
         try:
             pages: List[Tuple[int, str]] = []
             with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
@@ -109,7 +109,7 @@ class PDFLoader:
         except Exception:
             pass
 
-        # 2. Fallback: pypdf
+        # Fallback loader: pypdf
         try:
             pages = []
             reader = pypdf.PdfReader(io.BytesIO(pdf_bytes))

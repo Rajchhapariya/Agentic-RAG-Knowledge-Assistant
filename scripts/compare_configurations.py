@@ -57,10 +57,10 @@ def main():
 
     retriever = HybridRetriever.from_chunks(chunks)
 
-    # 1. Answerable Query
+    # Answerable evaluation query
     run_comparison("Answerable Single-Hop", "What are the reflection critique tokens introduced in Self-RAG?", retriever)
 
-    # 2. Unanswerable Adversarial Trap
+    # Adversarial unanswerable query
     run_comparison("Unanswerable / Hallucination Trap", "What is the quantum teleportation fidelity achieved by Agent-Q in 2026?", retriever)
 
 

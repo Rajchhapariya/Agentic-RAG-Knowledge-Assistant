@@ -61,7 +61,7 @@ class UserPDFPipeline:
         - Cache Hit: Loads pre-computed embeddings and chunks (0 document embedding calls).
         - Cache Miss: Generates embeddings, saves cache artifacts, and builds isolated retriever.
         """
-        # Step 1: Parse PDF
+        # Parse uploaded PDF document
         doc = self.loader.load_pdf(file_source, filename)
         file_hash = doc.metadata.get("file_hash", "")
         doc_dir = self.upload_dir / file_hash
@@ -71,7 +71,7 @@ class UserPDFPipeline:
         embeddings_path = doc_dir / "embeddings.npz"
         metadata_path = doc_dir / "metadata.json"
 
-        # Step 2: Check Cache Validity
+        # Verify cache validity via file hash
         if not force_recompute and all(p.exists() for p in [doc_path, chunks_path, embeddings_path, metadata_path]):
             try:
                 with open(metadata_path, "r", encoding="utf-8") as f:
@@ -107,7 +107,7 @@ class UserPDFPipeline:
                 # If cache corrupted, fall through to recompute
                 pass
 
-        # Step 3: Cache Miss -> Chunk & Embed
+        # Chunk document and compute dense embeddings on cache miss
         chunks = self.chunker.chunk_document(doc)
         if not chunks:
             raise UnextractablePDFError(f"No valid text chunks could be created from '{doc.title}'.")
@@ -115,7 +115,7 @@ class UserPDFPipeline:
         texts = [c.content for c in chunks]
         vectors = self.embedding_client.embed_raw_texts(texts)
 
-        # Step 4: Persist Cache Artifacts
+        # Persist cached artifacts to disk
         doc_dir.mkdir(parents=True, exist_ok=True)
 
         with open(doc_path, "w", encoding="utf-8") as f:

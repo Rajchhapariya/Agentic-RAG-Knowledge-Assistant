@@ -40,24 +40,24 @@ def normalize_text_for_matching(text: str) -> str:
     
     t = text
     
-    # 1. Unicode punctuation normalization
+    # Unicode punctuation normalization
     t = t.replace("\u2018", "'").replace("\u2019", "'")
     t = t.replace("\u201c", '"').replace("\u201d", '"')
     t = t.replace("\u2014", "-").replace("\u2013", "-").replace("\u2212", "-")
     t = t.replace("\u00a0", " ").replace("\u200b", "").replace("\u202f", " ")
     
-    # 2. Whitespace normalization
+    # Whitespace normalization
     t = re.sub(r'\s+', ' ', t).strip()
     
-    # 3. LaTeX and Math symbol normalization
+    # LaTeX and math symbol normalization
     t = t.replace("\\times", "*").replace("×", "*")
     t = t.replace("_{", "_").replace("^{", "^").replace("}", "")
     
-    # 4. Superscript digits translation (e.g. 10⁻⁵ -> 10^-5)
+    # Superscript digits translation (e.g. 10⁻⁵ -> 10^-5)
     superscript_map = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
     t = re.sub(r'10([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)', lambda m: f"10^{m.group(1).translate(superscript_map)}", t)
     
-    # 5. Scientific notation canonicalization: e.g. 1 * 10^-5, 1.0 * 10^-5, 10^-5 -> 1e-5
+    # Scientific notation canonicalization: e.g. 1 * 10^-5, 1.0 * 10^-5, 10^-5 -> 1e-5
     def norm_sci(match):
         coeff = match.group(1)
         exp = match.group(2)

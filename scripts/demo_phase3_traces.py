@@ -58,15 +58,15 @@ def main():
     retriever = HybridRetriever.from_chunks(chunks)
     orchestrator = AgentOrchestrator(retriever=retriever)
 
-    # 1. Simple Answerable
+    # Simple answerable query
     t1 = orchestrator.run("What are the four reflection critique tokens introduced in Self-RAG?")
     print_trace("1. Answerable Single-Hop Query with Citations", t1)
 
-    # 2. Multi-Hop Synthesis
+    # Multi-hop synthesis query
     t2 = orchestrator.run("Compare how Self-RAG decides when to retrieve versus how FLARE triggers active retrieval.")
     print_trace("2. Multi-Hop Cross-Paper Comparative Query", t2)
 
-    # 3. Unanswerable Hallucination Trap
+    # Adversarial unanswerable trap
     t3 = orchestrator.run("What is the benchmark accuracy of the Quantum-RAG model on MMLU in 2026?")
     print_trace("3. Genuinely Unanswerable / Hallucination Trap", t3)
 

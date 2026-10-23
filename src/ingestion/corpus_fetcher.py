@@ -41,7 +41,7 @@ class CorpusFetcher:
         
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         
-        # 1. Download PDF if not present
+        # Download paper PDF if not cached locally
         if not pdf_path.exists():
             pdf_url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
             print(f"Downloading PDF for {doc_id} from {pdf_url}...")
@@ -54,7 +54,7 @@ class CorpusFetcher:
             except Exception as e:
                 print(f"  Warning: Could not download PDF for {doc_id}: {e}")
 
-        # 2. Fetch or load ar5iv HTML for rich structured section extraction
+        # Fetch or load ar5iv HTML for structured section extraction
         if html_cache_path.exists():
             print(f"Loading cached structured HTML for {doc_id}...")
             with open(html_cache_path, "r", encoding="utf-8") as f:

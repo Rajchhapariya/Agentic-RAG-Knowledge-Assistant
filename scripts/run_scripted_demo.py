@@ -39,7 +39,7 @@ def run_demo():
     reset_cost_tracker()
     tracker = get_cost_tracker()
 
-    # Step 0: Initialize Research Retriever
+    # Instantiate retrieval subsystem
     with open(CHUNKS_JSON_PATH, "r", encoding="utf-8") as f:
         chunks = [Chunk(**item) for item in json.load(f)]
     research_retriever = HybridRetriever.from_chunks(chunks)

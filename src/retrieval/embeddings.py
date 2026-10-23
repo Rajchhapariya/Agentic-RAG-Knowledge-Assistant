@@ -52,7 +52,7 @@ class EmbeddingClient:
         self.api_enabled = OPENAI_API_ENABLED if api_enabled is None else api_enabled
         self.cache_only = CACHE_ONLY_MODE if cache_only is None else cache_only
 
-        # Initialize OpenAI client only if API is enabled and API key is present
+        # Instantiate OpenAI client when API mode is active and key is present
         self.client: Optional[OpenAI] = None
         if self.api_enabled and not self.cache_only:
             if self.api_key:
@@ -159,13 +159,13 @@ class EmbeddingClient:
         tracker = get_cost_tracker()
         q_key = self._hash_query(text)
 
-        # 1. Check in-memory / persistent query cache
+        # Query cache lookup
         if q_key in self._query_cache:
             vec = self._query_cache[q_key]
             tracker.track_query_embedding(estimated_tokens=self._count_tokens(text), is_cache_hit=True)
             return vec
 
-        # 2. Cache miss: verify safety constraints
+        # Verify rate limits and safety constraints
         if not self.api_enabled or self.cache_only:
             raise OpenAIAPIDisabledError(
                 f"OpenAI API is disabled (OPENAI_API_ENABLED={self.api_enabled}, CACHE_ONLY_MODE={self.cache_only}) "
@@ -175,7 +175,7 @@ class EmbeddingClient:
         if not self.client:
             raise ValueError("OpenAI client not initialized. Check OPENAI_API_KEY.")
 
-        # 3. Call OpenAI Embedding API
+        # OpenAI embedding API request
         tokens = self._count_tokens(text)
         response = self.client.embeddings.create(
             model=self.model,

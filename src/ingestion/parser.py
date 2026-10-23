@@ -30,7 +30,7 @@ class ResearchPaperParser:
         full_text_parts: List[str] = []
         char_offset = 0
 
-        # 1. Extract Abstract
+        # Extract abstract section
         abstract_el = soup.find('div', class_=re.compile(r'ltx_abstract'))
         if abstract_el:
             abs_text = self._clean_text(abstract_el.get_text())
@@ -51,7 +51,7 @@ class ResearchPaperParser:
                 full_text_parts.append(f"## Abstract\n{abs_text}")
                 char_offset += len(abs_text) + 2
 
-        # 2. Extract Body Sections
+        # Extract body sections
         section_tags = soup.find_all('section', class_=re.compile(r'ltx_section|ltx_subsection'))
         
         sec_counter = 1

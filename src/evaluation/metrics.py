@@ -132,7 +132,7 @@ def evaluate_question_trace(
     system_name: str
 ) -> QuestionEvaluationRecord:
     """Evaluates a single question trace against structured ground truth with multi-view metrics."""
-    # 1. Multi-View Retrieval Analysis
+    # Multi-view retrieval analysis
     pass1_chunks: List[str] = trace.passes[0].retrieved_chunk_ids if trace.passes else []
     all_accumulated_chunks: List[str] = []
     retrieved_doc_ids: List[str] = []
@@ -146,13 +146,13 @@ def evaluate_question_trace(
                 if doc_prefix not in retrieved_doc_ids:
                     retrieved_doc_ids.append(doc_prefix)
 
-    # 1. Pass-1 Recall@5 (Comparable directly to single-pass baselines)
+    # Pass-1 Recall@5 benchmark comparison
     pass1_rec = compute_recall_at_k(pass1_chunks, question.expected_chunk_ids, k=5)
     
-    # 2. Cumulative Evidence Pool Recall (Measures complete agentic retrieval coverage)
+    # Cumulative evidence pool recall across all agent iterations
     cum_pool_rec = compute_recall_at_k(all_accumulated_chunks, question.expected_chunk_ids, k=None)
     
-    # 3. Best-Pass Recall@5
+    # Best-pass Recall@5
     pass_recalls = [compute_recall_at_k(p.retrieved_chunk_ids, question.expected_chunk_ids, k=5) for p in trace.passes]
     best_pass_rec = max(pass_recalls, default=0.0)
 
@@ -163,7 +163,7 @@ def evaluate_question_trace(
     doc_rec = compute_recall_at_k(retrieved_doc_ids, question.expected_doc_ids, k=5)
     mrr_val = compute_mrr(all_accumulated_chunks, question.expected_chunk_ids)
 
-    # 2. Decision and Correctness Analysis
+    # Decision correctness analysis
     resp_text = trace.generation.response_text
     is_refused = (
         trace.generation.status == "REFUSED" or 
@@ -243,7 +243,7 @@ def evaluate_question_trace(
                 label = "Wrong"
                 failure_cat = "incorrect_answer"
 
-    # 3. Citation Analysis
+    # Citation faithfulness analysis
     cited_docs = [c.doc_id for c in trace.generation.citations]
     if cited_docs and question.expected_doc_ids:
         cit_prec = len(set(cited_docs) & set(question.expected_doc_ids)) / float(len(cited_docs))

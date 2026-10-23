@@ -92,7 +92,7 @@ class NumpyVectorStore:
 
         candidate_scores = sim_scores[candidate_indices]
         
-                num_results = min(top_k, len(candidate_indices))
+        num_results = min(top_k, len(candidate_indices))
         top_sub_indices = np.argsort(-candidate_scores)[:num_results]
         
         results: List[Tuple[Chunk, float, int]] = []

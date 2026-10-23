@@ -67,7 +67,7 @@ You MUST respond with valid JSON adhering to this EXACT schema:
     ) -> GenerationResult:
         """Generates a grounded response or explicit refusal based on the audit state."""
         
-        # 1. Direct conversational response (No retrieval needed)
+        # Conversational response path (no retrieval required)
         if decision == "DIRECT_ANSWER" and direct_response:
             return GenerationResult(
                 status="DIRECT_CONVERSATIONAL",
@@ -77,7 +77,7 @@ You MUST respond with valid JSON adhering to this EXACT schema:
                 has_conflict_acknowledged=False
             )
 
-        # 2. Explicit Refusal (Hallucination Prevention Gate)
+        # Explicit refusal gate (hallucination prevention)
         if decision in {"REFUSE", "DEFINITIVELY_ABSENT"}:
             missing_reasons = "\n".join([f"- {m}" for m in audit_result.missing_information]) if audit_result.missing_information else "- No relevant evidence found in indexed documents."
             refusal_text = (
@@ -93,7 +93,7 @@ You MUST respond with valid JSON adhering to this EXACT schema:
                 has_conflict_acknowledged=False
             )
 
-        # 3. Grounded Synthesis from Verified Spans (Full, Partial, or Debunking)
+        # Grounded synthesis from verified evidence spans
         spans_payload = []
         for i, span in enumerate(audit_result.verified_supported_spans, start=1):
             spans_payload.append({

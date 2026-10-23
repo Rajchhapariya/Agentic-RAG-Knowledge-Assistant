@@ -24,7 +24,7 @@ class QueryReformulator:
         # Collect all terms already queried to avoid verbatim repetition
         seen_queries = {q.strip().lower() for q in previous_queries}
         
-        # 1. If diagnosed gap provides specific missing concepts/parameters
+        # Context-guided reformulation when specific missing concepts exist
         gap_clean = re.sub(r'^(missing|sub-question \d+|has no verified supporting evidence|specifically)', '', diagnosed_gap, flags=re.IGNORECASE).strip()
         gap_clean = re.sub(r'[^\w\s\-_]', ' ', gap_clean).strip()
         

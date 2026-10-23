@@ -309,7 +309,7 @@ def run_app():
         
         st.markdown("---")
         
-        # 1. Decision Status Badge
+        # Decision status badge
         badge_class_map = {
             "SUFFICIENT": ("badge-sufficient", "✓ ANSWER: FULLY GROUNDED & VERIFIED"),
             "PARTIALLY_SUFFICIENT": ("badge-partial", "⚠ PARTIAL ANSWER (MISSING INFORMATION CAVEATS)"),
@@ -321,12 +321,12 @@ def run_app():
         
         st.markdown(f'<div class="status-badge {badge_cls}">{badge_text}</div>', unsafe_allow_html=True)
         
-        # 2. Main Response Box (Human-readable without internal IDs)
+        # Response container
         display_response = clean_display_text(trace.generation.response_text, active_doc_title)
         st.markdown("### Answer")
         st.markdown(display_response)
         
-        # 3. Verified Citations
+        # Verified citations section
         if trace.generation.citations:
             st.markdown("#### 📚 Verified Source Citations")
             for i, cit in enumerate(trace.generation.citations, start=1):
@@ -348,7 +348,7 @@ def run_app():
         elif trace.final_decision == "REFUSE":
             st.info("ℹ️ No citations are provided because the indexed corpus lacks verified supporting evidence.")
 
-        # 4. Agentic Retry Flow (Visualized if retries occurred)
+        # Agentic retry visualization
         if trace.retry_count > 0:
             st.markdown("#### 🔄 Iterative Self-Correction Trace")
             cols = st.columns(len(trace.passes))
@@ -362,7 +362,7 @@ def run_app():
                     elif p_rec.audit_result.verdict == "SUFFICIENT":
                         st.caption("↳ Verified sufficient evidence.")
 
-        # 5. Expandable Full Agent Trace (Deep Inspect)
+        # Execution telemetry trace inspector
         with st.expander("🔍 Deep Inspect: Complete Agent Execution Trace", expanded=False):
             tab_plan, tab_retrieval, tab_audit, tab_perf = st.tabs([
                 "1. Query Plan",
