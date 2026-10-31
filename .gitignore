@@ -26,3 +26,4 @@ data/user_uploads/
 # OS specific
 .DS_Store
 Thumbs.db
+assets/og-image.png

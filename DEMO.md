@@ -7,7 +7,7 @@ This document provides a concise, step-by-step walkthrough to rehearse and prese
 ## 🎯 Demo Objective
 
 Demonstrate how an **Agentic RAG architecture** (`PLAN → RETRIEVE → AUDIT → BOUNDED RETRY → GENERATE / REFUSE`) solves the critical vulnerabilities of standard naive RAG systems:
-1. **Hallucination Prevention**: Replaces unchecked generation with deterministic evidence auditing and controlled refusal.
+1. **Hallucination Prevention**: Replaces unchecked generation with LLM-based evidence auditing, deterministic quote verification and controlled refusal.
 2. **Autonomous Self-Correction**: Diagnoses retrieval gaps and iteratively reformulates queries across bounded retries.
 3. **Inspectable Provenance**: Provides token-level verified quotes, sub-question relationship matrices, and full execution traces.
 4. **Production Ingestion Architecture**: Supports dynamic user PDF uploads with SHA-256 content-addressable vector caching while preserving research corpus isolation.
@@ -153,7 +153,7 @@ Use these ready-to-use prompts during live presentations:
 3. **Why Retrieval and Generation Were Evaluated Separately**: Measuring cumulative evidence recall ($52.1\%$) separately from answer accuracy ($45.8\%$) and hallucination ($0/4$) decoupled retrieval recall from generator grounding failures.
 4. **Why the Held-Out Result Showed a Real Tradeoff Rather than "Agentic RAG is Better"**: Agentic RAG eliminated hallucinations on adversarial unanswerables ($0/4$ vs. $4/4$ for Hybrid RAG), but conservative quote verification reduced answer accuracy ($45.8\%$ vs. $60.4\%$) and increased latency ($\sim 17.7\text{s}$ vs. $\sim 1.86\text{s}$).
 5. **Why the Evidence Auditor Became the Main Latency/Cost Bottleneck**: Profiling revealed that the LLM auditor accounted for $\sim 88.2\%$ of total execution latency and $\sim 81.4\%$ of benchmark token spend, motivating future work on two-tier lexical gating.
-6. **How Benchmark Isolation, Caching, Mocking, and Budget Controls Improved Reproducibility**: SHA-256 CAS vector caching, query caching, mocked Pydantic test boundaries ($87$ offline tests), and hard execution guards enabled deterministic evaluation with zero accidental API spend.
+6. **How Benchmark Isolation, Caching, Mocking, and Budget Controls Improved Reproducibility**: SHA-256 CAS vector caching, query caching, mocked Pydantic test boundaries ($90$ test functions, $87$ run offline by default), and hard execution guards enabled reproducible offline tests with zero accidental API spend.
 
 ---
 

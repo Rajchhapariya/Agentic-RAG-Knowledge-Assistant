@@ -1,6 +1,11 @@
 # Agentic RAG Knowledge Assistant
 
-> A closed-loop retrieval-augmented generation engine with query decomposition, hybrid lexical-vector retrieval (BM25 + Dense RRF), deterministic citation auditing, and bounded error recovery.
+> A closed-loop retrieval-augmented generation engine with query decomposition, hybrid lexical-vector retrieval (BM25 + Dense RRF), LLM-based evidence auditing with deterministic quote verification, and bounded error recovery.
+
+**Results** (32-question held-out test set; frozen pre-fix numbers):
+- `Agentic_System_C_Full`: hallucination rate $0/4$ (0.0%), true refusal rate $4/4$ (100.0%), citation precision 55.2%, evidence recall 52.1%.
+- Answer accuracy is 45.8% for `Agentic_System_C_Full` vs 60.4% for `Baseline_B_HybridRAG`, which had a $4/4$ (100.0%) hallucination rate. Avg latency is 17.69s vs 1.86s.
+- Full table for all 8 configurations: [6. Final Held-Out Benchmark Results](#6-final-held-out-benchmark-results).
 
 ---
 
@@ -31,7 +36,7 @@ This project experimentally investigates whether an **autonomous, closed-loop Ag
 
 ## 2. Why This Is Agentic
 
-An architecture is not "agentic" simply because it includes an LLM prompt that decomposes a query. What makes this system agentic is its **closed-loop feedback mechanism**: an explicit, deterministic **Evidence Auditor** acts as an evaluation gate that measures factual coverage, diagnoses retrieval gaps, reformulates targeted queries, and controls iterative retries before deciding whether generation is legally permitted.
+An architecture is not "agentic" simply because it includes an LLM prompt that decomposes a query. What makes this system agentic is its **closed-loop feedback mechanism**: an explicit **Evidence Auditor** (LLM-based, with deterministic quote verification) acts as an evaluation gate that measures factual coverage, diagnoses retrieval gaps, reformulates targeted queries, and controls iterative retries before deciding whether generation is legally permitted.
 
 ```
                       ┌────────────────────────┐
@@ -259,7 +264,7 @@ Analyzing the benchmark failures exposed three distinct structural failure modes
 * **Question**: *"What convergence threshold and learning rate are reported for Agent-Synthesizer?"*
 * **Symptom**: The auditor rejected a valid retrieved chunk containing `1e-5` because the generator prompt expected `10^-5` or `0.00001`.
 * **Root Cause**: Strict character-exact quotation matching failed on trivial LaTeX/scientific formatting differences.
-* **Post-Evaluation Fix**: Implemented a conservative, AST-based numerical equivalence normalizer (`1e-5` $\equiv$ `10^-5` $\equiv$ `0.00001`) that preserves source grounding without hallucinating ungrounded values.
+* **Post-Evaluation Fix**: Implemented a conservative, regex-based text normalizer (`1e-5` $\equiv$ `10^-5` $\equiv$ `0.00001`) that preserves source grounding without hallucinating ungrounded values.
 * **Remaining Limitation**: Complex mathematical derivations and multidimensional matrix notation remain beyond conservative regex normalization.
 
 ### 3. Multi-Hop Retrieval Fragmentation (Q30)
@@ -293,7 +298,7 @@ The application includes an isolated dynamic ingestion pipeline for arbitrary us
        ▼
 3. Isolated Hybrid Retrieval (`src/retrieval/hybrid_retriever.py`)
    - Builds in-memory BM25 + dense index specific to the uploaded document
-   - 100% isolated from `data/processed_chunks/`
+   - Ingestion leaves `data/processed_chunks/` unmodified (checksum-verified in `tests/test_user_pdf_ingestion.py`)
        │
        ▼
 4. Unified Agentic Execution (`src/agent/orchestrator.py`)
@@ -341,7 +346,7 @@ python -m scripts.run_scripted_demo
 
 To support rapid development and reproducible continuous integration without incurring API charges:
 
-1. **100% Offline Default Tests**: **87 active offline tests** run with zero external OpenAI API calls. Live integration tests are explicitly separated and opt-in.
+1. **100% Offline Default Tests**: **90 test functions**, of which **87 run offline by default** with zero external OpenAI API calls. The 3 live integration tests are explicitly separated and opt-in.
 2. **Persistent Document Embedding Cache**: Document chunks are hashed and stored in `data/processed_chunks/document_embeddings.npz`. Re-indexing loads from disk in $\le 50\text{ ms}$.
 3. **Persistent Query Embedding Cache**: Benchmark evaluation queries are cached in `query_embeddings_cache.npz`, achieving a >92% query cache hit rate.
 4. **Execution Guards & Hard Budget Limits**: Benchmark runners require an explicit `--real-api` CLI flag and enforce a hard spend cap ($0.50 default).
@@ -377,7 +382,7 @@ OPENAI_API_ENABLED=true
 
 ### 3. Run Offline Test Suite
 ```bash
-# Runs 87 active offline tests with zero external API calls
+# Runs the 87 default offline tests (of 90 test functions) with zero external API calls
 pytest
 
 # Optional: Live integration tests (explicit opt-in, consumes API credits)
@@ -437,7 +442,7 @@ python -m scripts.run_evaluation_benchmark --split test --real-api
 1. **Retrieval and Verification are Distinct Engineering Problems**: In naive RAG, improving retrieval recall often increases hallucination because the generator receives more irrelevant context. A separate verification gate is required to decouple retrieval volume from output hallucination.
 2. **Agentic Loops Require Calibration Against False Refusal**: Introducing an evidence checker easily leads to overly conservative behavior where answerable queries are refused due to minor formatting mismatches. Calibrating quote verification was critical.
 3. **Inspectability Trumps "Magical" Black-Box Agents**: Surfacing decomposed sub-questions, individual pass records, exact verified quotes, and component latencies in the UI made debugging and evaluating the system drastically more reliable.
-4. **Deterministic Mock Architecture is Essential**: Building realistic Pydantic fixture boundaries allowed us to expand the test suite to 87 tests running in under 60 seconds with zero API spend.
+4. **Deterministic Mock Architecture is Essential**: Building realistic Pydantic fixture boundaries allowed us to expand the test suite to 90 test functions (87 offline by default) running in under 60 seconds with zero API spend.
 
 ---
 
@@ -448,7 +453,7 @@ python -m scripts.run_evaluation_benchmark --split test --real-api
 3. **Why Retrieval and Generation Were Evaluated Separately**: Measuring cumulative evidence recall ($52.1\%$) separately from answer accuracy ($45.8\%$) and hallucination ($0/4$) decoupled retrieval recall from generator grounding failures.
 4. **Why the Held-Out Result Showed a Real Tradeoff Rather than "Agentic RAG is Better"**: Agentic RAG eliminated hallucinations on adversarial unanswerables ($0/4$ vs. $4/4$ for Hybrid RAG), but conservative quote verification reduced answer accuracy ($45.8\%$ vs. $60.4\%$) and increased latency ($\sim 17.7\text{s}$ vs. $\sim 1.86\text{s}$).
 5. **Why the Evidence Auditor Became the Main Latency/Cost Bottleneck**: Profiling revealed that the LLM auditor accounted for $\sim 88.2\%$ of total execution latency and $\sim 81.4\%$ of benchmark token spend, motivating future work on two-tier lexical gating.
-6. **How Benchmark Isolation, Caching, Mocking, and Budget Controls Improved Reproducibility**: SHA-256 CAS vector caching, query caching, mocked Pydantic test boundaries ($87$ offline tests), and hard execution guards enabled deterministic evaluation with zero accidental API spend.
+6. **How Benchmark Isolation, Caching, Mocking, and Budget Controls Improved Reproducibility**: SHA-256 CAS vector caching, query caching, mocked Pydantic test boundaries ($90$ test functions, $87$ run offline by default), and hard execution guards enabled reproducible offline tests with zero accidental API spend.
 
 ---
 
